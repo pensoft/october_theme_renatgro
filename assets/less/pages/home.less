@@ -355,81 +355,70 @@
         }
     }
 
+    // Desktop diagram — pixel positions from Figma (1280px × 750px)
+    // All children are direct and absolutely positioned within the diagram.
     .objective-diagram {
         position: relative;
-        max-width: 1280px;
+        width: 1280px;
+        max-width: 100%;
+        height: 750px;
         margin: 0 auto;
-        height: 380px;
 
         .breakpoint-large-down({
             display: none;
         });
 
+        // Connector line SVG
         .connector-svg {
             position: absolute;
             left: 50%;
-            top: 15px;
-            transform: translateX(-55%);
+            top: 388px;
+            transform: translateX(~'calc(-50% - 14.5px)');
             width: 269px;
             height: 344px;
         }
 
-        .objective-node {
+        // Green dots — absolutely positioned buttons
+        .obj-dot {
             position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            z-index: 2;
 
-            &:hover .obj-dot span {
+            &:hover span {
                 transform: scale(1.3);
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
+        }
+        .dot-tl { left: 475px; top: 372px; }
+        .dot-tr { left: 744px; top: 444px; }
+        .dot-bl { left: 475px; top: 632px; }
+        .dot-br { left: 744px; top: 716px; }
 
-            &:hover .node-label {
+        // Text labels — absolutely positioned
+        .node-label {
+            position: absolute;
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 500;
+            font-size: 36px;
+            line-height: 1.15;
+            letter-spacing: 0.36px;
+            color: @dark-color;
+            cursor: pointer;
+            transition: color 0.2s;
+
+            &:hover {
                 color: @blue-color;
             }
 
-            .node-label {
-                font-family: 'Instrument Sans', sans-serif;
-                font-weight: 500;
-                font-size: 36px;
-                line-height: 1.15;
-                letter-spacing: 0.36px;
-                color: @dark-color;
-                max-width: 271px;
-                transition: color 0.2s;
-
-                .breakpoint-laptop-down({
-                    font-size: 28px;
-                    max-width: 220px;
-                });
-            }
-
-            // Left side nodes
-            &.node-tl {
-                right: calc(50% + 105px);
-                top: -5px;
-                .node-label { text-align: right; }
-            }
-            &.node-bl {
-                right: calc(50% + 105px);
-                top: 245px;
-                .node-label { text-align: right; }
-            }
-
-            // Right side nodes
-            &.node-tr {
-                left: calc(50% + 120px);
-                top: 85px;
-                .node-label { text-align: left; }
-            }
-            &.node-br {
-                left: calc(50% + 120px);
-                top: 330px;
-                .node-label { text-align: left; }
-            }
+            .breakpoint-laptop-down({
+                font-size: 28px;
+            });
         }
+        .label-tl { left: 175px; top: 384px; transform: translateY(-50%); width: 202px; text-align: right; }
+        .label-tr { left: 834px; top: 456px; transform: translateY(-50%); width: 271px; text-align: left; }
+        .label-bl { left: 175px; top: 647px; transform: translateY(-50%); width: 257px; text-align: right; }
+        .label-br { left: 834px; top: 723px; transform: translateY(-50%); width: 271px; text-align: left; }
     }
 
     // Mobile fallback

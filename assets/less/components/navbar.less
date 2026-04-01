@@ -1,5 +1,6 @@
 // ===== NAVBAR =====
-nav#headernavbar {
+// Base state: transparent, absolute over hero
+#headernavbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -18,12 +19,13 @@ nav#headernavbar {
     });
 }
 
-nav#headernavbar.scrolled {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 28, 68, 0.95);
+// Scrolled state: fixed, dark background
+#headernavbar.scrolled {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: rgba(0, 28, 68, 0.95) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 15px 81px;
@@ -34,8 +36,8 @@ nav#headernavbar.scrolled {
     });
 }
 
-// On non-home pages, always show dark background
-.content-wrapper:not(.home) nav#headernavbar {
+// On non-home pages: always fixed with dark bg
+.content-wrapper:not(.home) #headernavbar {
     background: #001C44;
     position: fixed;
     top: 0;
@@ -45,54 +47,6 @@ nav#headernavbar.scrolled {
     .breakpoint-large-down({
         padding: 15px 20px;
     });
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-
-    .logo-img {
-        height: 61px;
-        width: auto;
-
-        .breakpoint-large-down({
-            height: 40px;
-        });
-    }
-}
-
-.navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.lang-flags {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .flag-circle {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: white;
-
-        .flag-icon {
-            font-size: 30px;
-            line-height: 1;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            background-size: cover;
-            background-position: center;
-        }
-    }
 }
 
 // ===== Inner page header banner =====
@@ -143,6 +97,56 @@ nav#headernavbar.scrolled {
             justify-content: center;
             text-align: center;
         });
+    }
+}
+
+// ===== Navbar elements =====
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    .logo-img {
+        height: 61px;
+        width: auto;
+
+        .breakpoint-large-down({
+            height: 40px;
+        });
+    }
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.lang-flags {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .flag-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+
+        .flag-icon {
+            font-size: 30px;
+            line-height: 1;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            background-size: cover;
+            background-position: center;
+        }
     }
 }
 
