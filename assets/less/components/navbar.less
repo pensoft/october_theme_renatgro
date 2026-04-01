@@ -1,5 +1,5 @@
 // ===== NAVBAR =====
-#headernavbar {
+nav#headernavbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -9,41 +9,42 @@
     align-items: center;
     padding: 59px 81px;
     box-sizing: border-box;
-    z-index: 100;
-    transition: background 0.3s ease, padding 0.3s ease;
+    z-index: 10000;
     background: transparent;
+    transition: background 0.3s ease, padding 0.3s ease;
 
     .breakpoint-large-down({
         padding: 20px;
     });
+}
 
-    &.scrolled {
-        position: fixed !important;
-        background: rgba(0, 28, 68, 0.95) !important;
-        backdrop-filter: blur(10px);
-        padding: 15px 81px;
-        top: 0;
-        left: 0;
+nav#headernavbar.scrolled {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 28, 68, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px 81px;
+    z-index: 10000;
 
-        .breakpoint-large-down({
-            padding: 15px 20px;
-        });
-    }
+    .breakpoint-large-down({
+        padding: 15px 20px;
+    });
 }
 
 // On non-home pages, always show dark background
-.content-wrapper:not(.home) {
-    #headernavbar {
-        background: @dark-color;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 15px 81px;
+.content-wrapper:not(.home) nav#headernavbar {
+    background: #001C44;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 15px 81px;
 
-        .breakpoint-large-down({
-            padding: 15px 20px;
-        });
-    }
+    .breakpoint-large-down({
+        padding: 15px 20px;
+    });
 }
 
 .navbar-brand {

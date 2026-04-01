@@ -93,22 +93,6 @@ function onStart() {
     $(function() {
         AOS.init();
     });
-
-    /* Navbar scroll - inline to avoid JS cache issues */
-    (function(){
-        var scrolled = false;
-        window.addEventListener('scroll', function(){
-            var nav = document.getElementById('headernavbar');
-            if (!nav) return;
-            if (window.scrollY > 100 && !scrolled) {
-                scrolled = true;
-                nav.style.cssText = 'position:fixed !important;top:0;left:0;width:100%;z-index:10000;background:rgba(0,28,68,0.95) !important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:15px 81px;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;transition:background 0.3s;';
-            } else if (window.scrollY <= 100 && scrolled) {
-                scrolled = false;
-                nav.style.cssText = '';
-            }
-        });
-    })();
 </script>
 
 <script src="{{ 'assets/js/script.js'|theme}}"></script>

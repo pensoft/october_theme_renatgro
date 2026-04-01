@@ -2,12 +2,12 @@ var width = window.innerWidth;
 
 /* Navbar scroll behavior */
 window.addEventListener('scroll', function () {
-    var nav = document.getElementById("headernavbar");
+    var nav = document.getElementById('headernavbar');
     if (!nav) return;
     if (window.scrollY > 100) {
-        nav.style.cssText = 'position:fixed;top:0;left:0;width:100%;z-index:10000;background:rgba(0,28,68,0.95);backdrop-filter:blur(10px);padding:15px 81px;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;';
+        nav.classList.add('scrolled');
     } else {
-        nav.style.cssText = '';
+        nav.classList.remove('scrolled');
     }
 });
 
