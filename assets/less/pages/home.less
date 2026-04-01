@@ -1,4 +1,80 @@
-// ===== HOMEPAGE SECTIONS =====
+// ===== HOMEPAGE =====
+
+// ─── Hero ───────────────────────────────────────────────
+
+.homepage-intro {
+    position: relative;
+    width: 100%;
+    height: 775px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .breakpoint-large-down({
+        height: 500px;
+    });
+
+    .breakpoint-medium-down({
+        height: 400px;
+    });
+
+    .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center bottom;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 28, 68, 0.2);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 854px;
+        padding: 0 20px;
+
+        h1 {
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 500;
+            font-size: 65px;
+            line-height: 1.35;
+            letter-spacing: 0.65px;
+            color: white;
+            margin: 0;
+
+            .breakpoint-laptop-down({ font-size: 48px; });
+            .breakpoint-large-down({ font-size: 36px; });
+            .breakpoint-medium-down({ font-size: 28px; });
+        }
+    }
+}
+
+// ─── Coming soon placeholder ────────────────────────────
+
+.commig_soon {
+    width: 50%;
+    margin: 200px auto;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.84px;
+    text-align: center;
+}
+
+// ─── Sections ───────────────────────────────────────────
 
 // Two-tone text pattern (used in about, challenge, objective)
 .two-tone-text {

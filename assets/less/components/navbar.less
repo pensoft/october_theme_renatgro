@@ -95,6 +95,59 @@ nav#headernavbar.scrolled {
     }
 }
 
+// ===== Inner page header banner =====
+
+.header-image {
+    position: relative;
+    color: @white-color;
+    height: 346px;
+    background: @blue-color;
+    border-radius: 20px;
+    margin: 15px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent linear-gradient(-180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%) 0% 0% no-repeat padding-box;
+    }
+
+    .container {
+        padding: 0;
+        width: inherit;
+        height: 100%;
+        display: flex;
+        align-items: end;
+    }
+
+    h1.underline {
+        padding: 0;
+        margin-bottom: 55px;
+        font: normal normal 500 80px/1.1 'Instrument Sans', sans-serif;
+        color: white;
+
+        .breakpoint-large-down({
+            font-size: 40px;
+        });
+    }
+
+    .jumbotron {
+        display: flex;
+        justify-content: left;
+        text-align: left;
+
+        .breakpoint-large-down({
+            justify-content: center;
+            text-align: center;
+        });
+    }
+}
+
+// ===== Coming soon badge =====
+
 .coming-soon-badge {
     display: flex;
     align-items: center;

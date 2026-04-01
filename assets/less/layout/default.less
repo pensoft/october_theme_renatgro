@@ -142,3 +142,60 @@
 .hide {
     display: none;
 }
+
+// ===== Layout sections =====
+
+.content-wrapper {
+    min-height: 100%;
+
+    .row {
+        width: 100%;
+    }
+}
+
+#layout-content {
+    &:not(.home) {
+        h1.underline {
+            font-size: 42px;
+            display: block;
+            text-transform: uppercase;
+            color: @dark-color;
+        }
+
+        .breakpoint-laptop-down({
+            overflow: hidden;
+        });
+    }
+
+    &.search {
+        margin-top: 0;
+    }
+
+    .container {
+        ul {
+            padding-left: 40px;
+
+            .breakpoint-large-down({
+                padding-left: 0;
+            });
+        }
+    }
+}
+
+// ===== Utility classes =====
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.no-padding {
+    padding: 0;
+}
