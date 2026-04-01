@@ -1,5 +1,5 @@
 // ===== NAVBAR =====
-.navbar {
+#headernavbar {
     position: absolute;
     width: 100%;
     display: flex;
@@ -9,28 +9,33 @@
     box-sizing: border-box;
     z-index: 100;
     transition: all ease-in-out 0.3s;
+    background: transparent;
 
     .breakpoint-large-down({
         padding: 20px;
     });
 
     &.scrolled {
-        position: fixed;
-        background: rgba(0, 28, 68, 0.95);
+        position: fixed !important;
+        background: rgba(0, 28, 68, 0.95) !important;
         backdrop-filter: blur(10px);
         padding: 15px 81px;
         top: 0;
+        left: 0;
 
         .breakpoint-large-down({
             padding: 15px 20px;
         });
     }
+}
 
-    // On non-home pages, always show dark background
-    .content-wrapper:not(.home) & {
+// On non-home pages, always show dark background
+.content-wrapper:not(.home) {
+    #headernavbar {
         background: @dark-color;
         position: fixed;
         top: 0;
+        left: 0;
         padding: 15px 81px;
 
         .breakpoint-large-down({

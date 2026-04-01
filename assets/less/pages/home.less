@@ -303,11 +303,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
 
-            .dot {
-                width: 30px;
-                height: 30px;
-                flex-shrink: 0;
+            &:hover .obj-dot span {
+                transform: scale(1.3);
+                box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
+            }
+
+            &:hover .node-label {
+                color: @blue-color;
             }
 
             .node-label {
@@ -318,6 +322,7 @@
                 letter-spacing: 0.36px;
                 color: @dark-color;
                 max-width: 271px;
+                transition: color 0.2s;
 
                 .breakpoint-laptop-down({
                     font-size: 28px;
@@ -325,7 +330,7 @@
                 });
             }
 
-            // Left side nodes: label then dot (text-align right)
+            // Left side nodes
             &.node-tl {
                 right: calc(50% + 105px);
                 top: -5px;
@@ -337,7 +342,7 @@
                 .node-label { text-align: right; }
             }
 
-            // Right side nodes: dot then label (text-align left)
+            // Right side nodes
             &.node-tr {
                 left: calc(50% + 120px);
                 top: 85px;
@@ -351,7 +356,7 @@
         }
     }
 
-    // Mobile fallback: simple list
+    // Mobile fallback
     .objective-list-mobile {
         display: none;
 
@@ -366,11 +371,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
 
-            .dot {
-                width: 24px;
-                height: 24px;
-                flex-shrink: 0;
+            &:hover .obj-dot span {
+                transform: scale(1.3);
             }
 
             .node-label {
@@ -383,4 +387,150 @@
             }
         }
     }
+}
+
+// Green dot button
+.obj-dot {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: @green-accent;
+        border-radius: 50%;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 0 0 4px rgba(132, 175, 49, 0.15);
+    }
+}
+
+// Objective popup overlay
+.objective-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 28, 68, 0.4);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+
+    &.active {
+        display: flex;
+    }
+}
+
+.objective-popup {
+    position: relative;
+    display: flex;
+    background: #F2F3F8;
+    border-radius: 5px;
+    max-width: 760px;
+    width: 90%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: popupFadeIn 0.25s ease;
+
+    .breakpoint-large-down({
+        flex-direction: column;
+        max-height: 90vh;
+        overflow-y: auto;
+    });
+
+    .popup-image {
+        flex-shrink: 0;
+        width: 345px;
+
+        .breakpoint-large-down({
+            width: 100%;
+            height: 200px;
+        });
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .popup-content {
+        flex: 1;
+        padding: 35px 25px 35px 35px;
+
+        .popup-title {
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 500;
+            font-size: 26px;
+            letter-spacing: 0.26px;
+            line-height: 1.35;
+            color: @dark-color;
+            margin-bottom: 25px;
+        }
+
+        .popup-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            li {
+                padding-left: 20px;
+                position: relative;
+                font-family: 'Inter', sans-serif;
+                font-size: 18px;
+                line-height: 1.55;
+                letter-spacing: -0.36px;
+                color: @dark-color;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 7px;
+                    width: 10px;
+                    height: 10px;
+                    background: @dark-color;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+
+    .popup-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+@keyframes popupFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

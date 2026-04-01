@@ -4,7 +4,9 @@ forceUrl = 0
 
 <nav class="navbar fixed" id="headernavbar" role="navigation" aria-label="Primary">
     <a href="{{'home'|page}}" class="navbar-brand" aria-label="Home" title="Home">
-        <img src="{{ 'assets/images/renatgro-logo-white.svg'|theme }}" alt="{{ this.theme.site_name }}" class="logo-img">
+        {% if this.theme.site_logo %}
+            <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}" class="logo-img">
+        {% endif %}
     </a>
 
     <div class="navbar-right">

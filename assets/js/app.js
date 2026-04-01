@@ -4,10 +4,20 @@ var width = window.innerWidth;
 window.addEventListener('scroll', function (e) {
     var headernavbar = document.getElementById("headernavbar");
     if (headernavbar) {
-        if (window.scrollY > headernavbar.offsetHeight){
+        if (window.scrollY > 100){
             headernavbar.classList.add('scrolled');
+            headernavbar.style.position = 'fixed';
+            headernavbar.style.top = '0';
+            headernavbar.style.background = 'rgba(0, 28, 68, 0.95)';
+            headernavbar.style.backdropFilter = 'blur(10px)';
+            headernavbar.style.padding = '15px 81px';
         } else {
             headernavbar.classList.remove('scrolled');
+            headernavbar.style.position = '';
+            headernavbar.style.top = '';
+            headernavbar.style.background = '';
+            headernavbar.style.backdropFilter = '';
+            headernavbar.style.padding = '';
         }
     }
 });
