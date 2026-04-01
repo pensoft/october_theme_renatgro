@@ -413,9 +413,8 @@
     }
 }
 
-// Objective popup overlay
+// Objective popup overlay — controlled via JS style.display
 .objective-popup-overlay {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -425,10 +424,6 @@
     z-index: 10000;
     align-items: center;
     justify-content: center;
-
-    &.active {
-        display: flex;
-    }
 }
 
 .objective-popup {

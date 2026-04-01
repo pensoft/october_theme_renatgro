@@ -143,22 +143,24 @@ robot_follow = "follow"
         </div>
     </div>
 
-    <!-- Popup overlay -->
-    <div class="objective-popup-overlay" id="objectivePopupOverlay">
-        <div class="objective-popup" id="objectivePopup">
-            <div class="popup-image">
-                <img src="" alt="" id="popupImage">
-            </div>
-            <div class="popup-content">
-                <h3 class="popup-title" id="popupTitle"></h3>
-                <ul class="popup-list" id="popupList"></ul>
-            </div>
-            <button class="popup-close" id="popupClose" aria-label="{{ 'Close'|_ }}">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-        </div>
-    </div>
+
 </section>
+
+<!-- Objective popup (outside section for proper z-index stacking) -->
+<div class="objective-popup-overlay" id="objectivePopupOverlay" style="display:none;">
+    <div class="objective-popup" id="objectivePopup">
+        <div class="popup-image">
+            <img src="" alt="" id="popupImage">
+        </div>
+        <div class="popup-content">
+            <h3 class="popup-title" id="popupTitle"></h3>
+            <ul class="popup-list" id="popupList"></ul>
+        </div>
+        <button class="popup-close" id="popupClose" aria-label="{{ 'Close'|_ }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+</div>
 
 <script>
 $(function(){
@@ -201,26 +203,40 @@ $(function(){
         }
     };
 
-    $('[data-objective]').on('click', function(){
-        var key = $(this).data('objective');
+    function openPopup(key) {
         var data = objectiveData[key];
         if (!data) return;
-
         $('#popupTitle').text(data.title);
         $('#popupImage').attr('src', data.image).attr('alt', data.title);
         var list = $('#popupList').empty();
         data.items.forEach(function(item){
             list.append('<li>' + item + '</li>');
         });
-        $('#objectivePopupOverlay').addClass('active');
+        $('#objectivePopupOverlay').css('display', 'flex');
         $('body').css('overflow', 'hidden');
+    }
+
+    function closePopup() {
+        $('#objectivePopupOverlay').css('display', 'none');
+        $('body').css('overflow', '');
+    }
+
+    $('[data-objective]').on('click', function(e){
+        e.stopPropagation();
+        openPopup($(this).data('objective'));
     });
 
-    $('#popupClose, #objectivePopupOverlay').on('click', function(e){
-        if (e.target === this) {
-            $('#objectivePopupOverlay').removeClass('active');
-            $('body').css('overflow', '');
-        }
+    $('#popupClose').on('click', function(e){
+        e.stopPropagation();
+        closePopup();
+    });
+
+    $('#objectivePopupOverlay').on('click', function(e){
+        if (e.target === this) closePopup();
+    });
+
+    $(document).on('keydown', function(e){
+        if (e.key === 'Escape') closePopup();
     });
 });
 </script>
