@@ -1,386 +1,280 @@
-var width = window.innerWidth;
+/**
+ * ReNatgro Theme - Main Application Script
+ *
+ * Modules:
+ *  - Navbar        Scroll-based sticky header
+ *  - MobileMenu    Hamburger toggle for small screens
+ *  - Accordion     Expand/collapse content blocks
+ *  - Tabs          Tab switching (partners, etc.)
+ *  - LocaleSelect  Custom language switcher dropdown
+ *  - HashNav       Smooth-scroll to anchored sections
+ *  - Popup         Objective diagram popups
+ */
+;(function ($, window, document) {
+    'use strict';
 
-/* Navbar scroll behavior */
-window.addEventListener('scroll', function () {
-    var nav = document.getElementById('headernavbar');
-    if (!nav) return;
-    if (window.scrollY > 100) {
-        nav.classList.add('scrolled');
-    } else {
-        nav.classList.remove('scrolled');
-    }
-});
+    var BREAKPOINT_LARGE = 992;
+    var SCROLL_THRESHOLD = 100;
+    var HEADER_OFFSET    = 150;
+    var ANIM_SPEED       = 300;
 
-function elementScrolled(elem) {
-    var docViewTop = $(window).scrollTop();
-    var docViewBottom = docViewTop + $(window).height();
-    if($(elem).offset()){
-        var elemTop = $(elem).offset().top;
-        return ((elemTop <= docViewBottom) && (elemTop >= docViewTop));
-    }
-}
+    /* ─── Navbar ─────────────────────────────────────────── */
 
-$(document).ready(function() {
-    /* MENU */
-    $('.navbar-nav').attr('id', 'menu');
-    $( '<div class="calendar-top"></div>' ).insertBefore( "#calendar" );
-    $( '<div class="card-profile-top"></div>' ).insertBefore( ".card.profile.card-profile" );
-
-    var divs = $(".card-profiles > div");
-    for(var i = 0; i < divs.length; i+=2) {
-        divs.slice(i, i+2).wrapAll( '<div class="col-xs" />');
-    }
-
-    var headerNavbar = $('#headerNavbar');
-    var width100 = $('.width100');
-    var innerWidth = $('body').innerWidth();
-    headerNavbar.width(innerWidth);
-    width100.width(innerWidth);
-
-    $('.nav-item').children("a").each(function(){
-        if($(this).attr('data-toggle') == 'dropdown'){
-            $(this).removeAttr('data-toggle')
+    var Navbar = {
+        init: function () {
+            this.el = document.getElementById('headernavbar');
+            if (!this.el) return;
+            window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
+        },
+        onScroll: function () {
+            this.el.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
         }
-    });
+    };
 
-    /* Language dropdown */
-    (function(){
-        var $dropdown = $('#language-switcher.language-dropdown');
-        if(!$dropdown.length){ return; }
+    /* ─── Mobile Menu ────────────────────────────────────── */
 
-        var $toggle = $dropdown.find('.selected-language');
-        var $menu = $dropdown.find('.language-options');
+    var MobileMenu = {
+        init: function () {
+            if (window.innerWidth >= BREAKPOINT_LARGE) return;
+            var $toggle = $('#menuToggle input[type="checkbox"]');
+            if (!$toggle.length) return;
 
-        function closeDropdown(){
-            $dropdown.removeClass('open');
-            $toggle.attr('aria-expanded', 'false');
-        }
-
-        function openDropdown(){
-            $dropdown.addClass('open');
-            $toggle.attr('aria-expanded', 'true');
-        }
-
-        $toggle.on('click', function(e){
-            e.preventDefault();
-            if($dropdown.hasClass('open')){ closeDropdown(); } else { openDropdown(); }
-        });
-
-        $(document).on('click', function(e){
-            if(!$dropdown.is(e.target) && $dropdown.has(e.target).length === 0){
-                closeDropdown();
-            }
-        });
-
-        $(document).on('keydown', function(e){
-            if(e.key === 'Escape'){
-                closeDropdown();
-            }
-        });
-    })();
-
-    $("nav").removeClass("no-transition");
-
-    /* Mobile menu */
-    if (width < 992) {
-        $('#menuToggle input[type="checkbox"]').change(function(){
-            var checked = $(this).is(":checked");
-            if(checked){
-                $('#menu').show("slide", { direction: "right" }, 400);
-                $('#search').hide();
-                $('#menu, #menu *').css({
-                    'visibility': 'visible'
-                });
-                $('body', 'html').css({
-                    'overflow': 'hidden'
-                });
-            }else{
-                $('#menu').hide("slide", { direction: "right" }, 400);
-                $('#search').hide();
-                $('body', 'html').css({
-                    'overflow': 'auto'
-                });
-            }
-        });
-    }
-
-    /* Accordion toggle */
-    $('body').on('click', '.accordion-toggle', function () {
-        if ($(this).next(".accordion-content").is(':visible')) {
-            $(this).next(".accordion-content").slideUp(300);
-            $(this).children(".plusminus").html('<span class="plus">Read more</span>');
-        } else {
-            $(this).next(".accordion-content").slideDown(300);
-            $(this).children(".plusminus").html('<span class="minus">Read less</span>');
-        }
-    });
-
-    /* Hash navigation */
-    if (window.location.hash) {
-        var link = window.location.hash;
-        var anchorId = link.substr(link.indexOf("#") + 1);
-        if($("#"+anchorId).offset()){
-            $('html, body').animate({
-                scrollTop: $("#"+anchorId).offset().top - 150
-            }, 500);
-        } else {
-            $('.accordion-border').each(function(){
-                var title = $(this).find(".accordion-toggle .col-xs.start-xs").text().toUpperCase();
-                var toggler = $(this).find(".accordion-toggle");
-                if ( title.indexOf(anchorId.toUpperCase()) >= 0 && !toggler.next(".accordion-content").is(':visible') ){
-                    $('html, body').animate({
-                        scrollTop: toggler.parent().offset().top - 150
-                    }, 500);
-                    toggler.trigger( "click" );
+            $toggle.on('change', function () {
+                var open = $(this).is(':checked');
+                var $menu = $('#menu');
+                if (open) {
+                    $menu.show('slide', { direction: 'right' }, 400);
+                    $menu.add($menu.find('*')).css('visibility', 'visible');
+                    $('body').css('overflow', 'hidden');
+                } else {
+                    $menu.hide('slide', { direction: 'right' }, 400);
+                    $('body').css('overflow', '');
                 }
             });
         }
-    }
-
-    /* Dropdown anchor navigation */
-    $('.dropdown a').click(function(event) {
-        if (location.href.indexOf("#") != -1) {
-            var link = $(this).attr('href');
-            var anchorId = link.substr(link.indexOf("#") + 1);
-            if($("#"+anchorId).length>0){
-                $('html, body').animate({
-                    scrollTop: $("#"+anchorId).offset().top - 150
-                }, 500);
-            } else {
-                $('.accordion-border').each(function(){
-                    var title = $(this).find(".accordion-toggle .col-xs.start-xs").text().toUpperCase();
-                    var toggler = $(this).find(".accordion-toggle");
-                    if ( title.indexOf(anchorId.toUpperCase()) >= 0 && !toggler.next(".accordion-content").is(':visible') ){
-                        $('html, body').animate({
-                            scrollTop: toggler.parent().offset().top - 150
-                        }, 500);
-                        toggler.trigger( "click" );
-                        event.preventDefault();
-                    }
-                });
-            }
-        }
-    });
-
-    /* Library author formatting */
-    $('.library-item').each(function(){
-        var element = $(this).find('.text-ligth');
-        if (element.length) {
-            var texts = $(element[0]).text().split(',');
-            var boldTexts = texts.map(function(text) { return '<span class="author_item">' + text + '</span>'; }).join('');
-            $(element[0]).html(boldTexts);
-        }
-    });
-
-    /* Tabs (partners, etc.) */
-    $('.partners .tabs').each(function(){
-        var $active, $content, $links = $(this).find('a');
-        var speed = "fast";
-        var activeTab = $(location.hash);
-
-        $active = $($links.filter("[href='"+location.hash+"']")[0] || $links[0]);
-
-        if($(this).parent().parent().hasClass('partners')){
-            $active.addClass('active');
-        }
-
-        $links.not($active).removeClass('active');
-        $content = $($active[0].hash);
-
-        $links.not($active).each(function () {
-            $(this.hash).hide();
-        });
-
-        if(activeTab.length){
-            $content.slideDown(speed);
-            $('html, body').animate({
-                scrollTop: activeTab.offset().top - $('header').height()
-            }, speed);
-        }
-
-        $(this).find("a").click(function (e) {
-            if($(this).hasClass('active')) {
-                e.preventDefault();
-                return false;
-            }
-            $active.removeClass('active');
-            $content.hide();
-
-            $active = $(this);
-            $content = $(this.hash);
-
-            location.hash = $active[0].hash;
-
-            $active.addClass('active');
-            $content.slideDown(speed);
-
-            e.preventDefault();
-        });
-    });
-
-    onHashChange();
-    $(window).on("hashchange", function() {
-        onHashChange();
-    });
-
-    $('.nav.nav-pills').removeAttr('id');
-    $('.see_all_partners_link').hide();
-
-    $('<div class="mark"></div>').insertAfter($('.group-holder input'));
-
-    /* Keyboard navigation */
-    $('body').on("keyup", function(e) {
-        var code = e.which;
-        if (code == 39) {
-            e.preventDefault();
-            $('.next').trigger('click');
-        } else if (code == 37) {
-            e.preventDefault();
-            $('.prev').trigger('click');
-        }
-    });
-
-    /* LANGUAGE SWITCH - custom select */
-    document.querySelectorAll('select.locale-select').forEach(function(select) {
-        var wrapper = document.createElement('div');
-        wrapper.className = 'custom-select';
-        select.parentNode.insertBefore(wrapper, select);
-        wrapper.appendChild(select);
-
-        var selected = select.options[select.selectedIndex];
-
-        var trigger = document.createElement('div');
-        var selectedCode = selected.value.split('/')[1] || selected.value.split('/')[0];
-        var regex = new RegExp('^(\/' + selectedCode + ')(\/|$)');
-        var hash = window.location.hash;
-
-        trigger.className = 'custom-select__trigger';
-        trigger.innerHTML = '<span class="flag-icon flag-icon-' + selectedCode + '"></span> <span>' + selectedCode + '</span>';
-        wrapper.appendChild(trigger);
-
-        var list = document.createElement('div');
-        list.className = 'custom-select__options';
-
-        for (var i = 0; i < select.options.length; i++) {
-            var opt = select.options[i];
-            var localeCode = opt.value.split('/')[1] || opt.value.split('/')[0];
-            var newPath = window.location.pathname.replace(regex, '/' + localeCode + '/');
-
-            if (!window.location.pathname.match(regex)) {
-                newPath = '/' + localeCode + window.location.pathname;
-            }
-
-            newPath = newPath.replace(/\/\/+/g, '/');
-
-            var item = document.createElement('div');
-            item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
-            item.dataset.value = newPath + hash;
-            item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text;
-            list.appendChild(item);
-        }
-        wrapper.appendChild(list);
-
-        trigger.onclick = function(e) {
-            e.stopPropagation();
-            document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
-                if (el !== wrapper) el.classList.remove('is-open');
-            });
-            wrapper.classList.toggle('is-open');
-        };
-
-        list.onclick = function(e) {
-            var option = e.target.closest('.custom-select__option');
-            if (option) window.location.assign(option.dataset.value);
-        };
-    });
-
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
-            el.classList.remove('is-open');
-        });
-    });
-});
-
-function expandBiography(el){
-    var $el = $(el);
-    var $body = $el.parent().parent().parent().find('.body');
-    if($body.is(':visible')){
-        $body.slideUp(300);
-        $el.addClass('expanded');
-    } else {
-        $body.slideDown(300);
-        $el.removeClass('expanded');
-    }
-}
-
-function isScrolledIntoView(elem) {
-    var docViewTop = $(window).scrollTop();
-    var docViewBottom = docViewTop + $(window).height();
-
-    if($(elem).height()){
-        var elemTop = $(elem).offset().top;
-        var elemBottom = elemTop + $(elem).height();
-        return ((elemBottom/2 <= docViewBottom) && (elemTop >= docViewTop));
-    }
-    return false;
-}
-
-function onHashChange(){
-    $(".accordion-content").hide();
-    var caseStudiesHashTitle = location.hash;
-    if(caseStudiesHashTitle){
-        var caseStudiesTitle = caseStudiesHashTitle.substring(1, caseStudiesHashTitle.length);
-    }
-}
-
-function getScreenSize() {
-    return {
-        width: window.innerWidth || document.documentElement.clientWidth,
-        height: window.innerHeight || document.documentElement.clientHeight
     };
-}
 
-/* Objective popup - reads data from HTML data attributes */
-$(function(){
-    function openObjectivePopup(el) {
-        var $el = $(el).closest('[data-objective]');
-        var title = $el.data('title');
-        var image = $el.data('image');
-        var itemsStr = $el.data('items');
-        if (!title || !itemsStr) return;
+    /* ─── Accordion ──────────────────────────────────────── */
 
-        var items = itemsStr.split('||');
+    var Accordion = {
+        init: function () {
+            $(document).on('click', '.accordion-toggle', function () {
+                var $content = $(this).next('.accordion-content');
+                var $label   = $(this).find('.plusminus');
+                if ($content.is(':visible')) {
+                    $content.slideUp(ANIM_SPEED);
+                    $label.html('<span class="plus">Read more</span>');
+                } else {
+                    $content.slideDown(ANIM_SPEED);
+                    $label.html('<span class="minus">Read less</span>');
+                }
+            });
+        }
+    };
 
-        $('#popupTitle').text(title);
-        $('#popupImage').attr('src', image).attr('alt', title);
-        var $list = $('#popupList').empty();
-        items.forEach(function(item){
-            if (item.trim()) $list.append('<li>' + item.trim() + '</li>');
-        });
-        $('#objectivePopupOverlay').css('display', 'flex');
-        $('body').css('overflow', 'hidden');
-    }
+    /* ─── Tabs ───────────────────────────────────────────── */
 
-    function closeObjectivePopup() {
-        $('#objectivePopupOverlay').css('display', 'none');
-        $('body').css('overflow', '');
-    }
+    var Tabs = {
+        init: function () {
+            $('.tabs').each(function () {
+                var $links  = $(this).find('a');
+                if (!$links.length) return;
 
-    $(document).on('click', '[data-objective]', function(e){
-        e.stopPropagation();
-        openObjectivePopup(this);
+                var $active  = $($links.filter('[href="' + location.hash + '"]')[0] || $links[0]);
+                var $content = $($active[0].hash);
+
+                $active.addClass('active');
+                $links.not($active).removeClass('active').each(function () {
+                    $(this.hash).hide();
+                });
+
+                if (location.hash && $(location.hash).length) {
+                    $content.slideDown('fast');
+                }
+
+                $links.on('click', function (e) {
+                    e.preventDefault();
+                    if ($(this).hasClass('active')) return;
+
+                    $active.removeClass('active');
+                    $content.hide();
+
+                    $active  = $(this).addClass('active');
+                    $content = $(this.hash).slideDown('fast');
+                    location.hash = this.hash;
+                });
+            });
+        }
+    };
+
+    /* ─── Locale Select (custom dropdown) ────────────────── */
+
+    var LocaleSelect = {
+        init: function () {
+            document.querySelectorAll('select.locale-select').forEach(this.build.bind(this));
+            document.addEventListener('click', this.closeAll);
+        },
+
+        build: function (select) {
+            var wrapper  = this.wrap(select);
+            var selected = select.options[select.selectedIndex];
+            var code     = this.extractCode(selected.value);
+            var regex    = new RegExp('^(/' + code + ')(/|$)');
+            var hash     = window.location.hash;
+
+            var trigger = document.createElement('div');
+            trigger.className = 'custom-select__trigger';
+            trigger.innerHTML = '<span class="flag-icon flag-icon-' + code + '"></span> <span>' + code + '</span>';
+            wrapper.appendChild(trigger);
+
+            var list = document.createElement('div');
+            list.className = 'custom-select__options';
+
+            for (var i = 0; i < select.options.length; i++) {
+                var opt        = select.options[i];
+                var localeCode = this.extractCode(opt.value);
+                var newPath    = this.buildPath(localeCode, regex, hash);
+
+                var item = document.createElement('div');
+                item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
+                item.dataset.value = newPath;
+                item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text;
+                list.appendChild(item);
+            }
+            wrapper.appendChild(list);
+
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-select.is-open').forEach(function (el) {
+                    if (el !== wrapper) el.classList.remove('is-open');
+                });
+                wrapper.classList.toggle('is-open');
+            });
+
+            list.addEventListener('click', function (e) {
+                var option = e.target.closest('.custom-select__option');
+                if (option) window.location.assign(option.dataset.value);
+            });
+        },
+
+        wrap: function (select) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'custom-select';
+            select.parentNode.insertBefore(wrapper, select);
+            wrapper.appendChild(select);
+            return wrapper;
+        },
+
+        extractCode: function (value) {
+            return value.split('/')[1] || value.split('/')[0];
+        },
+
+        buildPath: function (localeCode, regex, hash) {
+            var path = window.location.pathname.replace(regex, '/' + localeCode + '/');
+            if (!window.location.pathname.match(regex)) {
+                path = '/' + localeCode + window.location.pathname;
+            }
+            return path.replace(/\/\/+/g, '/') + hash;
+        },
+
+        closeAll: function () {
+            document.querySelectorAll('.custom-select.is-open').forEach(function (el) {
+                el.classList.remove('is-open');
+            });
+        }
+    };
+
+    /* ─── Hash Navigation ────────────────────────────────── */
+
+    var HashNav = {
+        init: function () {
+            this.scrollToHash();
+            $(window).on('hashchange', this.scrollToHash.bind(this));
+        },
+
+        scrollToHash: function () {
+            if (!window.location.hash) return;
+            var id = window.location.hash.substring(1);
+            var $target = $('#' + id);
+
+            if ($target.length && $target.offset()) {
+                $('html, body').animate({ scrollTop: $target.offset().top - HEADER_OFFSET }, 500);
+            } else {
+                this.openMatchingAccordion(id);
+            }
+        },
+
+        openMatchingAccordion: function (id) {
+            $('.accordion-border').each(function () {
+                var title   = $(this).find('.accordion-toggle .col-xs.start-xs').text().toUpperCase();
+                var $toggle = $(this).find('.accordion-toggle');
+                if (title.indexOf(id.toUpperCase()) >= 0 && !$toggle.next('.accordion-content').is(':visible')) {
+                    $('html, body').animate({ scrollTop: $toggle.parent().offset().top - HEADER_OFFSET }, 500);
+                    $toggle.trigger('click');
+                }
+            });
+        }
+    };
+
+    /* ─── Objective Popup ────────────────────────────────── */
+
+    var Popup = {
+        init: function () {
+            this.$overlay = $('#objectivePopupOverlay');
+            if (!this.$overlay.length) return;
+
+            $(document).on('click', '[data-objective]', this.open.bind(this));
+            $(document).on('click', '#popupClose',      this.close.bind(this));
+            $(document).on('click', '#objectivePopupOverlay', this.onOverlayClick.bind(this));
+            $(document).on('keydown', this.onKeydown.bind(this));
+        },
+
+        open: function (e) {
+            e.stopPropagation();
+            var $el    = $(e.currentTarget).closest('[data-objective]');
+            var title  = $el.attr('data-title');
+            var image  = $el.attr('data-image');
+            var raw    = $el.attr('data-items');
+            if (!title || !raw) return;
+
+            $('#popupTitle').text(title);
+            $('#popupImage').attr({ src: image, alt: title });
+
+            var $list = $('#popupList').empty();
+            raw.split('||').forEach(function (text) {
+                text = text.trim();
+                if (text) $list.append('<li>' + text + '</li>');
+            });
+
+            this.$overlay.css('display', 'flex');
+            $('body').css('overflow', 'hidden');
+        },
+
+        close: function () {
+            this.$overlay.css('display', 'none');
+            $('body').css('overflow', '');
+        },
+
+        onOverlayClick: function (e) {
+            if (e.target === this.$overlay[0]) this.close();
+        },
+
+        onKeydown: function (e) {
+            if (e.key === 'Escape') this.close();
+        }
+    };
+
+    /* ─── Bootstrap ──────────────────────────────────────── */
+
+    Navbar.init();
+
+    $(function () {
+        MobileMenu.init();
+        Accordion.init();
+        Tabs.init();
+        LocaleSelect.init();
+        HashNav.init();
+        Popup.init();
     });
 
-    $(document).on('click', '#popupClose', function(e){
-        e.stopPropagation();
-        closeObjectivePopup();
-    });
-
-    $(document).on('click', '#objectivePopupOverlay', function(e){
-        if (e.target === this) closeObjectivePopup();
-    });
-
-    $(document).on('keydown', function(e){
-        if (e.key === 'Escape') closeObjectivePopup();
-    });
-});
+})(jQuery, window, document);
