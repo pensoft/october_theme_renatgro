@@ -103,15 +103,16 @@ robot_follow = "follow"
     </div>
 
     <div class="objective-diagram">
-        <img src="{{ 'assets/images/objective-connector.svg'|theme }}" alt="" class="connector-svg" aria-hidden="true">
+        <!-- SVG wrapper: dots positioned relative to SVG coordinates -->
+        <div class="diagram-core">
+            <img src="{{ 'assets/images/objective-connector.svg'|theme }}" alt="" class="connector-svg" aria-hidden="true">
+            <button class="obj-dot dot-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}"><span></span></button>
+            <button class="obj-dot dot-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}"><span></span></button>
+            <button class="obj-dot dot-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}"><span></span></button>
+            <button class="obj-dot dot-br" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}"><span></span></button>
+        </div>
 
-        <!-- Dots -->
-        <button class="obj-dot dot-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}"><span></span></button>
-        <button class="obj-dot dot-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}"><span></span></button>
-        <button class="obj-dot dot-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}"><span></span></button>
-        <button class="obj-dot dot-br" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}"><span></span></button>
-
-        <!-- Labels -->
+        <!-- Labels sit outside the core, positioned relative to diagram -->
         <div class="node-label label-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}">{{ 'Sustainable fertigation'|_ }}</div>
         <div class="node-label label-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}">{{ 'Farm renaturalisation'|_ }}</div>
         <div class="node-label label-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}">{{ 'Monitoring and digital innovation'|_ }}</div>
