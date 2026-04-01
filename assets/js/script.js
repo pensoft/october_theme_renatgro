@@ -1,9 +1,2 @@
-// var lineDrawing = anime({
-//     targets: '.about path',
-//     strokeDashoffset: [anime.setDashoffset, 0],
-//     easing: 'easeInOutSine',
-//     duration: 3000,
-//     delay: function(el, i) { return i * 250 },
-//     direction: 'alternate',
-//     loop: false,
-// });
+// This file intentionally left empty.
+// All JS logic lives in app.js.

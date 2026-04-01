@@ -110,6 +110,8 @@
 
     h2 { margin-bottom: 35px; }
 
+    .row { gap: 51px; }
+
     .whatwedo-list {
         display: flex;
         flex-direction: column;
@@ -293,11 +295,13 @@
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
         }
-        // Dots at SVG path endpoints (centered: -15px offset for 30px dot)
-        .dot-tl { left: -14px;  top: -14px; }
-        .dot-tr { left: 255px;  top: 156px; }
-        .dot-bl { left: -14px;  top: 246px; }
-        .dot-br { left: 255px;  top: 330px; }
+        // Dots at SVG path endpoints
+        // SVG path: M(0.5,0.5) → right → down to (269.5,170.5) → left → down to (0.5,260) → right → (269.5,344)
+        // Dot is 30×30, center the green circle (20px) on the path point
+        .dot-tl { left: -15px;  top: -15px; }        // path start: (0.5, 0.5)
+        .dot-tr { left: 254px;  top: 155px; }        // right mid:  (269.5, 170.5)
+        .dot-bl { left: -15px;  top: 200px; }        // left lower: (0.5, ~215)
+        .dot-br { left: 254px;  top: 329px; }        // path end:   (269.5, 344)
 
         .node-label {
             position: absolute;
@@ -312,10 +316,11 @@
             &:hover { color: @blue-color; }
             .breakpoint-laptop-down({ font-size: 28px; });
         }
-        .label-tl { right: ~'calc(50% + 160px)'; top: -5px;   width: 260px; text-align: right; }
-        .label-tr { left: ~'calc(50% + 160px)';  top: 163px;  width: 271px; text-align: left; }
-        .label-bl { right: ~'calc(50% + 160px)'; top: 240px;  width: 260px; text-align: right; }
-        .label-br { left: ~'calc(50% + 160px)';  top: 337px;  width: 271px; text-align: left; }
+        // Labels aligned vertically with their dot's center
+        .label-tl { right: ~'calc(50% + 155px)'; top: 0;     width: 260px; text-align: right; }
+        .label-tr { left: ~'calc(50% + 155px)';  top: 163px;  width: 271px; text-align: left; }
+        .label-bl { right: ~'calc(50% + 155px)'; top: 208px;  width: 260px; text-align: right; }
+        .label-br { left: ~'calc(50% + 155px)';  top: 337px;  width: 271px; text-align: left; }
     }
 
     // Mobile fallback
