@@ -355,30 +355,30 @@
         }
     }
 
-    // Desktop diagram — pixel positions from Figma (1280px × 750px)
-    // All children are direct and absolutely positioned within the diagram.
+    // Desktop diagram — positions relative to diagram top (offset -388px from Figma)
+    // Figma frame was 1280×747 with text in top 388px. We only render the diagram part.
     .objective-diagram {
         position: relative;
         width: 1280px;
         max-width: 100%;
-        height: 750px;
+        height: 370px; // 747 - 388 + some padding
         margin: 0 auto;
 
         .breakpoint-large-down({
             display: none;
         });
 
-        // Connector line SVG
+        // Connector line SVG — starts at top of diagram (was 388px in Figma frame)
         .connector-svg {
             position: absolute;
             left: 50%;
-            top: 388px;
+            top: 0;
             transform: translateX(~'calc(-50% - 14.5px)');
             width: 269px;
             height: 344px;
         }
 
-        // Green dots — absolutely positioned buttons
+        // Green dots — positions offset by -372px (first dot's Figma top)
         .obj-dot {
             position: absolute;
             width: 30px;
@@ -390,12 +390,12 @@
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
         }
-        .dot-tl { left: 475px; top: 372px; }
-        .dot-tr { left: 744px; top: 444px; }
-        .dot-bl { left: 475px; top: 632px; }
-        .dot-br { left: 744px; top: 716px; }
+        .dot-tl { left: 475px; top: 0; }
+        .dot-tr { left: 744px; top: 72px; }
+        .dot-bl { left: 475px; top: 260px; }
+        .dot-br { left: 744px; top: 344px; }
 
-        // Text labels — absolutely positioned
+        // Text labels
         .node-label {
             position: absolute;
             font-family: 'Instrument Sans', sans-serif;
@@ -415,10 +415,10 @@
                 font-size: 28px;
             });
         }
-        .label-tl { left: 175px; top: 384px; transform: translateY(-50%); width: 202px; text-align: right; }
-        .label-tr { left: 834px; top: 456px; transform: translateY(-50%); width: 271px; text-align: left; }
-        .label-bl { left: 175px; top: 647px; transform: translateY(-50%); width: 257px; text-align: right; }
-        .label-br { left: 834px; top: 723px; transform: translateY(-50%); width: 271px; text-align: left; }
+        .label-tl { left: 175px; top: 12px;  transform: translateY(-50%); width: 202px; text-align: right; }
+        .label-tr { left: 834px; top: 84px;  transform: translateY(-50%); width: 271px; text-align: left; }
+        .label-bl { left: 175px; top: 275px; transform: translateY(-50%); width: 257px; text-align: right; }
+        .label-br { left: 834px; top: 351px; transform: translateY(-50%); width: 271px; text-align: left; }
     }
 
     // Mobile fallback
