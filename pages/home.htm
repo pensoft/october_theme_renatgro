@@ -105,19 +105,19 @@ robot_follow = "follow"
     <div class="objective-diagram">
         <img src="{{ 'assets/images/objective-connector.svg'|theme }}" alt="" class="connector-svg" aria-hidden="true">
 
-        <div class="objective-node node-tl" data-objective="fertigation">
+        <div class="objective-node node-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}">
             <span class="node-label">{{ 'Sustainable fertigation'|_ }}</span>
             <button class="obj-dot" aria-label="{{ 'Learn more about sustainable fertigation'|_ }}"><span></span></button>
         </div>
-        <div class="objective-node node-tr" data-objective="renaturalisation">
+        <div class="objective-node node-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}">
             <button class="obj-dot" aria-label="{{ 'Learn more about farm renaturalisation'|_ }}"><span></span></button>
             <span class="node-label">{{ 'Farm renaturalisation'|_ }}</span>
         </div>
-        <div class="objective-node node-bl" data-objective="monitoring">
+        <div class="objective-node node-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}">
             <span class="node-label">{{ 'Monitoring and digital innovation'|_ }}</span>
             <button class="obj-dot" aria-label="{{ 'Learn more about monitoring and digital innovation'|_ }}"><span></span></button>
         </div>
-        <div class="objective-node node-br" data-objective="crops">
+        <div class="objective-node node-br" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}">
             <button class="obj-dot" aria-label="{{ 'Learn more about target crops'|_ }}"><span></span></button>
             <span class="node-label">{{ 'Target crops'|_ }}</span>
         </div>
@@ -125,20 +125,20 @@ robot_follow = "follow"
 
     <!-- Mobile fallback -->
     <div class="objective-list-mobile">
-        <div class="mobile-item" data-objective="fertigation">
-            <button class="obj-dot" aria-label="{{ 'Sustainable fertigation'|_ }}"><span></span></button>
+        <div class="mobile-item" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}">
+            <button class="obj-dot"><span></span></button>
             <span class="node-label">{{ 'Sustainable fertigation'|_ }}</span>
         </div>
-        <div class="mobile-item" data-objective="renaturalisation">
-            <button class="obj-dot" aria-label="{{ 'Farm renaturalisation'|_ }}"><span></span></button>
+        <div class="mobile-item" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}">
+            <button class="obj-dot"><span></span></button>
             <span class="node-label">{{ 'Farm renaturalisation'|_ }}</span>
         </div>
-        <div class="mobile-item" data-objective="monitoring">
-            <button class="obj-dot" aria-label="{{ 'Monitoring and digital innovation'|_ }}"><span></span></button>
+        <div class="mobile-item" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}">
+            <button class="obj-dot"><span></span></button>
             <span class="node-label">{{ 'Monitoring and digital innovation'|_ }}</span>
         </div>
-        <div class="mobile-item" data-objective="crops">
-            <button class="obj-dot" aria-label="{{ 'Target crops'|_ }}"><span></span></button>
+        <div class="mobile-item" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}">
+            <button class="obj-dot"><span></span></button>
             <span class="node-label">{{ 'Target crops'|_ }}</span>
         </div>
     </div>
@@ -161,82 +161,3 @@ robot_follow = "follow"
         </button>
     </div>
 </div>
-
-<script>
-$(function(){
-    var objectiveData = {
-        fertigation: {
-            title: "{{ 'Sustainable fertigation'|_ }}",
-            image: "{{ 'assets/images/objective-popup-1.jpg'|theme }}",
-            items: [
-                "{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}",
-                "{{ 'Monitoring water use efficiency and crop productivity'|_ }}",
-                "{{ 'Development of recommendations and decision-support tools'|_ }}"
-            ]
-        },
-        renaturalisation: {
-            title: "{{ 'Farm renaturalisation'|_ }}",
-            image: "{{ 'assets/images/objective-popup-1.jpg'|theme }}",
-            items: [
-                "{{ 'Integration of green infrastructure in farmland'|_ }}",
-                "{{ 'Enhancing biodiversity through ecological corridors'|_ }}",
-                "{{ 'Assessment of ecosystem services provided by natural elements'|_ }}"
-            ]
-        },
-        monitoring: {
-            title: "{{ 'Monitoring and digital innovation'|_ }}",
-            image: "{{ 'assets/images/objective-popup-1.jpg'|theme }}",
-            items: [
-                "{{ 'Digital tools for real-time environmental monitoring'|_ }}",
-                "{{ 'Data-driven decision support for farmers'|_ }}",
-                "{{ 'Training programmes for technology adoption'|_ }}"
-            ]
-        },
-        crops: {
-            title: "{{ 'Target crops'|_ }}",
-            image: "{{ 'assets/images/objective-popup-1.jpg'|theme }}",
-            items: [
-                "{{ 'Focus on key crops in the Doñana agricultural area'|_ }}",
-                "{{ 'Sustainable practices for berries, citrus and rice'|_ }}",
-                "{{ 'Crop-specific recommendations for water and nutrient management'|_ }}"
-            ]
-        }
-    };
-
-    function openPopup(key) {
-        var data = objectiveData[key];
-        if (!data) return;
-        $('#popupTitle').text(data.title);
-        $('#popupImage').attr('src', data.image).attr('alt', data.title);
-        var list = $('#popupList').empty();
-        data.items.forEach(function(item){
-            list.append('<li>' + item + '</li>');
-        });
-        $('#objectivePopupOverlay').css('display', 'flex');
-        $('body').css('overflow', 'hidden');
-    }
-
-    function closePopup() {
-        $('#objectivePopupOverlay').css('display', 'none');
-        $('body').css('overflow', '');
-    }
-
-    $('[data-objective]').on('click', function(e){
-        e.stopPropagation();
-        openPopup($(this).data('objective'));
-    });
-
-    $('#popupClose').on('click', function(e){
-        e.stopPropagation();
-        closePopup();
-    });
-
-    $('#objectivePopupOverlay').on('click', function(e){
-        if (e.target === this) closePopup();
-    });
-
-    $(document).on('keydown', function(e){
-        if (e.key === 'Escape') closePopup();
-    });
-});
-</script>

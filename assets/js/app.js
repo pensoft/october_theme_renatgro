@@ -339,3 +339,48 @@ function getScreenSize() {
         height: window.innerHeight || document.documentElement.clientHeight
     };
 }
+
+/* Objective popup - reads data from HTML data attributes */
+$(function(){
+    function openObjectivePopup(el) {
+        var $el = $(el).closest('[data-objective]');
+        var title = $el.data('title');
+        var image = $el.data('image');
+        var itemsStr = $el.data('items');
+        if (!title || !itemsStr) return;
+
+        var items = itemsStr.split('||');
+
+        $('#popupTitle').text(title);
+        $('#popupImage').attr('src', image).attr('alt', title);
+        var $list = $('#popupList').empty();
+        items.forEach(function(item){
+            if (item.trim()) $list.append('<li>' + item.trim() + '</li>');
+        });
+        $('#objectivePopupOverlay').css('display', 'flex');
+        $('body').css('overflow', 'hidden');
+    }
+
+    function closeObjectivePopup() {
+        $('#objectivePopupOverlay').css('display', 'none');
+        $('body').css('overflow', '');
+    }
+
+    $(document).on('click', '[data-objective]', function(e){
+        e.stopPropagation();
+        openObjectivePopup(this);
+    });
+
+    $(document).on('click', '#popupClose', function(e){
+        e.stopPropagation();
+        closeObjectivePopup();
+    });
+
+    $(document).on('click', '#objectivePopupOverlay', function(e){
+        if (e.target === this) closeObjectivePopup();
+    });
+
+    $(document).on('keydown', function(e){
+        if (e.key === 'Escape') closeObjectivePopup();
+    });
+});
