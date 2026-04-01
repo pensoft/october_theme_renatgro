@@ -24,10 +24,26 @@
         init: function () {
             this.el = document.getElementById('headernavbar');
             if (!this.el) return;
+            this.defaultPadding = window.innerWidth < BREAKPOINT_LARGE ? '20px' : '59px 81px';
+            this.scrolledPadding = window.innerWidth < BREAKPOINT_LARGE ? '15px 20px' : '15px 81px';
             window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
+            this.onScroll(); // run once on init in case already scrolled
         },
         onScroll: function () {
-            this.el.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
+            var s = this.el.style;
+            if (window.scrollY > SCROLL_THRESHOLD) {
+                s.position = 'fixed';
+                s.background = 'rgba(0, 28, 68, 0.95)';
+                s.backdropFilter = 'blur(10px)';
+                s.webkitBackdropFilter = 'blur(10px)';
+                s.padding = this.scrolledPadding;
+            } else {
+                s.position = '';
+                s.background = '';
+                s.backdropFilter = '';
+                s.webkitBackdropFilter = '';
+                s.padding = '';
+            }
         }
     };
 

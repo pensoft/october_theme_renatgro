@@ -348,7 +348,7 @@
 
     .objective-text {
         max-width: 1045px;
-        margin: 0 auto 60px;
+        margin: 0 auto 80px;
 
         h2 {
             margin-bottom: 20px;
@@ -390,10 +390,12 @@
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
         }
-        .dot-tl { left: 475px; top: 0; }
-        .dot-tr { left: 744px; top: 72px; }
-        .dot-bl { left: 475px; top: 260px; }
-        .dot-br { left: 744px; top: 344px; }
+        // Dots centered on SVG path endpoints (30px dots, offset -15px)
+        // SVG left edge ≈ 491px, right edge ≈ 760px in 1280px container
+        .dot-tl { left: 476px; top: -14px; }     // path start (0.5, 0.5)
+        .dot-tr { left: 745px; top: 156px; }     // path right mid (269.5, ~170)
+        .dot-bl { left: 476px; top: 245px; }     // path left lower (0.5, ~260)
+        .dot-br { left: 745px; top: 329px; }     // path end (269.5, 344)
 
         // Text labels
         .node-label {
@@ -415,10 +417,11 @@
                 font-size: 28px;
             });
         }
-        .label-tl { left: 175px; top: 12px;  transform: translateY(-50%); width: 202px; text-align: right; }
-        .label-tr { left: 834px; top: 84px;  transform: translateY(-50%); width: 271px; text-align: left; }
-        .label-bl { left: 175px; top: 275px; transform: translateY(-50%); width: 257px; text-align: right; }
-        .label-br { left: 834px; top: 351px; transform: translateY(-50%); width: 271px; text-align: left; }
+        // Labels vertically centered with their dots
+        .label-tl { right: 810px; top: 0;    transform: translateY(-50%); width: 260px; text-align: right; }
+        .label-tr { left: 790px;  top: 171px; transform: translateY(-50%); width: 271px; text-align: left; }
+        .label-bl { right: 810px; top: 260px; transform: translateY(-50%); width: 260px; text-align: right; }
+        .label-br { left: 790px;  top: 344px; transform: translateY(-50%); width: 271px; text-align: left; }
     }
 
     // Mobile fallback
