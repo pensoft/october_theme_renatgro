@@ -266,9 +266,8 @@
 
     /* ─── Bootstrap ──────────────────────────────────────── */
 
-    Navbar.init();
-
     $(function () {
+        Navbar.init();
         MobileMenu.init();
         Accordion.init();
         Tabs.init();
