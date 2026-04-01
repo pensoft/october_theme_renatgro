@@ -421,16 +421,18 @@ ul.pagination{
 .homepage-intro {
     position: relative;
     width: 100%;
-    height: 100vh;
-    min-height: 600px;
+    height: 775px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .breakpoint-large-down({
-        height: 70vh;
-        min-height: 400px;
+        height: 500px;
+    });
+
+    .breakpoint-medium-down({
+        height: 400px;
     });
 
     .hero-bg {
@@ -440,7 +442,7 @@ ul.pagination{
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transform: rotate(180deg);
+        object-position: center bottom;
     }
 
     .hero-overlay {
@@ -450,6 +452,7 @@ ul.pagination{
         width: 100%;
         height: 100%;
         background: rgba(0, 28, 68, 0.2);
+        z-index: 1;
     }
 
     .hero-content {

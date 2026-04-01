@@ -280,9 +280,9 @@
 
     .objective-diagram {
         position: relative;
-        max-width: 1000px;
+        max-width: 1280px;
         margin: 0 auto;
-        min-height: 380px;
+        height: 380px;
 
         .breakpoint-large-down({
             display: none;
@@ -291,8 +291,8 @@
         .connector-svg {
             position: absolute;
             left: 50%;
-            top: 0;
-            transform: translateX(-50%);
+            top: 15px;
+            transform: translateX(-55%);
             width: 269px;
             height: 344px;
         }
@@ -301,7 +301,7 @@
             position: absolute;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
 
             .dot {
                 width: 30px;
@@ -316,29 +316,36 @@
                 line-height: 1.15;
                 letter-spacing: 0.36px;
                 color: @dark-color;
-                text-align: left;
                 max-width: 271px;
 
                 .breakpoint-laptop-down({
                     font-size: 28px;
+                    max-width: 220px;
                 });
             }
 
+            // Left side nodes: label then dot (text-align right)
             &.node-tl {
-                right: calc(50% + 140px);
-                top: 0;
-            }
-            &.node-tr {
-                left: calc(50% + 140px);
-                top: 80px;
+                right: calc(50% + 105px);
+                top: -5px;
+                .node-label { text-align: right; }
             }
             &.node-bl {
-                right: calc(50% + 140px);
-                top: 250px;
+                right: calc(50% + 105px);
+                top: 245px;
+                .node-label { text-align: right; }
+            }
+
+            // Right side nodes: dot then label (text-align left)
+            &.node-tr {
+                left: calc(50% + 120px);
+                top: 85px;
+                .node-label { text-align: left; }
             }
             &.node-br {
-                left: calc(50% + 140px);
-                top: 340px;
+                left: calc(50% + 120px);
+                top: 330px;
+                .node-label { text-align: left; }
             }
         }
     }
