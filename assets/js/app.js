@@ -1,24 +1,13 @@
 var width = window.innerWidth;
 
 /* Navbar scroll behavior */
-window.addEventListener('scroll', function (e) {
-    var headernavbar = document.getElementById("headernavbar");
-    if (headernavbar) {
-        if (window.scrollY > 100){
-            headernavbar.classList.add('scrolled');
-            headernavbar.style.position = 'fixed';
-            headernavbar.style.top = '0';
-            headernavbar.style.background = 'rgba(0, 28, 68, 0.95)';
-            headernavbar.style.backdropFilter = 'blur(10px)';
-            headernavbar.style.padding = '15px 81px';
-        } else {
-            headernavbar.classList.remove('scrolled');
-            headernavbar.style.position = '';
-            headernavbar.style.top = '';
-            headernavbar.style.background = '';
-            headernavbar.style.backdropFilter = '';
-            headernavbar.style.padding = '';
-        }
+window.addEventListener('scroll', function () {
+    var nav = document.getElementById("headernavbar");
+    if (!nav) return;
+    if (window.scrollY > 100) {
+        nav.style.cssText = 'position:fixed;top:0;left:0;width:100%;z-index:10000;background:rgba(0,28,68,0.95);backdrop-filter:blur(10px);padding:15px 81px;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;';
+    } else {
+        nav.style.cssText = '';
     }
 });
 
