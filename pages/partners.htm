@@ -1,0 +1,53 @@
+url = "/partners"
+layout = "default"
+title = "Partners"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+header_image = "about.jpg"
+==
+<?php
+use Pensoft\Partners\Models\Partners;
+
+function onStart(){
+	$this['coordination_partners'] =  Partners::where('type', 4)->get();
+	$this['croatian_partners'] =  Partners::whereRaw('country_code ILIKE \'%HR%\'')->where('type', 1)->get();
+	$this['french_partners'] =  Partners::whereRaw('country_code ILIKE \'%FR%\'')->where('type', 1)->get();
+	$this['german_partners'] =  Partners::whereRaw('country_code ILIKE \'%DE%\'')->where('type', 1)->get();
+	$this['international_partners'] =  Partners::whereRaw('country_code NOT ILIKE \'%DE%\' AND country_code NOT ILIKE \'%FR%\' AND country_code NOT ILIKE \'%HR%\'')->where('type', 1)->get();
+}
+?>
+==
+
+<div class="container">
+    <div class="tabs">
+        <a class="" href="#coordination">{{ 'Coordination and Management'|_ }}</a>
+        <a class="" href="#croatian">{{ 'Croatian partners'|_ }}</a>
+        <a class="" href="#french">{{ 'French partners'|_ }}</a>
+        <a class="" href="#german">{{ 'German partners'|_ }}</a>
+        <a class="" href="#international">{{ 'International partners'|_ }}</a>
+    </div>
+</div>
+
+<div class="container partners_list">
+    <div class="row" id="coordination">
+        {% partial 'components/partners_list' partners = coordination_partners %}
+    </div>
+
+    <div class="row" id="croatian">
+        {% partial 'components/partners_list' partners = croatian_partners %}
+    </div>
+
+    <div class="row" id="german">
+        {% partial 'components/partners_list' partners = german_partners %}
+    </div>
+
+    <div class="row" id="french">
+        {% partial 'components/partners_list' partners = french_partners %}
+    </div>
+
+    <div class="row" id="international">
+        {% partial 'components/partners_list' partners = international_partners %}
+    </div>
+
+</div>

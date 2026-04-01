@@ -1,0 +1,68 @@
+<div class="ongoing-events-sidebar">
+    {% for entry in exhibitions %}
+    <a href="/{{currentLang}}/events/{{entry.slug}}" class="ongoing-card">
+        <div class="card-image">
+            {% if entry.cover_image %}
+            <img src="{{entry.cover_image|crop_image|resize(404, 204, { mode: 'crop' })}}" alt="{{ entry.title }}">
+            {% else %}
+            <img src="{{'sctt-general.png'|media}}" alt="{{ entry.title }}">
+            {% endif %}
+        </div>
+        <div class="card-overlay">
+            <div class="event-date-badge">
+                {% if entry.start == '2026-09-25T09:07:29' %} autumn {{entry.start|date("Y")}} {% else %}
+                {% if entry.start|date("Y") == entry.end|date("Y") %}
+                {% if entry.start|date("M") == entry.end|date("M") %}
+                {% if entry.start|date("j") == entry.end|date("j") %}
+                {{entry.start|date("j M Y")}}
+                {% else %}
+                {{entry.start|date("j")}} - {{entry.end|date("j M Y")}}
+                {% endif %}
+                {% else %}
+                {{entry.start|date("j M")}} - {{entry.end|date("j M Y")}}
+                {% endif %}
+                {% else %}
+                {{entry.start|date("j M Y")}} - {{entry.end|date("j M Y")}}
+                {% endif %}
+                {% endif %}{% if entry.start|date("H:i") != '00:00' %}, {{entry.start|date("H:i")}}{% if entry.end|date("H:i") != entry.start|date("H:i")%} - {{entry.end|date("H:i")}}{% endif %}{% endif %}
+            </div>
+            <h4>{{ entry.title|raw }}</h4>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+
+{% if exhibitions.lastPage is defined and exhibitions.lastPage > 1 %}
+<div class="pagination-wrapper ongoing-pagination-wrapper">
+    <nav class="pagination">
+        {% if exhibitions.currentPage > 1 %}
+        <a href="javascript:void(0);" class="pagination-link pagination-prev" data-ongoing-page="{{ exhibitions.currentPage - 1 }}">
+            <img src="{{ 'assets/images/pagination-arrow.svg'|theme }}" alt="Previous">
+        </a>
+        {% else %}
+        <span class="pagination-link pagination-prev disabled">
+            <img src="{{ 'assets/images/pagination-arrow.svg'|theme }}" alt="Previous">
+        </span>
+        {% endif %}
+
+        {% for i in 1..exhibitions.lastPage %}
+        {% if i == exhibitions.currentPage %}
+        <span class="pagination-link active">{{ i }}</span>
+        {% else %}
+        <a href="javascript:void(0);" class="pagination-link" data-ongoing-page="{{ i }}">{{ i }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if exhibitions.currentPage < exhibitions.lastPage %}
+        <a href="javascript:void(0);" class="pagination-link pagination-next" data-ongoing-page="{{ exhibitions.currentPage + 1 }}">
+            <img src="{{ 'assets/images/pagination-arrow.svg'|theme }}" alt="Next">
+        </a>
+        {% else %}
+        <span class="pagination-link pagination-next disabled">
+            <img src="{{ 'assets/images/pagination-arrow.svg'|theme }}" alt="Next">
+        </span>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}

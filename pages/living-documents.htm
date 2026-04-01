@@ -1,0 +1,46 @@
+url = "/internal-repository/living-documents"
+layout = "default"
+title = "Living documents"
+
+[session]
+security = "user"
+allowedUserGroups[] = "internal-users"
+allowedUserGroups[] = "registered"
+allowedUserGroups[] = "guest"
+redirect = "home"
+==
+{% component 'session' %}
+<div class="container">
+
+	<div class="row middle-xs between-xs">
+		<div class="col-xs-12 col-md-5 mt-1 mb-1">
+
+		</div>
+
+		<div class="col-xs-12 col-md-3 end-xs">
+			<a href="{{url('internal-repository')}}" class="back"> <div class="arrow-left end-xs"></div> &nbsp;{{ 'Back to documents'|_ }}</a>
+		</div>
+
+		<div class="col-xs-12 col-md-12 end-xs">
+			<h1 class="base_heading inner-page">{{ 'Living documents'|_ }}</h1>
+		</div>
+
+
+		<div class="col-xs-12 mt-2">
+
+
+			<p><iframe src="https://drive.google.com/embeddedfolderview?id=1cbqofK37HeROaAvnu27qiIWU4y2IB2Dm#list" width="100%" height="352" frameborder="0" marginheight="0" marginwidth="0"></iframe></p>
+
+			<p><em>{{ 'This folder contains a view-only copy of important project forms and tables (including dissemination reports). You can view and consult these documents at any time to receive an up-to-date overview on their status.'|_ }}</em></p>
+
+			<p><em>{{ 'If you wish to change or add contents to the dissemination tables, please send your request to'|_ }} <strong>Margarita Grudova</strong>&nbsp;{{ 'at'|_ }} <a href="mailto:m.grudova@pensoft.net">m.grudova@pensoft.net</a></em></p>
+
+			<p><em>{{ 'Should you wish to adapt or have questions concerning the project\'s contact lists, please contact'|_ }} <strong>Gabriela Popova</strong> {{ 'at'|_ }} <a href="mailto:g.popova@pensoft.net">g.popova@pensoft.net<!--а--></a></em><a href="mailto:g.popova@pensoft.net">.</a></p>
+		</div>
+
+
+
+	</div>
+
+
+</div>

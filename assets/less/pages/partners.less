@@ -1,0 +1,286 @@
+
+.partners_list{
+    display: flex!important;
+    justify-content: space-between;
+    width: 100%;
+
+    .breakpoint-large-down({
+        justify-content: center;
+    });
+}
+
+.partners{
+
+    .tabs{
+        //width: 100%;
+        //display: flex;
+        //justify-content: end;
+
+        a{
+            width: fit-content;
+            cursor: pointer;
+            color: @dark-color;
+            font-size: 14px;
+            font-family: Inter;
+            letter-spacing: -0.21px;
+            float: left;
+            padding: 12px 16px;
+            margin-right: 7px;
+            background: #E9EFFF;
+            border: 1px solid #3268FF29;
+            border-radius: 20px;
+            &:hover, &.active{
+                border: 1px solid @blue-color;
+                background: @blue-color;
+                color: white;
+            }
+
+        }
+
+
+    }
+
+    .row + .row {
+        margin-top: 0px!important;
+    }
+}
+.partner-item{
+    width: calc(~'100% - 60px');
+    height: calc(~'100% - 76px');
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 28px;
+    background: @secondary-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
+
+
+
+
+    .partner_title{
+        font-size: 20px;
+        line-height: 32px;
+        padding: 0;
+    }
+
+    a.btn {
+        width: 100%;
+        height: 50px;
+        /* UI Properties */
+        background: #3369FF;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: Inter;
+
+        &:hover{
+            background: @dark-color;
+            border: 1px solid @dark-color;
+        }
+
+    }
+
+    .logo_and_flag{
+        margin-bottom: 41px;
+    }
+
+    .partner_logo{
+        img{
+            max-height: 60px;
+            width: auto;
+            mix-blend-mode: multiply;
+        }
+    }
+
+    &.christian-albrechts-universitat-zu-kiel-cau,
+    &.campus-business-box-ev{
+        .partner_logo{
+            img{
+                mix-blend-mode: normal;
+            }
+        }
+    }
+
+    .title_and_description{
+        display: flex;
+        justify-content: space-between;
+        height: 80%;
+    }
+
+    .partner_title{
+        h4{
+            color: @dark-color;
+            font-family: Inter;
+            letter-spacing: 0px;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 30px; /* 115% */
+            margin-bottom: 10px;
+        }
+    }
+
+    .partner_description {
+        //display: flex;
+        //flex-direction: column;
+        //justify-content: space-between;
+    }
+
+    .partner_country {
+        justify-content: end;
+        display: flex;
+        .breakpoint-large-down({
+            display: flex;
+            justify-content: start;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        });
+
+        .add_label{
+            width: 83px;
+            height: 25px;
+            /* UI Properties */
+            background: #3268FF21;
+            border-radius: 7px;
+            font: normal normal normal 12px/25px Inter;
+            letter-spacing: -0.02px;
+            color: #05133A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3px;
+            margin-right: 10px;
+        }
+
+        span.flag{
+            width: 40px;
+            height: 27px;
+            border-radius: 5px;
+            display: block;
+
+            &.country_ {
+                background: url("../../assets/images/earth-icon.svg") top left no-repeat;
+                background-size: cover;
+                width: 40px;
+                height: 40px;
+            }
+
+            &.country_GB {
+                background: url("../../assets/images/flag_gb.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_DE {
+                background: url("../../assets/images/flag_de.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_BG {
+                background: url("../../assets/images/flag_bg.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_IE {
+                background: url("../../assets/images/flag_ir.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_ES {
+                background: url("../../assets/images/flag_es.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_GR {
+                background: url("../../assets/images/flag_gr.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_NL {
+                background: url("../../assets/images/flag_nl.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_DK {
+                background: url("../../assets/images/flag_dk.png") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_BE {
+                background: url("../../assets/images/flag_be.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_IT {
+                background: url("../../assets/images/flag_it.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_SI {
+                background: url("../../assets/images/flag_si.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_CH {
+                background: url("../../assets/images/flag_ch.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_FR {
+                background: url("../../assets/images/flag_fr.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_RO {
+                background: url("../../assets/images/flag_ro.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_SE {
+                background: url("../../assets/images/flag_se.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_CZ {
+                background: url("../../assets/images/flag_cz.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_HR {
+                background: url("../../assets/images/flag_croatia.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_NO {
+                background: url("../../assets/images/flag_no.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_MT {
+                background: url("../../assets/images/flag_mt.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_PL {
+                background: url("../../assets/images/flag_pl.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+            &.country_PT {
+                background: url("../../assets/images/flag_pt.svg") top left no-repeat;
+                background-size: cover;
+            }
+
+        }
+
+    }
+
+}
+
+
+
