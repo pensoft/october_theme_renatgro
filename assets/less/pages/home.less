@@ -1,4 +1,5 @@
 // ===== HOMEPAGE =====
+// Uses container-fluid > container/container1000 > row > col pattern
 
 // ─── Hero ───────────────────────────────────────────────
 
@@ -11,13 +12,8 @@
     align-items: center;
     justify-content: center;
 
-    .breakpoint-large-down({
-        height: 500px;
-    });
-
-    .breakpoint-medium-down({
-        height: 400px;
-    });
+    .breakpoint-large-down({ height: 500px; });
+    .breakpoint-medium-down({ height: 400px; });
 
     .hero-bg {
         position: absolute;
@@ -31,10 +27,7 @@
 
     .hero-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         background: rgba(0, 28, 68, 0.2);
         z-index: 1;
     }
@@ -69,14 +62,11 @@
     margin: 200px auto;
     font-size: 42px;
     font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.84px;
     text-align: center;
 }
 
-// ─── Sections ───────────────────────────────────────────
+// ─── Shared ─────────────────────────────────────────────
 
-// Two-tone text pattern (used in about, challenge, objective)
 .two-tone-text {
     font-family: 'Inter', sans-serif;
     font-size: 36px;
@@ -85,64 +75,30 @@
     letter-spacing: -0.72px;
     color: @dark-color;
 
-    .muted {
-        color: @muted-text-color;
-    }
+    .muted { color: @muted-text-color; }
 
-    .breakpoint-laptop-down({
-        font-size: 28px;
-    });
-    .breakpoint-large-down({
-        font-size: 22px;
-    });
-    .breakpoint-medium-down({
-        font-size: 18px;
-    });
+    .breakpoint-laptop-down({ font-size: 28px; });
+    .breakpoint-large-down({ font-size: 22px; });
+    .breakpoint-medium-down({ font-size: 18px; });
 }
 
-// ===== SECTION: About the project =====
+// ─── About ──────────────────────────────────────────────
+
 .section-about {
     text-align: center;
-    padding: 75px 20px;
-    max-width: 1255px;
-    margin: 0 auto;
-    box-sizing: border-box;
 
-    .breakpoint-large-down({
-        padding: 50px 20px;
-    });
-
-    h2 {
-        margin-bottom: 20px;
-    }
+    h2 { margin-bottom: 20px; }
 }
 
-// ===== SECTION: What we do =====
+// ─── What we do ─────────────────────────────────────────
+
 .section-whatwedo {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 75px 20px;
-    display: flex;
-    align-items: center;
-    gap: 51px;
-
-    .breakpoint-large-down({
-        flex-direction: column;
-        padding: 50px 20px;
-        gap: 40px;
-    });
-
     .whatwedo-image {
-        flex-shrink: 0;
-        width: 520px;
         height: 659px;
         border-radius: 5px;
         overflow: hidden;
 
-        .breakpoint-large-down({
-            width: 100%;
-            height: 400px;
-        });
+        .breakpoint-large-down({ height: 400px; });
 
         img {
             width: 100%;
@@ -152,13 +108,7 @@
         }
     }
 
-    .whatwedo-content {
-        flex: 1;
-
-        h2 {
-            margin-bottom: 35px;
-        }
-    }
+    h2 { margin-bottom: 35px; }
 
     .whatwedo-list {
         display: flex;
@@ -181,10 +131,7 @@
             align-items: center;
             justify-content: center;
 
-            img {
-                width: 32px;
-                height: 32px;
-            }
+            img { width: 32px; height: 32px; }
         }
 
         .item-text {
@@ -195,20 +142,16 @@
             letter-spacing: -0.56px;
             color: @dark-color;
 
-            .breakpoint-laptop-down({
-                font-size: 22px;
-            });
-            .breakpoint-large-down({
-                font-size: 18px;
-            });
+            .breakpoint-laptop-down({ font-size: 22px; });
+            .breakpoint-large-down({ font-size: 18px; });
         }
     }
 }
 
-// ===== SECTION: The challenge =====
+// ─── The challenge ──────────────────────────────────────
+
 .section-challenge {
     position: relative;
-    padding: 80px 0 60px;
     overflow: hidden;
 
     .challenge-bg {
@@ -221,26 +164,15 @@
         opacity: 0.25;
     }
 
-    // Decorative circles
     .circle-decor {
         position: absolute;
         width: 181px;
         height: 181px;
         z-index: 1;
+        .breakpoint-large-down({ display: none; });
 
-        .breakpoint-large-down({
-            display: none;
-        });
-
-        &.circle-left {
-            left: -40px;
-            top: 270px;
-        }
-        &.circle-right {
-            right: -40px;
-            top: 270px;
-            transform: scaleY(-1);
-        }
+        &.circle-left  { left: -40px; top: 270px; }
+        &.circle-right { right: -40px; top: 270px; transform: scaleY(-1); }
     }
 
     .glass-decor {
@@ -249,22 +181,17 @@
         height: 150px;
         border-radius: 900px;
         backdrop-filter: blur(21px);
-        box-shadow: 0px 40px 88px 0px rgba(0,0,0,0.1);
+        box-shadow: 0 40px 88px rgba(0,0,0,0.1);
         z-index: 1;
-
-        .breakpoint-large-down({
-            display: none;
-        });
+        .breakpoint-large-down({ display: none; });
 
         &.glass-left {
-            left: 50px;
-            top: 288px;
+            left: 50px; top: 288px;
             background: linear-gradient(90deg, rgba(234,238,255,0) 0%, rgba(234,238,255,0.15) 115%);
             transform: scaleY(-1);
         }
         &.glass-right {
-            right: 50px;
-            top: 288px;
+            right: 50px; top: 288px;
             background: linear-gradient(90deg, rgba(235,245,207,0) 0%, rgba(235,245,207,0.15) 115%);
         }
     }
@@ -273,24 +200,12 @@
         position: relative;
         z-index: 2;
         text-align: center;
-        max-width: 1045px;
-        margin: 0 auto 80px;
-        padding: 0 20px;
-
-        h2 {
-            margin-bottom: 20px;
-        }
+        h2 { margin-bottom: 20px; }
     }
 
     .challenge-cards {
         position: relative;
         z-index: 2;
-        display: flex;
-        justify-content: space-between;
-        gap: 35px;
-        max-width: 1255px;
-        margin: 0 auto;
-        padding: 0 20px;
 
         .breakpoint-large-down({
             flex-direction: column;
@@ -303,8 +218,7 @@
         border-radius: 5px;
         color: white;
         text-align: center;
-        padding: 40px 40px;
-        width: 395px;
+        padding: 40px;
         min-height: 313px;
         display: flex;
         flex-direction: column;
@@ -312,8 +226,6 @@
         justify-content: center;
 
         .breakpoint-large-down({
-            width: 100%;
-            max-width: 395px;
             min-height: auto;
             padding: 30px;
         });
@@ -339,35 +251,22 @@
     }
 }
 
-// ===== SECTION: General objective =====
+// ─── General objective ──────────────────────────────────
+
 .section-objective {
-    text-align: center;
-    padding: 80px 20px;
-    max-width: 1280px;
-    margin: 0 auto;
-
     .objective-text {
-        max-width: 1045px;
-        margin: 0 auto 80px;
-
-        h2 {
-            margin-bottom: 20px;
-        }
+        text-align: center;
+        h2 { margin-bottom: 20px; }
     }
 
-    // Desktop diagram
-    // The .diagram-core is exactly 270×345 (SVG size), centered.
-    // Dots are positioned using SVG coordinates within .diagram-core.
-    // Labels are positioned relative to .objective-diagram using 50% offsets.
+    // Desktop diagram: SVG + dots in .diagram-core (270×345), labels outside
     .objective-diagram {
         position: relative;
-        max-width: 1280px;
         height: 400px;
-        margin: 0 auto;
+        padding-top: 0;
+        padding-bottom: 0;
 
-        .breakpoint-large-down({
-            display: none;
-        });
+        .breakpoint-large-down({ display: none; });
 
         .diagram-core {
             position: absolute;
@@ -384,26 +283,22 @@
             height: 345px;
         }
 
-        // Dots positioned at SVG path endpoints (dot is 30px, center on path point)
-        // Path: starts (0.5,0.5), ends (269.5,344)
-        // Intermediate: right side at y≈170.5, left side at y≈215
         .obj-dot {
             position: absolute;
             width: 30px;
             height: 30px;
             z-index: 2;
-
             &:hover span {
                 transform: scale(1.3);
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
         }
-        .dot-tl { left: -14px;  top: -14px; }     // SVG (0.5, 0.5)
-        .dot-tr { left: 255px;  top: 156px; }     // SVG (269.5, ~170)
-        .dot-bl { left: -14px;  top: 246px; }     // SVG (0.5, ~260)
-        .dot-br { left: 255px;  top: 330px; }     // SVG (269.5, 344)
+        // Dots at SVG path endpoints (centered: -15px offset for 30px dot)
+        .dot-tl { left: -14px;  top: -14px; }
+        .dot-tr { left: 255px;  top: 156px; }
+        .dot-bl { left: -14px;  top: 246px; }
+        .dot-br { left: 255px;  top: 330px; }
 
-        // Labels positioned relative to .objective-diagram
         .node-label {
             position: absolute;
             font-family: 'Instrument Sans', sans-serif;
@@ -414,16 +309,9 @@
             color: @dark-color;
             cursor: pointer;
             transition: color 0.2s;
-
-            &:hover {
-                color: @blue-color;
-            }
-
-            .breakpoint-laptop-down({
-                font-size: 28px;
-            });
+            &:hover { color: @blue-color; }
+            .breakpoint-laptop-down({ font-size: 28px; });
         }
-        // Left labels: right edge near center, right labels: left edge near center
         .label-tl { right: ~'calc(50% + 160px)'; top: -5px;   width: 260px; text-align: right; }
         .label-tr { left: ~'calc(50% + 160px)';  top: 163px;  width: 271px; text-align: left; }
         .label-bl { right: ~'calc(50% + 160px)'; top: 240px;  width: 260px; text-align: right; }
@@ -433,23 +321,16 @@
     // Mobile fallback
     .objective-list-mobile {
         display: none;
-
-        .breakpoint-large-down({
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        });
+        .breakpoint-large-down({ display: block; });
 
         .mobile-item {
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
+            margin-bottom: 20px;
 
-            &:hover .obj-dot span {
-                transform: scale(1.3);
-            }
+            &:hover .obj-dot span { transform: scale(1.3); }
 
             .node-label {
                 font-family: 'Instrument Sans', sans-serif;
@@ -463,7 +344,8 @@
     }
 }
 
-// Green dot button
+// ─── Green dot button (shared) ──────────────────────────
+
 .obj-dot {
     width: 30px;
     height: 30px;
@@ -487,13 +369,11 @@
     }
 }
 
-// Objective popup overlay — controlled via JS style.display
+// ─── Popup ──────────────────────────────────────────────
+
 .objective-popup-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0, 28, 68, 0.4);
     z-index: 10000;
     align-items: center;
@@ -520,17 +400,8 @@
     .popup-image {
         flex-shrink: 0;
         width: 345px;
-
-        .breakpoint-large-down({
-            width: 100%;
-            height: 200px;
-        });
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .breakpoint-large-down({ width: 100%; height: 200px; });
+        img { width: 100%; height: 100%; object-fit: cover; }
     }
 
     .popup-content {
@@ -567,10 +438,8 @@
                 &:before {
                     content: '';
                     position: absolute;
-                    left: 0;
-                    top: 7px;
-                    width: 10px;
-                    height: 10px;
+                    left: 0; top: 7px;
+                    width: 10px; height: 10px;
                     background: @dark-color;
                     border-radius: 50%;
                 }
@@ -580,10 +449,8 @@
 
     .popup-close {
         position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 30px;
-        height: 30px;
+        top: 15px; right: 15px;
+        width: 30px; height: 30px;
         background: none;
         border: none;
         cursor: pointer;
@@ -592,14 +459,11 @@
         justify-content: center;
         opacity: 0.5;
         transition: opacity 0.2s;
-
-        &:hover {
-            opacity: 1;
-        }
+        &:hover { opacity: 1; }
     }
 }
 
 @keyframes popupFadeIn {
     from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }

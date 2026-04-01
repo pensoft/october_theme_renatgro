@@ -1,13 +1,14 @@
+// ===== Containers =====
+
 .container {
     max-width: 100%;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-     //padding-top: @padding-base-space-home * 2.5;
+    padding-right: 20px;
+    padding-left: 20px;
     padding-top: 50px;
-    //padding-bottom: @padding-base-space-home * 2.5;
     padding-bottom: 50px;
     margin-right: auto;
     margin-left: auto;
+    box-sizing: border-box;
 
     .breakpoint-small({
         max-width: 540px;
@@ -22,24 +23,22 @@
         max-width: 1180px;
     });
     .breakpoint-laptop({
-        max-width: 1229px;
+        max-width: 1280px;
     });
     .breakpoint-huge({
         max-width: 1326px;
     });
 }
 
-
 .container1000 {
     max-width: 100%;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    //padding-top: @padding-base-space-home * 2.5;
+    padding-right: 20px;
+    padding-left: 20px;
     padding-top: 50px;
-    //padding-bottom: @padding-base-space-home * 2.5;
-    padding-bottom: 80px;
+    padding-bottom: 50px;
     margin-right: auto;
     margin-left: auto;
+    box-sizing: border-box;
 
     .breakpoint-small({
         max-width: 540px;
@@ -51,21 +50,19 @@
         max-width: 870px;
     });
     .breakpoint-huge({
-        max-width: 1040px;
+        max-width: 1060px;
     });
 }
 
-
 .container700 {
     max-width: 100%;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    //padding-top: @padding-base-space-home * 2.5;
+    padding-right: 20px;
+    padding-left: 20px;
     padding-top: 50px;
-    //padding-bottom: @padding-base-space-home * 2.5;
-    padding-bottom: 80px;
+    padding-bottom: 50px;
     margin-right: auto;
     margin-left: auto;
+    box-sizing: border-box;
 
     .breakpoint-small({
         max-width: 540px;
@@ -76,72 +73,39 @@
     .breakpoint-large({
         max-width: 700px;
     });
-    .breakpoint-huge({
-        max-width: 700px;
-    });
 }
 
 .container-fluid {
     width: 100%;
-    padding-left: 0!important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
+// ===== Grid helpers =====
 
+.row {
+    + .row {
+        // margin-top: 1.5rem;
+    }
+}
 
-
-.fixed-top,.fixed-bottom,.fixed-right,.fixed-left {
-    position: fixed;
-}
-.fixed-top {
-    top: 0;
-    left: 0;
-    right: 0;
-}
-.fixed-bottom {
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-.fixed-right {
-    top: 0;
-    bottom: 0;
-    left: 0;
-}
-.fixed-left {
-    top: 0;
-    bottom: 0;
-    right: 0;
-}
-.row + .row {
-    //margin-top: 1.5rem;
-}
 .border-box {
     box-sizing: border-box;
 }
 
-// Positions
+// ===== Positioning utilities =====
 
-.relative {
-    position: relative;
-}
-.absolute {
-    position: absolute;
-}
-.fixed {
-    position: fixed;
-}
-.sticky {
-    position: sticky;
-}
-.static {
-    position: static;
-}
-.show {
-    display: block;
-}
-.hide {
-    display: none;
-}
+.relative  { position: relative; }
+.absolute  { position: absolute; }
+.fixed     { position: fixed; }
+.sticky    { position: sticky; }
+.static    { position: static; }
+.show      { display: block; }
+.hide      { display: none; }
+
+.fixed-top, .fixed-bottom { position: fixed; left: 0; right: 0; }
+.fixed-top    { top: 0; }
+.fixed-bottom { bottom: 0; }
 
 // ===== Layout sections =====
 
