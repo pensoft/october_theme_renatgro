@@ -1,13 +1,7 @@
-<div class="container-fluid homepage-intro">
-    <div class="hero-section">
-        {% if this.theme.header_image %}
-        <img src="{{ this.theme.header_image.getPath() }}" alt="{{ this.theme.site_name }}" class="hero-image">
-        {% endif %}
-        <div class="container intro-container">
-            <h1>{{ this.theme.site_name }}</h1>
-            {% if this.theme.tag_line %}
-            <p class="hero-tagline">{{ this.theme.tag_line }}</p>
-            {% endif %}
-        </div>
+<div class="homepage-intro">
+    <img src="{{ 'assets/images/hero-bg.png'|theme }}" alt="" class="hero-bg" aria-hidden="true">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>{{ 'Renaturalising Agriculture in the Doñana Area'|_ }}</h1>
     </div>
 </div>

@@ -1,0 +1,378 @@
+// ===== HOMEPAGE SECTIONS =====
+
+// Two-tone text pattern (used in about, challenge, objective)
+.two-tone-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: -0.72px;
+    color: @dark-color;
+
+    .muted {
+        color: @muted-text-color;
+    }
+
+    .breakpoint-laptop-down({
+        font-size: 28px;
+    });
+    .breakpoint-large-down({
+        font-size: 22px;
+    });
+    .breakpoint-medium-down({
+        font-size: 18px;
+    });
+}
+
+// ===== SECTION: About the project =====
+.section-about {
+    text-align: center;
+    padding: 75px 0;
+    max-width: 1255px;
+    margin: 0 auto;
+
+    .breakpoint-large-down({
+        padding: 50px 20px;
+    });
+
+    h2 {
+        margin-bottom: 20px;
+    }
+}
+
+// ===== SECTION: What we do =====
+.section-whatwedo {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 75px 20px;
+    display: flex;
+    align-items: center;
+    gap: 51px;
+
+    .breakpoint-large-down({
+        flex-direction: column;
+        padding: 50px 20px;
+        gap: 40px;
+    });
+
+    .whatwedo-image {
+        flex-shrink: 0;
+        width: 520px;
+        height: 659px;
+        border-radius: 5px;
+        overflow: hidden;
+
+        .breakpoint-large-down({
+            width: 100%;
+            height: 400px;
+        });
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: rotate(180deg);
+        }
+    }
+
+    .whatwedo-content {
+        flex: 1;
+
+        h2 {
+            margin-bottom: 35px;
+        }
+    }
+
+    .whatwedo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .whatwedo-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+
+        .icon-circle {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: @blue-color;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        .item-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.55;
+            letter-spacing: -0.56px;
+            color: @dark-color;
+
+            .breakpoint-laptop-down({
+                font-size: 22px;
+            });
+            .breakpoint-large-down({
+                font-size: 18px;
+            });
+        }
+    }
+}
+
+// ===== SECTION: The challenge =====
+.section-challenge {
+    position: relative;
+    padding: 80px 0 60px;
+    overflow: hidden;
+
+    .challenge-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 768px;
+        background: @light-blue-bg;
+        opacity: 0.25;
+    }
+
+    // Decorative circles
+    .circle-decor {
+        position: absolute;
+        width: 181px;
+        height: 181px;
+        z-index: 1;
+
+        .breakpoint-large-down({
+            display: none;
+        });
+
+        &.circle-left {
+            left: -40px;
+            top: 270px;
+        }
+        &.circle-right {
+            right: -40px;
+            top: 270px;
+            transform: scaleY(-1);
+        }
+    }
+
+    .glass-decor {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 900px;
+        backdrop-filter: blur(21px);
+        box-shadow: 0px 40px 88px 0px rgba(0,0,0,0.1);
+        z-index: 1;
+
+        .breakpoint-large-down({
+            display: none;
+        });
+
+        &.glass-left {
+            left: 50px;
+            top: 288px;
+            background: linear-gradient(90deg, rgba(234,238,255,0) 0%, rgba(234,238,255,0.15) 115%);
+            transform: scaleY(-1);
+        }
+        &.glass-right {
+            right: 50px;
+            top: 288px;
+            background: linear-gradient(90deg, rgba(235,245,207,0) 0%, rgba(235,245,207,0.15) 115%);
+        }
+    }
+
+    .challenge-text {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 1045px;
+        margin: 0 auto 80px;
+        padding: 0 20px;
+
+        h2 {
+            margin-bottom: 20px;
+        }
+    }
+
+    .challenge-cards {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        gap: 35px;
+        max-width: 1255px;
+        margin: 0 auto;
+        padding: 0 20px;
+
+        .breakpoint-large-down({
+            flex-direction: column;
+            align-items: center;
+        });
+    }
+
+    .challenge-card {
+        background: @blue-color;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        padding: 40px 40px;
+        width: 395px;
+        min-height: 313px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .breakpoint-large-down({
+            width: 100%;
+            max-width: 395px;
+            min-height: auto;
+            padding: 30px;
+        });
+
+        .card-title {
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 500;
+            font-size: 26px;
+            letter-spacing: 0.26px;
+            line-height: 1.35;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .card-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.55;
+            letter-spacing: -0.36px;
+            color: white;
+        }
+    }
+}
+
+// ===== SECTION: General objective =====
+.section-objective {
+    text-align: center;
+    padding: 80px 20px;
+    max-width: 1280px;
+    margin: 0 auto;
+
+    .objective-text {
+        max-width: 1045px;
+        margin: 0 auto 60px;
+
+        h2 {
+            margin-bottom: 20px;
+        }
+    }
+
+    .objective-diagram {
+        position: relative;
+        max-width: 1000px;
+        margin: 0 auto;
+        min-height: 380px;
+
+        .breakpoint-large-down({
+            display: none;
+        });
+
+        .connector-svg {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 269px;
+            height: 344px;
+        }
+
+        .objective-node {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .dot {
+                width: 30px;
+                height: 30px;
+                flex-shrink: 0;
+            }
+
+            .node-label {
+                font-family: 'Instrument Sans', sans-serif;
+                font-weight: 500;
+                font-size: 36px;
+                line-height: 1.15;
+                letter-spacing: 0.36px;
+                color: @dark-color;
+                text-align: left;
+                max-width: 271px;
+
+                .breakpoint-laptop-down({
+                    font-size: 28px;
+                });
+            }
+
+            &.node-tl {
+                right: calc(50% + 140px);
+                top: 0;
+            }
+            &.node-tr {
+                left: calc(50% + 140px);
+                top: 80px;
+            }
+            &.node-bl {
+                right: calc(50% + 140px);
+                top: 250px;
+            }
+            &.node-br {
+                left: calc(50% + 140px);
+                top: 340px;
+            }
+        }
+    }
+
+    // Mobile fallback: simple list
+    .objective-list-mobile {
+        display: none;
+
+        .breakpoint-large-down({
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        });
+
+        .mobile-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .dot {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            .node-label {
+                font-family: 'Instrument Sans', sans-serif;
+                font-weight: 500;
+                font-size: 24px;
+                line-height: 1.15;
+                color: @dark-color;
+                text-align: left;
+            }
+        }
+    }
+}

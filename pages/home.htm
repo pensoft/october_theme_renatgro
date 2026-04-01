@@ -2,84 +2,144 @@ url = "/"
 layout = "default"
 title = "ReNatgro"
 is_hidden = 0
-meta_title = "ReNatgro"
-meta_description = "ReNatgro - Restauracion ecologica en Donana"
+meta_title = "ReNatgro - Renaturalising Agriculture in the Doñana Area"
+meta_description = "ReNatgro is an ambitious initiative to demonstrate how productive farming can coexist with biodiversity conservation in the Doñana area."
 robot_index = "index"
 robot_follow = "follow"
-
-[jumbotron intro]
-jumbotron = "homepage-intro"
-title = 0
-background = "transperant"
-templates = "template3"
-description_limit = 0
-
-[jumbotron projectIntro]
-jumbotron = "project-intro"
-background = "transperant"
-templates = "template3"
-description_limit = 0
 ==
-<?php
-use Pensoft\Articles\Models\Article;
-
-function onStart(){
-    $this['highlights'] = Article::news()->where('published', 'true')->descPublished()->take(3)->get()->map(function($item){
-        $item->content = str_limit(strip_tags($item->content), 90);
-        $item->href = $item->slug;
-        return $item;
-    });
-}
-?>
 ==
-<div class="container1000 intro">
-    <div class="row between-md around-xs">
-        <div class="col-md-12 col-xs-12">
-            {% component 'intro' %}
-        </div>
-    </div>
-</div>
 
-<!-- news-->
-<div class="container1000 highlights-news">
-    <div class="row nav-row">
-        <div class="col-md-9 col-xs-12 start-md center-xs">
-            <h1>{{ 'RECENT NEWS'|_ }}</h1>
-        </div>
-        <div class="col-md-3 col-xs-12 view-all-button">
-            <a href="/{{currentLang}}/news" class="btn btn-primary">{{ 'All news'|_ }}</a>
-        </div>
+<!-- About the project -->
+<section class="section-about">
+    <h2>{{ 'About the project'|_ }}</h2>
+    <p class="two-tone-text">
+        {{ 'ReNatgro is an ambitious initiative that brings together research, innovation and the agricultural sector to demonstrate how productive'|_ }}
+        <span class="muted">{{ 'farming can coexist with biodiversity conservation and sustainable water use in the Doñana area.'|_ }}</span>
+    </p>
+</section>
+
+<!-- What we do -->
+<section class="section-whatwedo">
+    <div class="whatwedo-image">
+        <img src="{{ 'assets/images/what-we-do-bg.jpg'|theme }}" alt="{{ 'Sustainable agriculture in Doñana'|_ }}">
     </div>
-    <div class="row">
-        {% for highlight in highlights %}
-        <div class="col-md-4 col-xs-12">
-            <div class="news-item">
-                <div class="home-news-cover">
-                    <a href="/{{currentLang}}/news/{{highlight.slug}}">
-                        <img src="{{highlight.cover.thumb(334, 196,{'mode':'crop'})}}" alt="{{ highlight.title }}">
-                    </a>
+    <div class="whatwedo-content">
+        <h2>{{ 'What we do'|_ }}</h2>
+        <div class="whatwedo-list">
+            <div class="whatwedo-item">
+                <div class="icon-circle">
+                    <img src="{{ 'assets/images/icon-water.svg'|theme }}" alt="">
                 </div>
-                <div class="news-content">
-                    <a href="/{{currentLang}}/news/{{highlight.slug}}"><div class="news-title">{{ highlight.title|length > 100 ? highlight.title|slice(0, 100)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : highlight.title|replace({"&nbsp;": " ", ".": ". "})  }}</div></a>
-                    <p class="news-date">{{ highlight.published_at|date('d M Y') }}</p>
-                    <div class="row read-more-row">
-                        <a href="/{{currentLang}}/news/{{highlight.slug}}" class="read-more"><span>{{'Read more' |_}}</span> <span>&#10230;</span></a>
-                    </div>
+                <span class="item-text">{{ 'Improve water and nitrogen efficiency in farms'|_ }}</span>
+            </div>
+            <div class="whatwedo-item">
+                <div class="icon-circle">
+                    <img src="{{ 'assets/images/icon-tree.svg'|theme }}" alt="">
                 </div>
+                <span class="item-text">{{ 'Integrate green infrastructures in agricultural landscapes'|_ }}</span>
+            </div>
+            <div class="whatwedo-item">
+                <div class="icon-circle">
+                    <img src="{{ 'assets/images/icon-soil.svg'|theme }}" alt="">
+                </div>
+                <span class="item-text">{{ 'Monitor biodiversity, soil health and ecosystem services'|_ }}</span>
+            </div>
+            <div class="whatwedo-item">
+                <div class="icon-circle">
+                    <img src="{{ 'assets/images/icon-monitor.svg'|theme }}" alt="">
+                </div>
+                <span class="item-text">{{ 'Develop digital tools and training for farmers'|_ }}</span>
+            </div>
+            <div class="whatwedo-item">
+                <div class="icon-circle">
+                    <img src="{{ 'assets/images/icon-lightbulb.svg'|theme }}" alt="">
+                </div>
+                <span class="item-text">{{ 'Promote scalable solutions for sustainable agriculture'|_ }}</span>
             </div>
         </div>
-        {% endfor %}
     </div>
-</div>
+</section>
 
-<div class="container1000 project-intro">
-    <div class="row between-md around-xs">
-        <div class="col-md-4 col-xs-12 start-md center-xs title_and_btn">
-            <h1>{{ 'About the project'|_ }}</h1>
-            <a href="/{{currentLang}}/about" class="btn btn-primary" aria-label="{{ 'Open about page'|_ }}">{{ 'About us'|_ }}</a>
+<!-- The challenge -->
+<section class="section-challenge">
+    <div class="challenge-bg"></div>
+    <img src="{{ 'assets/images/circle-navy.svg'|theme }}" alt="" class="circle-decor circle-left" aria-hidden="true">
+    <img src="{{ 'assets/images/circle-green.svg'|theme }}" alt="" class="circle-decor circle-right" aria-hidden="true">
+    <div class="glass-decor glass-left"></div>
+    <div class="glass-decor glass-right"></div>
+
+    <div class="challenge-text">
+        <h2>{{ 'The challenge'|_ }}</h2>
+        <p class="two-tone-text">
+            {{ 'The Doñana area has been facing increasing pressure on water resources and biodiversity for decades, driven by intensive agricultural activity and wider environmental pressures.'|_ }}
+            <span class="muted">{{ 'ReNatgro aims to integrate existing knowledge and demonstrate a holistic and scalable approach to sustainable farming.'|_ }}</span>
+        </p>
+    </div>
+
+    <div class="challenge-cards">
+        <div class="challenge-card">
+            <div class="card-title">{{ 'Water pressure'|_ }}</div>
+            <div class="card-desc">{{ 'Agricultural activity in the area places significant pressure on water resources, making sustainable management an urgent priority.'|_ }}</div>
         </div>
-        <div class="col-md-8 col-xs-12">
-            {% component 'projectIntro' %}
+        <div class="challenge-card">
+            <div class="card-title">{{ 'Biodiversity loss'|_ }}</div>
+            <div class="card-desc">{{ 'Valuable ecosystems and species are increasingly affected by land use intensity and environmental degradation.'|_ }}</div>
+        </div>
+        <div class="challenge-card">
+            <div class="card-title">{{ 'Need for practical solutions'|_ }}</div>
+            <div class="card-desc">{{ 'There is a strong need for coordinated, scalable approaches that support both productive agriculture and ecological restoration.'|_ }}</div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- General objective -->
+<section class="section-objective">
+    <div class="objective-text">
+        <h2>{{ 'General objective'|_ }}</h2>
+        <p class="two-tone-text">
+            {{ 'To promote eco-sustainable farming practices that reduce pressure on water resources and biodiversity'|_ }}
+            <span class="muted">{{ 'while improving the long-term resilience of agriculture in the Doñana area.'|_ }}</span>
+        </p>
+    </div>
+
+    <div class="objective-diagram">
+        <img src="{{ 'assets/images/objective-connector.svg'|theme }}" alt="" class="connector-svg" aria-hidden="true">
+
+        <div class="objective-node node-tl">
+            <span class="node-label">{{ 'Sustainable fertigation'|_ }}</span>
+            <img src="{{ 'assets/images/objective-dot-1.svg'|theme }}" alt="" class="dot">
+        </div>
+        <div class="objective-node node-tr">
+            <img src="{{ 'assets/images/objective-dot-2.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Farm renaturalisation'|_ }}</span>
+        </div>
+        <div class="objective-node node-bl">
+            <span class="node-label">{{ 'Monitoring and digital innovation'|_ }}</span>
+            <img src="{{ 'assets/images/objective-dot-3.svg'|theme }}" alt="" class="dot">
+        </div>
+        <div class="objective-node node-br">
+            <img src="{{ 'assets/images/objective-dot-4.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Target crops'|_ }}</span>
+        </div>
+    </div>
+
+    <!-- Mobile fallback -->
+    <div class="objective-list-mobile">
+        <div class="mobile-item">
+            <img src="{{ 'assets/images/objective-dot-1.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Sustainable fertigation'|_ }}</span>
+        </div>
+        <div class="mobile-item">
+            <img src="{{ 'assets/images/objective-dot-2.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Farm renaturalisation'|_ }}</span>
+        </div>
+        <div class="mobile-item">
+            <img src="{{ 'assets/images/objective-dot-3.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Monitoring and digital innovation'|_ }}</span>
+        </div>
+        <div class="mobile-item">
+            <img src="{{ 'assets/images/objective-dot-4.svg'|theme }}" alt="" class="dot">
+            <span class="node-label">{{ 'Target crops'|_ }}</span>
+        </div>
+    </div>
+</section>

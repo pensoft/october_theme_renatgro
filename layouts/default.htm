@@ -30,6 +30,9 @@ function onStart() {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
     {% component 'SeoCmsPage' %}
     {% if this.theme.site_icon %}
     <link rel="icon" type="{{this.theme.site_icon.getContentType()}}" href="{{this.theme.site_icon.getPath()}}">
@@ -63,11 +66,8 @@ function onStart() {
     <!-- Header -->
     <header id="layout-header">
         {% partial 'site/header'
-        site_name=this.theme.site_name
-        tag_line=this.theme.tag_line
         page_title=this.page.title
         page_id=this.page.id
-        footer_funds_flag=this.theme.footer_funds_flag.getPath()
         %}
     </header>
 
@@ -80,28 +80,10 @@ function onStart() {
         {% page %}
     </section>
 </div>
-{% if this.theme.enable_footer %}
 <!-- Footer -->
 <footer id="layout-footer">
-    {% partial 'site/footer'
-    enable_social_media=this.theme.social_media
-    enable_facebook=this.theme.facebook
-    facebook_url=this.theme.facebook_url
-    enable_instagram=this.theme.instagram
-    instagram_url=this.theme.instagram_url
-    enable_twitter=this.theme.twitter
-    twitter_url=this.theme.twitter_url
-    enable_youtube=this.theme.youtube
-    youtube_url=this.theme.youtube_url
-    enable_linkedin=this.theme.linkedin
-    linkedin_url=this.theme.linkedin_url
-    enable_researchgate=this.theme.researchgate
-    researchgate_url=this.theme.researchgate_url
-    footer_funds_flag=this.theme.footer_funds_flag.getPath()
-    footer_funds_text=this.theme.footer_funds_text
-    %}
+    {% partial 'site/footer' %}
 </footer>
-{% endif %}
 
 <div id="gdpr-reload">
     {% partial 'gdpr' %}
