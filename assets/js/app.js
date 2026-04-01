@@ -24,25 +24,22 @@
         init: function () {
             this.el = document.getElementById('headernavbar');
             if (!this.el) return;
-            this.defaultPadding = window.innerWidth < BREAKPOINT_LARGE ? '20px' : '59px 81px';
             this.scrolledPadding = window.innerWidth < BREAKPOINT_LARGE ? '15px 20px' : '15px 81px';
             window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
-            this.onScroll(); // run once on init in case already scrolled
+            this.onScroll();
         },
         onScroll: function () {
-            var s = this.el.style;
             if (window.scrollY > SCROLL_THRESHOLD) {
-                s.position = 'fixed';
-                s.background = 'rgba(0, 28, 68, 0.95)';
-                s.backdropFilter = 'blur(10px)';
-                s.webkitBackdropFilter = 'blur(10px)';
-                s.padding = this.scrolledPadding;
+                this.el.classList.add('scrolled');
+                this.el.setAttribute('style',
+                    'position:fixed;top:0;left:0;width:100%;z-index:10000;' +
+                    'background:rgba(0,28,68,0.95);backdrop-filter:blur(10px);' +
+                    '-webkit-backdrop-filter:blur(10px);padding:' + this.scrolledPadding +
+                    ';box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;'
+                );
             } else {
-                s.position = '';
-                s.background = '';
-                s.backdropFilter = '';
-                s.webkitBackdropFilter = '';
-                s.padding = '';
+                this.el.classList.remove('scrolled');
+                this.el.removeAttribute('style');
             }
         }
     };
