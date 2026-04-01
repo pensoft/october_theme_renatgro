@@ -25,11 +25,16 @@
             this.el = document.getElementById('headernavbar');
             if (!this.el) return;
             this.scrolledPadding = window.innerWidth < BREAKPOINT_LARGE ? '15px 20px' : '15px 81px';
-            window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
+            var handler = this.onScroll.bind(this);
+            window.addEventListener('scroll', handler, { passive: true });
+            document.body.addEventListener('scroll', handler, { passive: true });
             this.onScroll();
         },
+        getScrollTop: function () {
+            return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        },
         onScroll: function () {
-            if (window.scrollY > SCROLL_THRESHOLD) {
+            if (this.getScrollTop() > SCROLL_THRESHOLD) {
                 this.el.classList.add('scrolled');
                 this.el.setAttribute('style',
                     'position:fixed;top:0;left:0;width:100%;z-index:10000;' +
