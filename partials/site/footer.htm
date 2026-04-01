@@ -1,3 +1,11 @@
+[menu footer_menu]
+start = "id-1"
+activeNode = 0
+listItemClasses = "footer-nav-item"
+primaryClasses = "footer-nav"
+secondaryClasses = "dropdown-menu"
+numberOfLevels = 1
+
 [cookieConsent]
 message = "This website uses cookies to ensure you get the best experience on our website."
 dismiss = "Got it!"
@@ -12,17 +20,13 @@ theme = "light-bottom"
     <div class="footer-top">
         <div class="footer-logo">
             <a href="{{'home'|page}}">
-                <img src="{{ 'assets/images/renatgro-logo-white.svg'|theme }}" alt="ReNatgro">
+                {% if this.theme.site_logo %}
+                    <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
+                {% endif %}
             </a>
         </div>
 
-        <div class="footer-nav">
-            <a href="/{{currentLang}}/about">{{ 'About'|_ }}</a>
-            <a href="/{{currentLang}}/news">{{ 'News & Events'|_ }}</a>
-            <a href="/{{currentLang}}/partners">{{ 'Consortium'|_ }}</a>
-            <a href="/{{currentLang}}/materials">{{ 'Resources'|_ }}</a>
-            <a href="/{{currentLang}}/contact">{{ 'Contact'|_ }}</a>
-        </div>
+        {% component 'footer_menu' %}
 
         <div class="footer-social">
             {% if this.theme.linkedin_url %}
@@ -32,7 +36,7 @@ theme = "light-bottom"
             {% endif %}
             {% if this.theme.bluesky_url %}
             <a href="{{this.theme.bluesky_url}}" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-                <img src="{{ 'assets/images/footer-social-icons.svg'|theme }}" alt="Social" style="width:122px; height:auto;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.28-.02-.12.03-2.07 1.32-5.84 3.87-.55.38-1.05.56-1.49.55-.49-.01-1.43-.28-2.13-.51-.86-.28-1.55-.43-1.49-.91.03-.25.38-.51 1.05-.78 4.12-1.8 6.87-2.98 8.26-3.56 3.93-1.64 4.75-1.92 5.28-1.93.12 0 .38.03.55.17.14.12.18.28.2.45.02.09.03.29.01.45z" fill="currentColor"/></svg>
             </a>
             {% endif %}
             {% if this.theme.youtube_url %}
@@ -46,9 +50,11 @@ theme = "light-bottom"
     <!-- Funding row -->
     <div class="footer-funding-row">
         <div class="eu-badge">
-            <img src="{{ 'assets/images/eu-funded-neg.svg'|theme }}" alt="{{ 'Funded by the European Union'|_ }}">
+            {% if this.theme.footer_funds_flag %}
+                <img src="{{ this.theme.footer_funds_flag.getPath() }}" alt="{{ 'Funded by the European Union'|_ }}">
+            {% endif %}
         </div>
-        <p class="disclaimer">{{ 'CONCERTO receives funding from the European Union\'s Horizon Europe research and innovation programme under grant agreement No 101185000. Views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union or the European Climate, Infrastructure and Environment Executive Agency (CINEA). Neither the EU nor CINEA can be held responsible for them.'|_ }}</p>
+        <p class="disclaimer">{{ this.theme.footer_funds_text|raw }}</p>
     </div>
 
     <!-- Bottom row -->

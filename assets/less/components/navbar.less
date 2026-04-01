@@ -25,6 +25,18 @@
             padding: 15px 20px;
         });
     }
+
+    // On non-home pages, always show dark background
+    .content-wrapper:not(.home) & {
+        background: @dark-color;
+        position: fixed;
+        top: 0;
+        padding: 15px 81px;
+
+        .breakpoint-large-down({
+            padding: 15px 20px;
+        });
+    }
 }
 
 .navbar-brand {
