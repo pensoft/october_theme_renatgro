@@ -6,40 +6,11 @@ primaryClasses = "navbar-nav"
 secondaryClasses = "dropdown-menu"
 numberOfLevels = 2
 
-[jumbotron]
-jumbotron = "intro"
-background = "transperant"
-templates = "template1"
-description_limit = 0
-
-[menu login]
-start = "id-18"
-activeNode = 0
-listItemClasses = "item"
-primaryClasses = "nav nav-pills"
-secondaryClasses = "dropdown-menu"
-numberOfLevels = 2
-
 [localePicker]
 forceUrl = 0
 ==
-{% if user %}
-<nav class="fixed navbar-loggedin-user " id="headernavbar2" role="navigation" aria-label="Logged in users navigation">
-    <div class="navbar-collapse collapse row middle-xs">
-        <div class="col-xs-12 col-md-9">{% component 'login' %}</div>
-        <div class="col-xs-2 end-xs  col-md-3 hidden-xs">
-            {% if user.avatar %}
-            <a href="/profile" class="profile_name"><span>{{ user.name }} {{ user.surname }} &nbsp; &nbsp; </span><img alt="{{ user.name }} {{ user.surname }}" src="{{user.avatar.getThumb(30,30, { mode : 'crop' } )}}" style="border-radius: 50%; margin-right:20px;" align="right"> </a>
-            {% else %}
 
-            <a href="/profile" class="profile_name"><span>{{ user.name }} {{ user.surname }} &nbsp; &nbsp; </span><img alt="{{ user.name }} {{ user.surname }}" src="{{ 'CMS_icons_avatar_white.svg'|media }}" width="30" height="30" style="margin-right:20px;" align="right"></a>
-            {% endif %}
-        </div>
-</nav>
-{% endif %}
-
-
-<nav class="pr-1 pl-1 navbar fixed" id="headernavbar" role="navigation" aria-label="Primary" {% if user and this.page.id != 'home' %} style="margin-top:69px;"{% endif %}>
+<nav class="pr-1 pl-1 navbar fixed" id="headernavbar" role="navigation" aria-label="Primary">
     <div id="menuToggle">
         <input type="checkbox" aria-label="Toggle navigation menu" aria-controls="headerNavbarNav" />
         <span aria-hidden="true"></span>
@@ -51,16 +22,10 @@ forceUrl = 0
     <a href="{{'home'|page}}" class="navbar-brand" id="navbar-brand"
        style="background: url('{{ this.theme.site_logo.getPath() }}') center no-repeat; background-size: contain;" aria-label="Home" title="Home"></a>
 
-    <a href="{{'home'|page}}" class="navbar-brand" id="navbar-brand"
-       style="background: url('{{ this.theme.site_logo.getPath() }}') center no-repeat; background-size: contain;" aria-label="Home" title="Home"></a>
-
     <div class="container menu_container">
         <div class="navbar-collapse collapse center-xs" id="headerNavbarNav">
-
             {% component 'menu' %}
         </div>
-
-
     </div>
 
     <div class="funding-social-media">
@@ -89,8 +54,6 @@ forceUrl = 0
                 <a href="{{this.theme.threads_url}}" target="_blank" rel="noopener noreferrer" class="pr p-secondary p-threads normal" aria-label="visit our threads (opens in a new tab)"><span class="visually-hidden">threads</span></a>
                 {% endif %}
 
-                <!--<div id="google_translate_element" aria-label="google translate"></div>-->
-
                 <select class="locale-select form-control" onchange="window.location.assign(this.value)">
                     {% for code, name in locales %}
                     <option data-lang="{{code}}" value="{{ this.page.url|localeUrl(code) }}" {{ code == activeLocale ? 'selected' }}>{{ name }}</option>
@@ -108,21 +71,16 @@ forceUrl = 0
         </div>
         {% endif %}
 
-
     </div>
 
 </nav>
 
-
-
-{% if this.page.id != 'home' and this.page.id != 'coming-soon' %}
+{% if this.page.id != 'home' %}
 <div class="header-image {{page_id}}">
-    {% if page_id != 'home' and page_id != 'coming-soon' %}
     <div class="container">
         <h1 class="underline white">
             {% if page_title %} {{ page_title|_ }} {% else %} {{ site_name }} {% endif %}
         </h1>
     </div>
-    {% endif %}
 </div>
 {% endif %}

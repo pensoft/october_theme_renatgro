@@ -1,22 +1,18 @@
-name: "Science Comes To Town"
+name: "Renatgro"
 author: "Pensoft"
 homepage: "https://pensoft.net"
-code: "Pensoft-Kiel"
+code: "Pensoft-Renatgro"
 authorCode: "Pensoft"
-description: "Demonstrates the basic concepts of the front-end theming."
+description: "ReNatgro project theme - ecological restoration in Donana"
 previewImage: "assets/images/preview.png"
 require:
-    - rainlab.builder
-    - rainlab.googleanalytics
     - rainlab.location
     - rainlab.pages
     - rainlab.sitemap
     - rainlab.translate
     - rainlab.user
-    - AnandPatel.SeoExtension
-    - RainLab.Sitemap
-    - abwebdevelopers.imageresize
     - anandpatel.seoextension
+    - abwebdevelopers.imageresize
     - benfreke.menumanager
     - bennothommo.meta
     - offline.gdpr
@@ -29,15 +25,13 @@ require:
     - pensoft.accordions
     - pensoft.articles
     - pensoft.cardprofiles
+    - pensoft.contactform
     - pensoft.jumbotron
-    - pensoft.library
-    - pensoft.links
     - pensoft.maintenance
     - pensoft.media
     - pensoft.pageextension
     - pensoft.partners
     - pensoft.searchextension
-    - pensoft.internaldocuments
 form:
     tabs:
         defaultTab: 'General settings'
@@ -62,14 +56,14 @@ form:
             site_name:
                 label: Site name
                 comment: The website name as it should appear on the front-end
-                default: Pensoft projects
+                default: ReNatgro
             site_domain:
                 label: Site domain
                 comment: Used in Mailing plugin, mailing group domain
-                default: 'pensoft-test.test'
+                default: 'renatgro.eu'
             tag_line:
                 label: Tagline
-                default: My first project website
+                default: Ecological restoration in Donana
             author:
                 label: Author
                 default:

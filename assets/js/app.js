@@ -1,69 +1,16 @@
-
-$(window).scroll(animateNumbers);
-var viewed = false;
-
-var viewed_subscribe = false;
-var viewed_text = false;
-
-// window.onscroll = function() {
-//     animateTestimonial()
-//     animateSubscribe()
-//     // animateTextRows()
-// }
-
 var width = window.innerWidth;
 
-var documentHasScroll = function() {
-    return window.innerHeight <= document.body.offsetHeight;
-};
-
-
-
-
+/* Navbar scroll behavior */
 window.addEventListener('scroll', function (e) {
     var headernavbar = document.getElementById("headernavbar");
-    if (window.scrollY > headernavbar.offsetHeight){
-        var headerNavbarNav = document.querySelector('#headerNavbarNav')
-        headernavbar.classList.add('scrolled');
-    }else{
-        headernavbar.classList.remove('scrolled');
-    }
-    var headernavbar2 = document.getElementById("headernavbar2");
-    if(headernavbar2){
+    if (headernavbar) {
         if (window.scrollY > headernavbar.offsetHeight){
-            headernavbar2.classList.add('scrolled');
-        }else{
-            headernavbar2.classList.remove('scrolled');
+            headernavbar.classList.add('scrolled');
+        } else {
+            headernavbar.classList.remove('scrolled');
         }
     }
-
-
 });
-//
-// function animateTestimonial(){
-//     var el = $(".testimonial h3");
-//     if (isScrolledIntoView(el) && !viewed) {
-//         viewed = true;
-//         animateHeadingWords(el);
-//     }
-// }
-//
-// function animateSubscribe(){
-//     var el = $(".subscriber h1");
-//     if (isScrolledIntoView(el) && !viewed_subscribe) {
-//         viewed_subscribe = true;
-//         animateSubtitleWords(el, 0.8);
-//     }
-// }
-//
-// function animateSubscribe(){
-//     var el = $(".subscriber h1");
-//     if (isScrolledIntoView(el) && !viewed_subscribe) {
-//         viewed_subscribe = true;
-//         animateTextRowsSmooth();
-//     }
-// }
-
 
 function elementScrolled(elem) {
     var docViewTop = $(window).scrollTop();
@@ -72,25 +19,24 @@ function elementScrolled(elem) {
         var elemTop = $(elem).offset().top;
         return ((elemTop <= docViewBottom) && (elemTop >= docViewTop));
     }
-
 }
 
-    $(document).ready(function() {
-    // $("nav").removeClass("no-transition");
-	/* MENU */
-	$('.navbar-nav').attr('id', 'menu'); // please don't remove this line
-	$( '<div class="calendar-top"></div>' ).insertBefore( "#calendar" );
-	$( '<div class="card-profile-top"></div>' ).insertBefore( ".card.profile.card-profile" );
-	var divs = $(".card-profiles > div");
-	for(var i = 0; i < divs.length; i+=2) {
-		divs.slice(i, i+2).wrapAll( '<div class="col-xs" />');
-	}
+$(document).ready(function() {
+    /* MENU */
+    $('.navbar-nav').attr('id', 'menu');
+    $( '<div class="calendar-top"></div>' ).insertBefore( "#calendar" );
+    $( '<div class="card-profile-top"></div>' ).insertBefore( ".card.profile.card-profile" );
 
-	var headerNavbar = $('#headerNavbar');
-	var width100 = $('.width100');
-	var innerWidth = $('body').innerWidth();
-	headerNavbar.width(innerWidth);
-	width100.width(innerWidth);
+    var divs = $(".card-profiles > div");
+    for(var i = 0; i < divs.length; i+=2) {
+        divs.slice(i, i+2).wrapAll( '<div class="col-xs" />');
+    }
+
+    var headerNavbar = $('#headerNavbar');
+    var width100 = $('.width100');
+    var innerWidth = $('body').innerWidth();
+    headerNavbar.width(innerWidth);
+    width100.width(innerWidth);
 
     $('.nav-item').children("a").each(function(){
         if($(this).attr('data-toggle') == 'dropdown'){
@@ -98,7 +44,7 @@ function elementScrolled(elem) {
         }
     });
 
-    // Language dropdown: toggle open/close and outside click handling
+    /* Language dropdown */
     (function(){
         var $dropdown = $('#language-switcher.language-dropdown');
         if(!$dropdown.length){ return; }
@@ -136,7 +82,8 @@ function elementScrolled(elem) {
 
     $("nav").removeClass("no-transition");
 
-    if (width < 992) { // mobile
+    /* Mobile menu */
+    if (width < 992) {
         $('#menuToggle input[type="checkbox"]').change(function(){
             var checked = $(this).is(":checked");
             if(checked){
@@ -158,8 +105,8 @@ function elementScrolled(elem) {
         });
     }
 
-
-    $('body').on('click', '.work_packages .accordion-toggle, .messages .accordion-toggle, .pilots .accordion-toggle, .media_images .accordion-toggle', function () {
+    /* Accordion toggle */
+    $('body').on('click', '.accordion-toggle', function () {
         if ($(this).next(".accordion-content").is(':visible')) {
             $(this).next(".accordion-content").slideUp(300);
             $(this).children(".plusminus").html('<span class="plus">Read more</span>');
@@ -169,18 +116,7 @@ function elementScrolled(elem) {
         }
     });
 
-    $('.work_packages .accordion-content, .pilots .accordion-content, .messages .accordion-toggle').each(function( index, value ) {
-        $(value).find('a').attr( "onclick", "window.open(this.href, '_blank');" )
-    });
-
-    $('.nav-item').children("a").each(function(){
-        if($(this).attr('data-toggle') == 'dropdown'){
-            $(this).removeAttr('data-toggle')
-        }
-    });
-
-    $("nav").removeClass("no-transition");
-
+    /* Hash navigation */
     if (window.location.hash) {
         var link = window.location.hash;
         var anchorId = link.substr(link.indexOf("#") + 1);
@@ -188,7 +124,7 @@ function elementScrolled(elem) {
             $('html, body').animate({
                 scrollTop: $("#"+anchorId).offset().top - 150
             }, 500);
-        }else{
+        } else {
             $('.accordion-border').each(function(){
                 var title = $(this).find(".accordion-toggle .col-xs.start-xs").text().toUpperCase();
                 var toggler = $(this).find(".accordion-toggle");
@@ -202,8 +138,8 @@ function elementScrolled(elem) {
         }
     }
 
+    /* Dropdown anchor navigation */
     $('.dropdown a').click(function(event) {
-
         if (location.href.indexOf("#") != -1) {
             var link = $(this).attr('href');
             var anchorId = link.substr(link.indexOf("#") + 1);
@@ -211,10 +147,7 @@ function elementScrolled(elem) {
                 $('html, body').animate({
                     scrollTop: $("#"+anchorId).offset().top - 150
                 }, 500);
-            }else{
-                // event.preventDefault();
-                $("path[title='"+anchorId.toUpperCase()+"']").addClass('active_path');
-
+            } else {
                 $('.accordion-border').each(function(){
                     var title = $(this).find(".accordion-toggle .col-xs.start-xs").text().toUpperCase();
                     var toggler = $(this).find(".accordion-toggle");
@@ -228,261 +161,75 @@ function elementScrolled(elem) {
                 });
             }
         }
-
-
     });
 
-
-    $('.work_packages .accordion-content, .messages .accordion-toggle').each(function( index, value ) {
-        $(value).find('a').attr( "onclick", "window.open(this.href, '_blank');" )
-    });
-
-    // $('.text-ligth').each(function(){
+    /* Library author formatting */
     $('.library-item').each(function(){
-        // Select the element with the class .custom-field-text
         var element = $(this).find('.text-ligth');
-
-        // Check if the element exists to avoid errors
-        if (element) {
-            // Split the text content by commas
-
+        if (element.length) {
             var texts = $(element[0]).text().split(',');
-
-            // // Wrap each text piece with <b> tags and join them back into a string
-            var boldTexts = texts.map(text => `<span class="author_item">${text}</span>`).join('');
-            // // Update the HTML content of the original element
+            var boldTexts = texts.map(function(text) { return '<span class="author_item">' + text + '</span>'; }).join('');
             $(element[0]).html(boldTexts);
         }
     });
 
-    $('.events .tabs, .events-tabs-wrapper .tabs, .partners .tabs, .engagement .tabs').each(function(){
-        // For each set of tabs, we want to keep track of
-        // which tab is active and its associated content
+    /* Tabs (partners, etc.) */
+    $('.partners .tabs').each(function(){
         var $active, $content, $links = $(this).find('a');
         var speed = "fast";
         var activeTab = $(location.hash);
-        // If the location.hash matches one of the links, use that as the active tab.
-        // If no match is found, use the first link as the initial active tab.
-        $active = $($links.filter("[href=\'"+location.hash+"\']")[0] || $links[0]);
 
-        if($(this).parent().parent().hasClass('videos')){
-            $active.addClass('active');
-        }
-
-
-        if($(this).parent().parent().parent().parent().hasClass('events')){
-            $active.addClass('active');
-        }
-
-        if($(this).parent().hasClass('events-tabs-wrapper')){
-            $active.addClass('active');
-        }
+        $active = $($links.filter("[href='"+location.hash+"']")[0] || $links[0]);
 
         if($(this).parent().parent().hasClass('partners')){
             $active.addClass('active');
         }
 
-        if($(this).parent().parent().hasClass('engagement')){
-            $active.addClass('active');
-        }
-
-        // Remove active from other tabs on initial load
         $links.not($active).removeClass('active');
-
         $content = $($active[0].hash);
 
-        // Hide the remaining content
         $links.not($active).each(function () {
             $(this.hash).hide();
         });
 
         if(activeTab.length){
             $content.slideDown(speed);
-            //scroll to element
             $('html, body').animate({
-                scrollTop:  activeTab.offset().top - $('header').height()
+                scrollTop: activeTab.offset().top - $('header').height()
             }, speed);
         }
 
-        // Bind the click event handler
         $(this).find("a").click(function (e) {
             if($(this).hasClass('active')) {
-                $content.slideDown({
-                    scrollTop: $content.offset().top - $('header').height()
-                }, speed);
-                var screenSize = getScreenSize();
-                if (screenSize.width < 800) {
-                    // scroll to element
-                    $('html, body').animate({
-                        scrollTop: $content.offset().top - $('header').height() + 300  // mobile
-                    }, speed);
-                }else{
-                    //scroll to element icons top
-                    $('html, body').animate({
-                        scrollTop:  $content.offset().top - $('header').height() + 300
-                    }, speed);
-                }
                 e.preventDefault();
                 return false;
             }
-            // Make the old tab inactive.
             $active.removeClass('active');
             $content.hide();
 
-            // Update the variables with the new link and content
             $active = $(this);
             $content = $(this.hash);
 
             location.hash = $active[0].hash;
 
-            // Make the tab active.
             $active.addClass('active');
-            $content.slideDown({
-                scrollTop: $content.offset().top - $('header').height()
-            }, speed);
+            $content.slideDown(speed);
 
-            // Update view title for events page
-            var $viewTitle = $('.events-tabs-wrapper .view-title');
-            if ($viewTitle.length) {
-                if (this.hash === '#calendarView') {
-                    $viewTitle.text($viewTitle.data('calendar-text'));
-                } else {
-                    $viewTitle.text($viewTitle.data('list-text'));
-                }
-            }
-
-            // Re-render FullCalendar when calendar tab becomes visible
-            if (this.hash === '#calendarView') {
-                setTimeout(function() {
-                    var calendarEl = document.getElementById('calendar');
-                    if (calendarEl && calendarEl._calendar) {
-                        calendarEl._calendar.render();
-                        calendarEl._calendar.refetchEvents();
-                    }
-                }, 100);
-            }
-
-            // Prevent the anchor\'s default click action
             e.preventDefault();
         });
     });
 
-    // $( ".subtabs_events" ).tabs();
-    // openParentTab();
-
-    /* HOMEPAGE intro **/
-    $('.video-carousel').slick({
-        autoplaySpeed: 5000,
-        draggable: true,
-        pauseOnHover: true,
-        infinite: true,
-        speed: 1000,
-        autoplay: true,
-        arrows: true,
-        fade: true,
-        lazyLoad: 'ondemand',
-        dots: false,
-        prevArrow: '<div class="custom-arrow custom-prev"><img src="/themes/pensoft-kiel/assets/images/arrow-prev.svg" alt="Previous"></div>',
-        nextArrow: '<div class="custom-arrow custom-next"><img src="/themes/pensoft-kiel/assets/images/arrow-next.svg" alt="Next"></div>',
+    onHashChange();
+    $(window).on("hashchange", function() {
+        onHashChange();
     });
 
-
-    // $('.towns_uppercase_labels').slick({
-    //     dots: false,
-    //     infinite: true,
-    //     speed: 1000,
-    //     autoplay: true,
-    //     autoplaySpeed: 3000,
-    //     slidesToShow: 3,
-    //     slidesToScroll: 1,
-    //     centerMode: true,
-    //     arrows: false
-    // });
-
-
-	onHashChange();
-	$(window).on("hashchange", function() {
-		onHashChange();
-	});
-
-	$('.nav.nav-pills').removeAttr('id');
-
-	var count = $("h1").text().length;
-
-	$('.see_all_partners_link').hide();
-
-    $(".timeline_container.left .blue_line").width(function() {
-        return (innerWidth - $('.container').width())/2;
-    });
-
-
-    var active_forms = '';
-    var active_docs = '';
-    if(window.location.pathname == '/internal-repository/forms'){
-        active_forms = 'active_item';
-    }
-    if(window.location.pathname == '/internal-repository/living-documents'){
-        active_docs = 'active_item';
-    }
-
-    $('<div class="col-xs-12">\n' +
-        '<div class="sidebar_menu_item ' + active_forms + ' ">\n' +
-        '<a href="/internal-repository/forms" title="Reporting forms">\n' +
-        '<i></i> <div class="card-header">Reporting forms</div>\n' +
-        '</a>\n' +
-        '</div>\n' +
-        '</div>').insertAfter($('.sidebar_menu_list .col-xs-12:last-child').last());
-
-    $('<div class="col-xs-12">\n' +
-        '<div class="sidebar_menu_item ' + active_docs + ' ">\n' +
-        '<a href="/internal-repository/living-documents" title="Living documents">\n' +
-        '<i></i> <div class="card-header">Living documents</div>\n' +
-        '</a>\n' +
-        '</div>\n' +
-        '</div>').insertAfter($('.sidebar_menu_list .col-xs-12:last-child').last());
-
-
-    $('<small>To download individual image please right click</small>').insertAfter($('.all_images_container'));
+    $('.nav.nav-pills').removeAttr('id');
+    $('.see_all_partners_link').hide();
 
     $('<div class="mark"></div>').insertAfter($('.group-holder input'));
 
-    $('.dorsal').click(function () {
-        var link = $(this);
-        link.parent().parent().find('.toogle-contact-paragraphs').slideToggle('slow', function() {
-            if ($(this).is(':visible')) {
-                link.text('Read less');
-            } else {
-                link.text('Read more');
-            }
-        });
-
-    });
-
-    if( width < 1024 ){
-        $('.projects_services .key_1').click(function(){
-            $(this).classList.remove("ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons ui-state-hover ui-accordion-header-active ui-state-active");
-        });
-        $( window ).on( "load", function() {
-          $(".projects_services .key_1").each(function(k, v) {
-                $(this).attr("style", "display:block!important;");
-            });
-        } );
-    }
-
-    if(width >= 1024){
-        $('.work_packages .key_0, .work_packages .key_3, .work_packages .key_6, .work_packages .key_9, .work_packages .key_12, .work_packages .key_15').wrapAll('<div class="col-md-4 col-xs-12" />');
-        $('.work_packages .key_1, .work_packages .key_4, .work_packages .key_7, .work_packages .key_10, .work_packages .key_13, .work_packages .key_16').wrapAll('<div class="col-md-4 col-xs-12" />');
-        $('.work_packages .key_2, .work_packages .key_5, .work_packages .key_8, .work_packages .key_11, .work_packages .key_14, .work_packages .key_17').wrapAll('<div class="col-md-4 col-xs-12" />');
-
-
-
-        // $('.advisory_board .key_0, .advisory_board .key_2, .advisory_board .key_4, .advisory_board .key_6, .advisory_board .key_8, .advisory_board .key_10, .advisory_board .key_12, .advisory_board .key_14, .advisory_board .key_16, .advisory_board .key_18, .advisory_board .key_20, .advisory_board .key_22').wrapAll('<div class="col-md-6 col-xs-12" />');
-        // $('.advisory_board .key_1, .advisory_board .key_3, .advisory_board .key_5, .advisory_board .key_7, .advisory_board .key_9, .advisory_board .key_11, .advisory_board .key_13, .advisory_board .key_15, .advisory_board .key_17, .advisory_board .key_19, .advisory_board .key_21, .advisory_board .key_23').wrapAll('<div class="col-md-6 col-xs-12" />');
-
-    }
-
-
-
+    /* Keyboard navigation */
     $('body').on("keyup", function(e) {
         var code = e.which;
         if (code == 39) {
@@ -494,163 +241,79 @@ function elementScrolled(elem) {
         }
     });
 
+    /* LANGUAGE SWITCH - custom select */
+    document.querySelectorAll('select.locale-select').forEach(function(select) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'custom-select';
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.appendChild(select);
 
+        var selected = select.options[select.selectedIndex];
 
-        /* LANGUAGE SWITCH */
+        var trigger = document.createElement('div');
+        var selectedCode = selected.value.split('/')[1] || selected.value.split('/')[0];
+        var regex = new RegExp('^(\/' + selectedCode + ')(\/|$)');
+        var hash = window.location.hash;
 
-        document.querySelectorAll('select.locale-select').forEach(function(select) {
-            var wrapper = document.createElement('div');
-            wrapper.className = 'custom-select';
-            select.parentNode.insertBefore(wrapper, select);
-            wrapper.appendChild(select);
+        trigger.className = 'custom-select__trigger';
+        trigger.innerHTML = '<span class="flag-icon flag-icon-' + selectedCode + '"></span> <span>' + selectedCode + '</span>';
+        wrapper.appendChild(trigger);
 
-            var selected = select.options[select.selectedIndex];
+        var list = document.createElement('div');
+        list.className = 'custom-select__options';
 
-            var trigger = document.createElement('div');
+        for (var i = 0; i < select.options.length; i++) {
+            var opt = select.options[i];
+            var localeCode = opt.value.split('/')[1] || opt.value.split('/')[0];
+            var newPath = window.location.pathname.replace(regex, '/' + localeCode + '/');
 
-            var selectedCode = selected.value.split('/')[1] || selected.value.split('/')[0];
-
-            var regex = new RegExp('^(\/' + selectedCode + ')(\/|$)');
-            var hash = window.location.hash;
-
-            trigger.className = 'custom-select__trigger';
-            trigger.innerHTML = '<span class="flag-icon flag-icon-' + selectedCode + '"></span> <span>' + selectedCode + '</span>';
-            wrapper.appendChild(trigger);
-
-            var list = document.createElement('div');
-            list.className = 'custom-select__options';
-
-            for (var i = 0; i < select.options.length; i++) {
-                var opt = select.options[i];
-
-                var localeCode = opt.value.split('/')[1] || opt.value.split('/')[0];
-
-                var newPath = window.location.pathname.replace(regex, '/' + localeCode + '/');
-
-                if (!window.location.pathname.match(regex)) {
-                    newPath = '/' + localeCode + window.location.pathname;
-                }
-
-                newPath = newPath.replace(/\/\/+/g, '/');
-
-                var item = document.createElement('div');
-                item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
-                // item.dataset.value = opt.value;
-                item.dataset.value = newPath + hash;
-
-
-
-                // Extract locale code from option value for display
-
-                item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text ;
-                list.appendChild(item);
+            if (!window.location.pathname.match(regex)) {
+                newPath = '/' + localeCode + window.location.pathname;
             }
-            wrapper.appendChild(list);
 
-            trigger.onclick = function(e) {
-                e.stopPropagation();
-                document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
-                    if (el !== wrapper) el.classList.remove('is-open');
-                });
-                wrapper.classList.toggle('is-open');
-            };
+            newPath = newPath.replace(/\/\/+/g, '/');
 
-            list.onclick = function(e) {
-                var option = e.target.closest('.custom-select__option');
-                if (option) window.location.assign(option.dataset.value);
-            };
-        });
+            var item = document.createElement('div');
+            item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
+            item.dataset.value = newPath + hash;
+            item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text;
+            list.appendChild(item);
+        }
+        wrapper.appendChild(list);
 
+        trigger.onclick = function(e) {
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
+                if (el !== wrapper) el.classList.remove('is-open');
+            });
+            wrapper.classList.toggle('is-open');
+        };
 
-    // /* LANGUAGE SWITCH */
-    //
-    // document.querySelectorAll('select.locale-select').forEach(function(select) {
-    //     var wrapper = document.createElement('div');
-    //     wrapper.className = 'custom-select';
-    //     select.parentNode.insertBefore(wrapper, select);
-    //     wrapper.appendChild(select);
-    //
-    //     var selected = select.options[select.selectedIndex];
-    //
-    //     var trigger = document.createElement('div');
-    //
-    //     var selectedCode = selected.value.split('/')[1] || selected.value.split('/')[0];
-    //
-    //     trigger.className = 'custom-select__trigger';
-    //     trigger.innerHTML = '<span class="flag-icon flag-icon-' + selectedCode + '"></span> <span>' + selectedCode + '</span>';
-    //     wrapper.appendChild(trigger);
-    //
-    //     var list = document.createElement('div');
-    //     list.className = 'custom-select__options';
-    //
-    //     for (var i = 0; i < select.options.length; i++) {
-    //         var opt = select.options[i];
-    //         var item = document.createElement('div');
-    //         item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
-    //         item.dataset.value = opt.value;
-    //
-    //         // Extract locale code from option value for display
-    //         var localeCode = opt.value.split('/')[1] || opt.value.split('/')[0];
-    //         item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text ;
-    //         list.appendChild(item);
-    //     }
-    //     wrapper.appendChild(list);
-    //
-    //     trigger.onclick = function(e) {
-    //         e.stopPropagation();
-    //         document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
-    //             if (el !== wrapper) el.classList.remove('is-open');
-    //         });
-    //         wrapper.classList.toggle('is-open');
-    //     };
-    //
-    //     list.onclick = function(e) {
-    //         var option = e.target.closest('.custom-select__option');
-    //         if (option) window.location.assign(option.dataset.value);
-    //     };
-    // });
+        list.onclick = function(e) {
+            var option = e.target.closest('.custom-select__option');
+            if (option) window.location.assign(option.dataset.value);
+        };
+    });
 
     document.addEventListener('click', function() {
         document.querySelectorAll('.custom-select.is-open').forEach(function(el) {
             el.classList.remove('is-open');
         });
     });
-
-
 });
 
-
 function expandBiography(el){
-    $el = $(el) // read-more link
-    $body  = $el.parent().parent().parent().find('.body');
+    var $el = $(el);
+    var $body = $el.parent().parent().parent().find('.body');
     if($body.is(':visible')){
         $body.slideUp(300);
         $el.addClass('expanded');
-    }else{
+    } else {
         $body.slideDown(300);
         $el.removeClass('expanded');
     }
 }
 
-function animateNumbers() {
-    if (isScrolledIntoView($(".numbers2")) && !viewed) {
-        viewed = true;
-        $('.number_item_number h1 .count').each(function () {
-            var size = $(this).text().split(".")[1] ? $(this).text().split(".")[1].length : 0;
-            $(this).prop('Counter',0).animate({
-                Counter: $(this).text()
-            }, {
-                duration: 1800,
-                easing: 'swing',
-                step: function (now) {
-                    $(this).text(parseFloat(now).toFixed(size));
-                }
-            });
-        });
-    }
-}
-
-// Helper function to check if element is in view
 function isScrolledIntoView(elem) {
     var docViewTop = $(window).scrollTop();
     var docViewBottom = docViewTop + $(window).height();
@@ -659,371 +322,21 @@ function isScrolledIntoView(elem) {
         var elemTop = $(elem).offset().top;
         var elemBottom = elemTop + $(elem).height();
         return ((elemBottom/2 <= docViewBottom) && (elemTop >= docViewTop));
-        // return (elemBottom <= docViewBottom);
     }
-    return;
-}
-
-function openModal() {
-    document.getElementById("imagesModal").style.display = "block";
-}
-
-function closeModal() {
-    document.getElementById("imagesModal").style.display = "none";
-}
-
-// var slideIndex = 1;
-// showSlides(slideIndex);
-
-function plusSlides(n) {
-    showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-    showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-    var i;
-    var slides = document.getElementsByClassName("slides");
-    // var dots = document.getElementsByClassName("demo");
-    // var captionText = document.getElementById("caption");
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-    }
-    // for (i = 0; i < dots.length; i++) {
-    //     dots[i].className = dots[i].className.replace(" active", "");
-    // }
-    slides[slideIndex-1].style.display = "block";
-    // dots[slideIndex-1].className += " active";
-    // captionText.innerHTML = dots[slideIndex-1].alt;
-}
-
-
-
-
-
-function handlePilotsSVGMapMouseMove(event) {
-    var title = $(event.target).parent().attr('title');
-    var tooltip = document.getElementById("tooltip");
-
-    switch (title) {
-        case 'Güímar Valley':
-        case 'Guadalquivir Productive Plains':
-        case 'Baden-Württemberg Living Lab':
-        case 'Southern Małopolska Upland & the Vistula River Valley Living Lab':
-        case 'South-Limburg, Geuldal Valley Living Lab':
-        case 'Kent Apple Orchard Living Lab':
-        case 'South Scania':
-        case 'TODO':
-            break;
-        default:
-            return tooltip.classList.remove("active");
-    }
-
-    var x = event.clientX;
-    var y = event.clientY;
-
-    tooltip.style.left = (x + 20) + "px";
-    tooltip.style.top = (y - 20) + "px";
-
-    tooltip.innerHTML = title;
-    tooltip.classList.add("active");
-
-}
-
-function onPilots(pTitle) {
-    // $("path").removeClass('active_path');
-    var tooltip = document.getElementById("tooltip");
-    tooltip.classList.remove("active");
-    // $("g[title='"+pTitle+"']").addClass('active_path');
-
-    $('.pilots .accordion-border').each(function(){
-        var title = $(this).find(".accordion-toggle .title_container").text();
-        var toggler = $(this).find(".accordion-toggle");
-        toggler.next(".accordion-content").hide();
-
-
-        if(title.indexOf(pTitle) >= 0 && !toggler.next(".accordion-content").is(':visible')){
-            toggler.trigger( "click" );
-            $("html, body").animate({ scrollTop: toggler.offset().top - 190 }, 500);
-        }
-    });
-}
-
-
-function openParentTab() {
-    locationHash = location.hash.substring( 1 );
-    // Check if we have an location Hash
-    if (locationHash) {
-        // Check if the location hash exsist.
-        var hash = jQuery('#'+locationHash);
-        if (hash.length) {
-            // Check of the location Hash is inside a tab.
-            if (hash.closest(".tabContent").length) {
-                // Grab the index number of the parent tab so we can activate it
-                var tabNumber = hash.closest(".tabContent").index();
-                jQuery(".tabs.fix").tabs({ active: tabNumber });
-                // Not need but this puts the focus on the selected hash
-                hash.get(0).scrollIntoView();
-                setTimeout(function() {
-                    hash.get(0).scrollIntoView();
-                }, 1000);
-            }
-        }
-    }
+    return false;
 }
 
 function onHashChange(){
-	$("path").removeClass('active_path');
-	$(".accordion-content").hide();
-	var caseStudiesHashTitle = location.hash;
-
-	if(caseStudiesHashTitle){
-		var caseStudiesTitle = caseStudiesHashTitle.substring(1, caseStudiesHashTitle.length);
-		$("path[title='"+caseStudiesTitle.toUpperCase()+"']").addClass('active_path');
-
-
-	}
-}
-
-function encodeURIObject(data){
-    return Object.keys(data).map(function (i) {
-        return encodeURIComponent(i) + '=' + encodeURIComponent(data[i])
-    }).join('&');
-}
-
-function appendProfile() {
-    $(document).on('profile', function (e) {
-        var headerNavbarNav = $('#headerNavbarNav');
-        var li = '<li class="nav-item"><a href="/profile" target = "_self">Profile</a></li >';
-        headerNavbarNav.find('>ul').append(li);
-    });
-}
-function appendSignIn(){
-    $(document).on('signin', function (e) {
-        var headerNavbarLogin = $('#headerNavbarNav');
-        var li = '<li class="nav-item sign-in"><a href="/login" target = "_self">Log in</a></li >';
-		headerNavbarLogin.find('>ul').append(li);
-		var menu = $('#menuToggle');
-		menu.find('>ul').append(li);
-    });
-}
-
-function appendSignOut() {
-    $(document).on('signout', function (e) {
-        var headerNavbarNav = $('#headerNavbarNav');
-        var li = '<li class="nav-item  sign-in"><a data-request="onLogout" data-request-data="redirect: \'/\'">Log out</a></li >';
-        headerNavbarNav.find('>ul').append(li);
-		var menu = $('#menuToggle');
-		menu.find('>ul').append(li);
-    });
-}
-function appendSignInFooter(){
-    $(document).on('signin', function (e) {
-        var footerNavbarLogin = $('#footerNavbarNav');
-        var li = '<li class="item sign-in"><a href="/login" target = "_self">Log in</a></li >';
-        footerNavbarLogin.find('>ul').append(li);
-		// var menu = $('#menuToggle');
-		// menu.find('>ul').append(li);
-    });
-}
-
-function appendSignOutFooter() {
-    $(document).on('signout', function (e) {
-        var footerNavbarLogin = $('#footerNavbarNav');
-        var li = '<li class="item sign-in"><a data-request="onLogout" data-request-data="redirect: \'/\'">Log out</a></li >';
-        footerNavbarLogin.find('>ul').append(li);
-		// var menu = $('#menuToggle');
-		// menu.find('>ul').append(li);
-    });
-}
-
-
-function redirectAndRefresh(url){
-	$(".tabs a").each(function() {
-		this.href = window.location.hash;
-	});
-	window.open(url, '_blank');
-	location.reload();
-}
-
-function isBreakpointLarge() {
-    return window.innerWidth <= 991;
-}
-
-function showSearchForm(){
-	$('#layout-header').toggleClass('full-width');
-	$('#search').toggle();
-	$('.navbar a.p-search').css('visibility', 'hidden');
-	// $('#menu li').hide();
-	// $('nav a:not(.navbar-brand)').hide();
-}
-
-function hideSearchForm(){
-	$('#layout-header').toggleClass('full-width');
-	$('#search').hide();
-    $('.navbar a.p-search').css('visibility', 'visible');
-	// $('#menu li').show();
-    // $('nav a').show();
-}
-
-function requestFormLibrary() {
-	$('#mylibraryForm').on('click', 'a', function () {
-		var $form = $(this).closest('form');
-		$form.request();
-	})
-}
-
-function requestFormPartners() {
-	$('#myPartnersForm').on('click', 'a', function () {
-		var $form = $(this).closest('form');
-		$form.request();
-	})
-}
-
-
-
-function scrollDown(){
-	var element = $('#layout-content');
-	$("html, body").animate({ scrollTop: element.offset().top - 190 }, 500);
-}
-
-
-function hideMe(elem){
-    $(elem).parent().hide();
-}
-
-function fetchMails(i, searchStr){
-    // $('.group_mailing_list').hide();
-    if($('.group_mailing_list_'+i).is(":visible")){
-        $('.group_mailing_list_'+i).hide();
-    }else{
-        //groups
-        $.request('onFetchMailingList', {
-            update: { 'mailing_list': '#mailing_list_tooltip_content_'+i,
-            },
-            data: {
-                search_str: searchStr
-            },
-        }).then(response => {
-            $('.group_mailing_list_'+i).html('<a class="close-btn" onclick="hideMe(this)">X</a>' + response.mailing_list);
-        });
-        $('.group_mailing_list').hide();
-        $('.group_mailing_list_'+i).show();
-    }
-
-}
-
-
-function fetchSingleMail(i, searchStr){
-    if($('.single_mailing_list_'+i).is(":visible")){
-        $('.single_mailing_list_'+i).hide();
-    }else{
-        //groups
-        $.request('onFetchSingleMail', {
-            update: { 'individual_email': '#individual_tooltip_content_'+i,
-            },
-            data: {
-                search_str: searchStr
-            },
-        }).then(response => {
-            $('.single_mailing_list_'+i).html('<a class="close-btn" onclick="hideMe(this)">X</a>' + response.individual_email);
-        });
-        $('.single_mailing_list').hide();
-        $('.single_mailing_list_'+i).show();
+    $(".accordion-content").hide();
+    var caseStudiesHashTitle = location.hash;
+    if(caseStudiesHashTitle){
+        var caseStudiesTitle = caseStudiesHashTitle.substring(1, caseStudiesHashTitle.length);
     }
 }
-
-function initMailingTooltip(){
-    var searchStr = '';
-    $('.group-holder').eq(0).find('.inputWithTooltip span').each(function(i, obj) {
-        searchStr = $.trim($(obj).text());
-        $(this).parent().css('display', 'inline-grid');
-        $('<img src="/storage/app/media/CMS_icons_groups.svg" style="max-width: 16px; margin-left: 5px;" class="icon mailing_list_tooltip_'+i+'" onclick="fetchMails('+i+', \'' + searchStr + '\')" />').insertAfter($(this).parent());
-        $('<div class="group_mailing_list group_mailing_list_' + i + '" style="display: none;"></div>').insertAfter($(this).parent());
-
-
-    });
-    $('.group-holder').eq(1).find('.inputWithTooltip span').each(function(i, obj) {
-        searchStr = $.trim($(obj).text());
-        $('<img src="/storage/app/media/CMS_icons_individuals.svg" style="max-width: 16px; margin-left: 5px;" class="icon mailing_list_tooltip_individuals_'+i+'" onclick="fetchSingleMail('+i+', \'' + searchStr + '\')" />').insertAfter($(this).parent());
-        $(this).parent().css('display', 'inline-grid');
-        $('<div class="single_mailing_list single_mailing_list_' + i + '" style="display: none;"></div>').insertAfter($(this).parent());
-    });
-
-    $('.group-holder').eq(0).prepend( "<p style='margin-left: 10px; width: 100%;'>Prior to sending group emails, please make sure that all individuals you want to contact have been included in the respective group by clicking on the group icon.</p><p></p>" );
-    $('.group-holder').eq(1).prepend( "<p style='margin-left: 10px; width: 100%;'>To see each person’s email, click on the account icon.</p><p></p>" );
-
-}
-
 
 function getScreenSize() {
-    var myHeight = 0;
-    var myWidth = 0;
-    if (window.innerWidth && window.innerHeight) {
-        // Netscape & Mozilla
-        myHeight = window.innerHeight;
-        myWidth = window.innerWidth;
-    } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-        // IE > 6
-        myHeight = document.documentElement.clientHeight;
-        myWidth = document.documentElement.clientWidth;
-    } else if (document.body.offsetWidth && document.body.offsetHeight) {
-        // IE = 6
-        myHeight = document.body.offsetHeight;
-        myWidth = document.body.offsetWidth;
-    } else if (document.body.clientWidth && document.body.clientHeight) {
-        // IE < 6
-        myHeight = document.body.clientHeight;
-        myWidth = document.body.clientWidth;
-    }
-
-    return {'width': myWidth, 'height': myHeight};
+    return {
+        width: window.innerWidth || document.documentElement.clientWidth,
+        height: window.innerHeight || document.documentElement.clientHeight
+    };
 }
-
-function init() {
-    window.addEventListener('resize', function () {
-        if (isBreakpointLarge()) {
-            $('#card-carousel').slick('unslick');
-        } else {
-            if (typeof cardCarousel === 'function') {
-                cardCarousel({
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    autoplay: true,
-                    autoplaySpeed: 6000,
-                    prevArrow: '<i class="slick-prev"/>',
-                    nextArrow: '<i class="slick-next"/>',
-                });
-             }
-        }
-        // keepFooter(documentHasScroll());
-
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        if (!isBreakpointLarge()) {
-            if (typeof cardCarousel === 'function') {
-                cardCarousel({
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    autoplay: true,
-                    autoplaySpeed: 6000,
-                    prevArrow: '<i class="slick-prev"/>',
-                    nextArrow: '<i class="slick-next"/>',
-                });
-            }
-        }
-		// appendSearchAndSocialMedia()
-		requestFormLibrary()
-		// requestFormPartners()
-        // keepFooter(documentHasScroll());
-
-    });
-    appendSignInFooter()
-    appendSignOutFooter()
-}
-
-init()

@@ -1,19 +1,15 @@
-{
-    "name": "october/pensoft-kiel-theme",
+    {
+    "name": "october/pensoft-renatgro-theme",
     "type": "october-theme",
-    "description": "Pensoft Kiel October CMS theme",
-    "keywords": ["october", "cms", "kiel", "theme"],
+    "description": "Pensoft Renatgro October CMS theme",
+    "keywords": ["october", "cms", "renatgro", "theme"],
     "authors": [
         {
-            "name": "Kremena Kaleva",
-            "email": "k.kaleva@pensoft.net",
+            "name": "Pensoft",
+            "email": "preprint@pensoft.net",
             "role": "Dev"
         }
     ],
-    "require": {
-        "php": ">=5.4",
-        "composer/installers": "~1.0"
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"

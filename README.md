@@ -1,1 +1,1 @@
-# october_theme_kiel
+# october_theme_renatgro

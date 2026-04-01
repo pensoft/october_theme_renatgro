@@ -27,7 +27,11 @@ theme = "light-bottom"
         <div class="row between-md around-xs middle-xs logo_and_nav">
             <div class="col-md-1 col-xs-12 start-md center-xs">
                 <div class="footer-logo-container">
-                    <a href="{{'home'|page}}"><img src="{{ 'SCTT logo_White.svg'|media }}" alt=""></a>
+                    <a href="{{'home'|page}}">
+                        {% if this.theme.site_logo %}
+                        <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
+                        {% endif %}
+                    </a>
                 </div>
             </div>
             <div class="col-md-5 col-xs-12"></div>
@@ -40,36 +44,37 @@ theme = "light-bottom"
         <div class="row between-md around-xs">
             <div class="col-md-2 col-xs-12 subscribe start-md center-xs">
                 <div class="heading-text">{{ 'Subscribe to our newsletter'|_ }}</div>
-<!--                <a href="{{this.theme.subscribe}}" target="_blank" class="">{{ 'Subscribe'|_ }}</a>-->
-                <a href="/coming-soon" target="_blank" class="">{{ 'Subscribe'|_ }}</a>
+                {% if this.theme.subscribe %}
+                <a href="{{this.theme.subscribe}}" target="_blank" class="">{{ 'Subscribe'|_ }}</a>
+                {% endif %}
             </div>
             <div class="col-md-2 col-xs-12 follow start-md center-xs">
-                <div class="heading-text">{{ 'Follow Science Comes To Town'|_ }}</div>
+                <div class="heading-text">{{ 'Follow us'|_ }}</div>
                 <div class="social_media">
                     <div>
                         {% if this.theme.twitter_url %}
-                        <a href="{{this.theme.twitter_url}}" target="_blank" class="pr p-twitter normal "></a>
+                        <a href="{{this.theme.twitter_url}}" target="_blank" rel="noopener noreferrer" class="pr p-twitter normal "></a>
                         {% endif %}
                         {% if this.theme.facebook_url %}
-                        <a href="{{this.theme.facebook_url}}" target="_blank" class="pr p-facebook normal "></a>
+                        <a href="{{this.theme.facebook_url}}" target="_blank" rel="noopener noreferrer" class="pr p-facebook normal "></a>
                         {% endif %}
                         {% if this.theme.linkedin_url %}
-                        <a href="{{this.theme.linkedin_url}}" target="_blank" class="pr p-linkedin normal "></a>
+                        <a href="{{this.theme.linkedin_url}}" target="_blank" rel="noopener noreferrer" class="pr p-linkedin normal "></a>
                         {% endif %}
                         {% if this.theme.youtube_url %}
-                        <a href="{{this.theme.youtube_url}}" target="_blank" class="pr p-youtube normal "></a>
+                        <a href="{{this.theme.youtube_url}}" target="_blank" rel="noopener noreferrer" class="pr p-youtube normal "></a>
                         {% endif %}
                         {% if this.theme.instagram_url %}
-                        <a href="{{this.theme.instagram_url}}" target="_blank" class="pr p-instagram normal "></a>
+                        <a href="{{this.theme.instagram_url}}" target="_blank" rel="noopener noreferrer" class="pr p-instagram normal "></a>
                         {% endif %}
                         {% if this.theme.researchgate_url %}
-                        <a href="{{this.theme.researchgate_url}}" target="_blank" class="pr p-researchgate normal "></a>
+                        <a href="{{this.theme.researchgate_url}}" target="_blank" rel="noopener noreferrer" class="pr p-researchgate normal "></a>
                         {% endif %}
                         {% if this.theme.bluesky_url %}
-                        <a href="{{this.theme.bluesky_url}}" target="_blank" class="pr p-secondary p-bluesky normal "></a>
+                        <a href="{{this.theme.bluesky_url}}" target="_blank" rel="noopener noreferrer" class="pr p-secondary p-bluesky normal "></a>
                         {% endif %}
                         {% if this.theme.threads_url %}
-                        <a href="{{this.theme.threads_url}}" target="_blank" class="pr p-secondary p-threads normal "></a>
+                        <a href="{{this.theme.threads_url}}" target="_blank" rel="noopener noreferrer" class="pr p-secondary p-threads normal "></a>
                         {% endif %}
                     </div>
                 </div>
@@ -83,15 +88,11 @@ theme = "light-bottom"
                     {% component 'disclaimer' %}
                 </div>
             </div>
-<!--            <div class="col-md-3 col-xs-12 era">-->
-<!--                <img src="{{'ERA_we-are.jpg'|media}}">-->
-<!--            </div>-->
         </div>
 
         <div class="row between-xs privacy-row">
             <div class="privacy-link start-xs">
-                <a href="/coming-soon">{{ 'Privacy Policy'|_ }}</a>
-                <a href="/legal-notice">{{ 'Legal notice'|_ }}</a>
+                <a href="/privacy-policy">{{ 'Privacy Policy'|_ }}</a>
             </div>
             <div class="powered-by end-md start-xs">
                 <span>{{ 'Designed and powered by'|_ }} <a href="https://pensoft.net/" target="_blank">
@@ -100,14 +101,5 @@ theme = "light-bottom"
             </div>
         </div>
 
-
     </div>
 </div>
-
-
-{% if user %}
-<script>$(document).trigger('profile')</script>
-<script>$(document).trigger('signout')</script>
-{% else %}
-<script>$(document).trigger('signin')</script>
-{% endif %}
