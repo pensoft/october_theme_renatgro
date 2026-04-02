@@ -1,7 +1,3 @@
-[localePicker]
-forceUrl = 0
-==
-
 <nav id="headernavbar" role="navigation" aria-label="Primary">
     <a href="{{'home'|page}}" class="navbar-brand" aria-label="Home" title="Home">
         {% if this.theme.site_logo %}
@@ -11,18 +7,14 @@ forceUrl = 0
 
     <div class="navbar-right">
         <div class="lang-flags">
-            <a href="{{ this.page.url|localeUrl('es') }}"
-               class="flag-circle {{ activeLocale == 'es' ? 'is-active' }}"
-               title="Español"
-               data-request="onSwitchLocale"
-               data-request-data="locale: 'es'">
+            <a href="{{ esUrl }}"
+               class="flag-circle {{ currentLang == 'es' ? 'is-active' }}"
+               title="Español">
                 <span class="flag-icon flag-icon-es"></span>
             </a>
-            <a href="{{ this.page.url|localeUrl('en') }}"
-               class="flag-circle {{ activeLocale == 'en' ? 'is-active' }}"
-               title="English"
-               data-request="onSwitchLocale"
-               data-request-data="locale: 'en'">
+            <a href="{{ enUrl }}"
+               class="flag-circle {{ currentLang == 'en' ? 'is-active' }}"
+               title="English">
                 <span class="flag-icon flag-icon-gb"></span>
             </a>
         </div>

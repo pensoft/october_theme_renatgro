@@ -60,7 +60,11 @@ form:
             site_domain:
                 label: Site domain
                 comment: Used in Mailing plugin, mailing group domain
-                default: 'renatgro.eu'
+                default: 'renatgro.pensoft.com'
+            site_domain_es:
+                label: Spanish domain
+                comment: Domain for Spanish locale (alias domain)
+                default: 'renatgro.pensoft.es'
             tag_line:
                 label: Tagline
                 default: Ecological restoration in Donana

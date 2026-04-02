@@ -9,17 +9,33 @@ security = "all"
 includePageMeta = 1
 escape = 1
 
-[localePicker]
-forceUrl = 0
-
 ==
 <?php
 function onStart() {
     $translator = \RainLab\Translate\Classes\Translator::instance();
 
-    $currentLang = $translator->getLocale();
+    // Detect locale from domain
+    $host = request()->getHost();
+    $esDomain = $this->theme->site_domain_es ?? 'renatgro.pensoft.es';
 
-    $this['currentLang'] = $currentLang;
+    if ($host === $esDomain || str_ends_with($host, '.es')) {
+        $locale = 'es';
+    } else {
+        $locale = 'en';
+    }
+
+    $translator->setLocale($locale);
+    app()->setLocale($locale);
+
+    $this['currentLang'] = $locale;
+
+    // Build cross-domain URLs for flag switcher and hreflang
+    $enDomain = $this->theme->site_domain ?? 'renatgro.pensoft.com';
+    $scheme = request()->getScheme();
+    $path = request()->getRequestUri();
+
+    $this['enUrl'] = $scheme . '://' . $enDomain . $path;
+    $this['esUrl'] = $scheme . '://' . $esDomain . $path;
 }
 ?>
 ==
@@ -52,6 +68,10 @@ function onStart() {
     {% else %}
         {% component 'metaList' %}
     {% endif %}
+
+    <link rel="alternate" hreflang="en" href="{{ enUrl }}" />
+    <link rel="alternate" hreflang="es" href="{{ esUrl }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ enUrl }}" />
 
     {% framework extras %}
     {% styles %}
