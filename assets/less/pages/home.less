@@ -298,7 +298,7 @@
         h2 { margin-bottom: 20px; }
     }
 
-    // Desktop diagram: SVG + dots in .diagram-core (270×345), labels outside
+    // Desktop diagram: Figma SVG (270×345) centered, CSS dots at path endpoints, labels outside
     .objective-diagram {
         position: relative;
         height: 400px;
@@ -332,13 +332,12 @@
                 box-shadow: 0 0 0 8px rgba(132, 175, 49, 0.2);
             }
         }
-        // Dots at SVG path endpoints
-        // SVG path: M(0.5,0.5) → right → down to (269.5,170.5) → left → down to (0.5,215.5) → right → (269.5,344)
-        // Dot is 30×30, center on the path point (offset -15px)
-        .dot-tl { left: -15px;  top: -15px; }        // path start: (0.5, 0.5)
-        .dot-tr { left: 254px;  top: 155px; }        // right mid:  (269.5, 170.5)
-        .dot-bl { left: -15px;  top: 200px; }        // left lower: (0.5, 215.5)
-        .dot-br { left: 254px;  top: 329px; }        // path end:   (269.5, 344)
+        // Dots centered on SVG path endpoints (30×30, offset -15px from center)
+        // Path: start (0.5, 0.5) → (269.5, 170.5) → (0.5, 215.5) → (269.5, 344)
+        .dot-tl { left: -15px;  top: -15px; }        // (0.5, 0.5) — Sustainable fertigation
+        .dot-tr { left: 254px;  top: 70px; }        // (269.5, 170.5) — Farm renaturalisation
+        .dot-bl { left: -15px;  top: 243px; }        // (0.5, 215.5) — Monitoring and digital innovation
+        .dot-br { left: 254px;  top: 329px; }        // (269.5, 344) — Target crops
 
         .node-label {
             position: absolute;
@@ -354,10 +353,10 @@
             .breakpoint-laptop-down({ font-size: 28px; });
         }
         // Labels aligned vertically with their dot's center
-        .label-tl { right: ~'calc(50% + 155px)'; top: -8px;   width: 260px; text-align: right; }
-        .label-tr { left: ~'calc(50% + 155px)';  top: 163px;  width: 271px; text-align: left; }
+        .label-tl { right: ~'calc(50% + 155px)'; top: -40px;   width: 260px; text-align: right; }
+        .label-tr { left: ~'calc(50% + 155px)';  top: 40px;  width: 271px; text-align: left; }
         .label-bl { right: ~'calc(50% + 155px)'; top: 195px;  width: 260px; text-align: right; }
-        .label-br { left: ~'calc(50% + 155px)';  top: 337px;  width: 271px; text-align: left; }
+        .label-br { left: ~'calc(50% + 155px)';  top: 324px;  width: 271px; text-align: left; }
     }
 
     // Mobile fallback

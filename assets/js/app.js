@@ -160,43 +160,29 @@
 
     var Popup = {
         init: function () {
-            this.$overlay = $('#objectivePopupOverlay');
-            if (!this.$overlay.length) return;
+            if (!$('.objective-popup-overlay').length) return;
 
-            $(document).on('click', '[data-objective]', this.open.bind(this));
-            $(document).on('click', '#popupClose',      this.close.bind(this));
-            $(document).on('click', '#objectivePopupOverlay', this.onOverlayClick.bind(this));
+            $(document).on('click', '[data-popup-target]', this.open.bind(this));
+            $(document).on('click', '[data-popup-close]', this.close.bind(this));
+            $(document).on('click', '.objective-popup-overlay', this.onOverlayClick.bind(this));
             $(document).on('keydown', this.onKeydown.bind(this));
         },
 
         open: function (e) {
             e.stopPropagation();
-            var $el    = $(e.currentTarget).closest('[data-objective]');
-            var title  = $el.attr('data-title');
-            var image  = $el.attr('data-image');
-            var raw    = $el.attr('data-items');
-            if (!title || !raw) return;
-
-            $('#popupTitle').text(title);
-            $('#popupImage').attr({ src: image, alt: title });
-
-            var $list = $('#popupList').empty();
-            raw.split('||').forEach(function (text) {
-                text = text.trim();
-                if (text) $list.append('<li>' + text + '</li>');
-            });
-
-            this.$overlay.css('display', 'flex');
+            var id = $(e.currentTarget).attr('data-popup-target');
+            if (!id) return;
+            $('#' + id).css('display', 'flex');
             $('body').css('overflow', 'hidden');
         },
 
         close: function () {
-            this.$overlay.css('display', 'none');
+            $('.objective-popup-overlay').css('display', 'none');
             $('body').css('overflow', '');
         },
 
         onOverlayClick: function (e) {
-            if (e.target === this.$overlay[0]) this.close();
+            if ($(e.target).hasClass('objective-popup-overlay')) this.close();
         },
 
         onKeydown: function (e) {

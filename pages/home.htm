@@ -66,35 +66,35 @@ description_limit = 0
     <div class="container objective-diagram">
         <div class="diagram-core">
             <img src="{{ 'assets/images/objective-connector.svg'|theme }}" alt="" class="connector-svg" aria-hidden="true">
-            <button class="obj-dot dot-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}"><span></span></button>
-            <button class="obj-dot dot-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}"><span></span></button>
-            <button class="obj-dot dot-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}"><span></span></button>
-            <button class="obj-dot dot-br" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}"><span></span></button>
+            <button class="obj-dot dot-tl" data-popup-target="objectivePopup1"><span></span></button>
+            <button class="obj-dot dot-tr" data-popup-target="objectivePopup2"><span></span></button>
+            <button class="obj-dot dot-bl" data-popup-target="objectivePopup3"><span></span></button>
+            <button class="obj-dot dot-br" data-popup-target="objectivePopup4"><span></span></button>
         </div>
 
-        <div class="node-label label-tl" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}">{{ 'Sustainable fertigation'|_ }}</div>
-        <div class="node-label label-tr" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}">{{ 'Farm renaturalisation'|_ }}</div>
-        <div class="node-label label-bl" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}">{{ 'Monitoring and digital innovation'|_ }}</div>
-        <div class="node-label label-br" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}">{{ 'Target crops'|_ }}</div>
+        <div class="node-label label-tl" data-popup-target="objectivePopup1">{{ 'Sustainable fertigation'|_ }}</div>
+        <div class="node-label label-tr" data-popup-target="objectivePopup2">{{ 'Farm renaturalisation'|_ }}</div>
+        <div class="node-label label-bl" data-popup-target="objectivePopup3">{{ 'Monitoring and digital innovation'|_ }}</div>
+        <div class="node-label label-br" data-popup-target="objectivePopup4">{{ 'Target crops'|_ }}</div>
     </div>
 
     <!-- Mobile fallback -->
     <div class="container objective-list-mobile">
         <div class="row center-xs">
             <div class="col-xs-12">
-                <div class="mobile-item" data-objective data-title="{{ 'Sustainable fertigation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}||{{ 'Monitoring water use efficiency and crop productivity'|_ }}||{{ 'Development of recommendations and decision-support tools'|_ }}">
+                <div class="mobile-item" data-popup-target="objectivePopup1">
                     <button class="obj-dot"><span></span></button>
                     <span class="node-label">{{ 'Sustainable fertigation'|_ }}</span>
                 </div>
-                <div class="mobile-item" data-objective data-title="{{ 'Farm renaturalisation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Integration of green infrastructure in farmland'|_ }}||{{ 'Enhancing biodiversity through ecological corridors'|_ }}||{{ 'Assessment of ecosystem services provided by natural elements'|_ }}">
+                <div class="mobile-item" data-popup-target="objectivePopup2">
                     <button class="obj-dot"><span></span></button>
                     <span class="node-label">{{ 'Farm renaturalisation'|_ }}</span>
                 </div>
-                <div class="mobile-item" data-objective data-title="{{ 'Monitoring and digital innovation'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Digital tools for real-time environmental monitoring'|_ }}||{{ 'Data-driven decision support for farmers'|_ }}||{{ 'Training programmes for technology adoption'|_ }}">
+                <div class="mobile-item" data-popup-target="objectivePopup3">
                     <button class="obj-dot"><span></span></button>
                     <span class="node-label">{{ 'Monitoring and digital innovation'|_ }}</span>
                 </div>
-                <div class="mobile-item" data-objective data-title="{{ 'Target crops'|_ }}" data-image="{{ 'assets/images/objective-popup-1.jpg'|theme }}" data-items="{{ 'Focus on key crops in the Doñana agricultural area'|_ }}||{{ 'Sustainable practices for berries, citrus and rice'|_ }}||{{ 'Crop-specific recommendations for water and nutrient management'|_ }}">
+                <div class="mobile-item" data-popup-target="objectivePopup4">
                     <button class="obj-dot"><span></span></button>
                     <span class="node-label">{{ 'Target crops'|_ }}</span>
                 </div>
@@ -103,17 +103,81 @@ description_limit = 0
     </div>
 </section>
 
-<!-- Objective popup -->
-<div class="objective-popup-overlay" id="objectivePopupOverlay" style="display:none;">
-    <div class="objective-popup" id="objectivePopup">
+<!-- Objective popup: Sustainable fertigation -->
+<div class="objective-popup-overlay" id="objectivePopup1" style="display:none;">
+    <div class="objective-popup">
         <div class="popup-image">
-            <img src="" alt="" id="popupImage">
+            <img src="{{ 'assets/images/objective-popup-1.jpg'|theme }}" alt="{{ 'Sustainable fertigation'|_ }}">
         </div>
         <div class="popup-content">
-            <h3 class="popup-title" id="popupTitle"></h3>
-            <ul class="popup-list" id="popupList"></ul>
+            <h3 class="popup-title">{{ 'Sustainable fertigation'|_ }}</h3>
+            <ul class="popup-list">
+                <li>{{ 'Optimisation of irrigation and nitrogen fertilisation'|_ }}</li>
+                <li>{{ 'Monitoring water use efficiency and crop productivity'|_ }}</li>
+                <li>{{ 'Development of recommendations and decision-support tools'|_ }}</li>
+            </ul>
         </div>
-        <button class="popup-close" id="popupClose" aria-label="{{ 'Close'|_ }}">
+        <button class="popup-close" data-popup-close aria-label="{{ 'Close'|_ }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+</div>
+
+<!-- Objective popup: Farm renaturalisation -->
+<div class="objective-popup-overlay" id="objectivePopup2" style="display:none;">
+    <div class="objective-popup">
+        <div class="popup-image">
+            <img src="{{ 'assets/images/objective-popup-1.jpg'|theme }}" alt="{{ 'Farm renaturalisation'|_ }}">
+        </div>
+        <div class="popup-content">
+            <h3 class="popup-title">{{ 'Farm renaturalisation'|_ }}</h3>
+            <ul class="popup-list">
+                <li>{{ 'Integration of green infrastructure in farmland'|_ }}</li>
+                <li>{{ 'Enhancing biodiversity through ecological corridors'|_ }}</li>
+                <li>{{ 'Assessment of ecosystem services provided by natural elements'|_ }}</li>
+            </ul>
+        </div>
+        <button class="popup-close" data-popup-close aria-label="{{ 'Close'|_ }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+</div>
+
+<!-- Objective popup: Monitoring and digital innovation -->
+<div class="objective-popup-overlay" id="objectivePopup3" style="display:none;">
+    <div class="objective-popup">
+        <div class="popup-image">
+            <img src="{{ 'assets/images/objective-popup-1.jpg'|theme }}" alt="{{ 'Monitoring and digital innovation'|_ }}">
+        </div>
+        <div class="popup-content">
+            <h3 class="popup-title">{{ 'Monitoring and digital innovation'|_ }}</h3>
+            <ul class="popup-list">
+                <li>{{ 'Digital tools for real-time environmental monitoring'|_ }}</li>
+                <li>{{ 'Data-driven decision support for farmers'|_ }}</li>
+                <li>{{ 'Training programmes for technology adoption'|_ }}</li>
+            </ul>
+        </div>
+        <button class="popup-close" data-popup-close aria-label="{{ 'Close'|_ }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+</div>
+
+<!-- Objective popup: Target crops -->
+<div class="objective-popup-overlay" id="objectivePopup4" style="display:none;">
+    <div class="objective-popup">
+        <div class="popup-image">
+            <img src="{{ 'assets/images/objective-popup-1.jpg'|theme }}" alt="{{ 'Target crops'|_ }}">
+        </div>
+        <div class="popup-content">
+            <h3 class="popup-title">{{ 'Target crops'|_ }}</h3>
+            <ul class="popup-list">
+                <li>{{ 'Focus on key crops in the Doñana agricultural area'|_ }}</li>
+                <li>{{ 'Sustainable practices for berries, citrus and rice'|_ }}</li>
+                <li>{{ 'Crop-specific recommendations for water and nutrient management'|_ }}</li>
+            </ul>
+        </div>
+        <button class="popup-close" data-popup-close aria-label="{{ 'Close'|_ }}">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#001C44" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
     </div>
