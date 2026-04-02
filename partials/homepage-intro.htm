@@ -1,7 +1,13 @@
+[jumbotron hero]
+jumbotron = "hero"
+background = "transperant"
+templates = "template3"
+description_limit = 0
+==
+==
+
 <div class="homepage-intro">
     <img src="{{ 'assets/images/hero-bg.png'|theme }}" alt="" class="hero-bg" aria-hidden="true">
     <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1>{{ 'Renaturalising Agriculture in the Doñana Area'|_ }}</h1>
-    </div>
+    <div class="center-xs">{% component 'hero' %}</div>
 </div>

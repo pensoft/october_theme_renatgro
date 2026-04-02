@@ -6,7 +6,6 @@
  *  - MobileMenu    Hamburger toggle for small screens
  *  - Accordion     Expand/collapse content blocks
  *  - Tabs          Tab switching (partners, etc.)
- *  - LocaleSelect  Custom language switcher dropdown
  *  - HashNav       Smooth-scroll to anchored sections
  *  - Popup         Objective diagram popups
  */
@@ -125,83 +124,6 @@
         }
     };
 
-    /* ─── Locale Select (custom dropdown) ────────────────── */
-
-    var LocaleSelect = {
-        init: function () {
-            document.querySelectorAll('select.locale-select').forEach(this.build.bind(this));
-            document.addEventListener('click', this.closeAll);
-        },
-
-        build: function (select) {
-            var wrapper  = this.wrap(select);
-            var selected = select.options[select.selectedIndex];
-            var code     = this.extractCode(selected.value);
-            var regex    = new RegExp('^(/' + code + ')(/|$)');
-            var hash     = window.location.hash;
-
-            var trigger = document.createElement('div');
-            trigger.className = 'custom-select__trigger';
-            trigger.innerHTML = '<span class="flag-icon flag-icon-' + code + '"></span> <span>' + code + '</span>';
-            wrapper.appendChild(trigger);
-
-            var list = document.createElement('div');
-            list.className = 'custom-select__options';
-
-            for (var i = 0; i < select.options.length; i++) {
-                var opt        = select.options[i];
-                var localeCode = this.extractCode(opt.value);
-                var newPath    = this.buildPath(localeCode, regex, hash);
-
-                var item = document.createElement('div');
-                item.className = 'custom-select__option' + (opt.selected ? ' is-selected' : '');
-                item.dataset.value = newPath;
-                item.innerHTML = '<span class="flag-icon flag-icon-' + localeCode + '"></span> ' + opt.text;
-                list.appendChild(item);
-            }
-            wrapper.appendChild(list);
-
-            trigger.addEventListener('click', function (e) {
-                e.stopPropagation();
-                document.querySelectorAll('.custom-select.is-open').forEach(function (el) {
-                    if (el !== wrapper) el.classList.remove('is-open');
-                });
-                wrapper.classList.toggle('is-open');
-            });
-
-            list.addEventListener('click', function (e) {
-                var option = e.target.closest('.custom-select__option');
-                if (option) window.location.assign(option.dataset.value);
-            });
-        },
-
-        wrap: function (select) {
-            var wrapper = document.createElement('div');
-            wrapper.className = 'custom-select';
-            select.parentNode.insertBefore(wrapper, select);
-            wrapper.appendChild(select);
-            return wrapper;
-        },
-
-        extractCode: function (value) {
-            return value.split('/')[1] || value.split('/')[0];
-        },
-
-        buildPath: function (localeCode, regex, hash) {
-            var path = window.location.pathname.replace(regex, '/' + localeCode + '/');
-            if (!window.location.pathname.match(regex)) {
-                path = '/' + localeCode + window.location.pathname;
-            }
-            return path.replace(/\/\/+/g, '/') + hash;
-        },
-
-        closeAll: function () {
-            document.querySelectorAll('.custom-select.is-open').forEach(function (el) {
-                el.classList.remove('is-open');
-            });
-        }
-    };
-
     /* ─── Hash Navigation ────────────────────────────────── */
 
     var HashNav = {
@@ -282,6 +204,125 @@
         }
     };
 
+    /* ─── Hero Text Reveal ──────────────────────────────────── */
+
+    var HeroReveal = {
+        init: function () {
+            var h1 = document.querySelector('.hero-content h1');
+            if (!h1) return;
+
+            var text = h1.textContent.trim();
+            var words = text.split(/\s+/);
+            h1.innerHTML = '';
+            h1.classList.add('hero-reveal');
+
+            words.forEach(function (word, i) {
+                var span = document.createElement('span');
+                span.className = 'hero-word';
+                span.textContent = word;
+                span.style.animationDelay = (i * 0.12) + 's';
+                h1.appendChild(span);
+                if (i < words.length - 1) h1.appendChild(document.createTextNode(' '));
+            });
+        }
+    };
+
+    /* ─── Scroll Fill Text ──────────────────────────────── */
+
+    var ScrollFillText = {
+        init: function () {
+            var elements = document.querySelectorAll('.scroll-fill-text');
+            if (!elements.length) return;
+            this.instances = [];
+            var self = this;
+
+            elements.forEach(function (el) {
+                var text = el.textContent.trim();
+                var words = text.split(/\s+/);
+                el.innerHTML = '';
+
+                words.forEach(function (word, i) {
+                    var span = document.createElement('span');
+                    span.className = 'scroll-fill-word';
+                    span.textContent = word;
+                    el.appendChild(span);
+                    if (i < words.length - 1) {
+                        el.appendChild(document.createTextNode(' '));
+                    }
+                });
+
+                self.instances.push({
+                    el: el,
+                    words: el.querySelectorAll('.scroll-fill-word')
+                });
+            });
+
+            this.ticking = false;
+            var handler = function () {
+                if (!self.ticking) {
+                    self.ticking = true;
+                    requestAnimationFrame(function () {
+                        self.update();
+                        self.ticking = false;
+                    });
+                }
+            };
+            window.addEventListener('scroll', handler, { passive: true });
+            document.body.addEventListener('scroll', handler, { passive: true });
+            this.update();
+        },
+
+        update: function () {
+            var winH = window.innerHeight;
+
+            this.instances.forEach(function (inst) {
+                var rect = inst.el.getBoundingClientRect();
+                var start = winH * 0.9;
+                var end = winH * 0.3;
+                var progress = (start - rect.top) / (start - end);
+                progress = Math.max(0, Math.min(1, progress));
+
+                var total = inst.words.length;
+                var read = progress * total;
+
+                for (var i = 0; i < total; i++) {
+                    if (i < read) {
+                        inst.words[i].classList.add('is-read');
+                    } else {
+                        inst.words[i].classList.remove('is-read');
+                    }
+                }
+            });
+        }
+    };
+
+    /* ─── Reveal Items (fade-up one by one) ────────────────── */
+
+    var RevealItems = {
+        init: function () {
+            var items = document.querySelectorAll('.reveal-item');
+            if (!items.length) return;
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        var delay = el.dataset.revealDelay || 0;
+                        setTimeout(function () {
+                            el.classList.add('is-visible');
+                        }, delay);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            items.forEach(function (el, i) {
+                el.dataset.revealDelay = i * 120;
+                observer.observe(el);
+            });
+        }
+    };
+
     /* ─── Bootstrap ──────────────────────────────────────── */
 
     $(function () {
@@ -289,9 +330,11 @@
         MobileMenu.init();
         Accordion.init();
         Tabs.init();
-        LocaleSelect.init();
         HashNav.init();
         Popup.init();
+        HeroReveal.init();
+        ScrollFillText.init();
+        RevealItems.init();
     });
 
 })(jQuery, window, document);

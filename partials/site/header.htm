@@ -11,10 +11,18 @@ forceUrl = 0
 
     <div class="navbar-right">
         <div class="lang-flags">
-            <a href="{{ this.page.url|localeUrl('es') }}" class="flag-circle" title="Español">
+            <a href="{{ this.page.url|localeUrl('es') }}"
+               class="flag-circle {{ activeLocale == 'es' ? 'is-active' }}"
+               title="Español"
+               data-request="onSwitchLocale"
+               data-request-data="locale: 'es'">
                 <span class="flag-icon flag-icon-es"></span>
             </a>
-            <a href="{{ this.page.url|localeUrl('en') }}" class="flag-circle" title="English">
+            <a href="{{ this.page.url|localeUrl('en') }}"
+               class="flag-circle {{ activeLocale == 'en' ? 'is-active' }}"
+               title="English"
+               data-request="onSwitchLocale"
+               data-request-data="locale: 'en'">
                 <span class="flag-icon flag-icon-gb"></span>
             </a>
         </div>
