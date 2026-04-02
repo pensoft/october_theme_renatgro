@@ -162,6 +162,13 @@
         init: function () {
             if (!$('.objective-popup-overlay').length) return;
 
+            // Ensure close buttons have an icon (fallback if CMS stripped it)
+            $('[data-popup-close]').each(function () {
+                if (!$(this).find('img, svg').length) {
+                    $(this).html('<img src="/themes/pensoft-renatgro/assets/images/icon-close.svg" alt="Close">');
+                }
+            });
+
             $(document).on('click', '[data-popup-target]', this.open.bind(this));
             $(document).on('click', '[data-popup-close]', this.close.bind(this));
             $(document).on('click', '.objective-popup-overlay', this.onOverlayClick.bind(this));
@@ -187,6 +194,41 @@
 
         onKeydown: function (e) {
             if (e.key === 'Escape') this.close();
+        }
+    };
+
+    /* ─── Diagram Dots (inject if missing) ──────────────────── */
+
+    var DiagramDots = {
+        dots: [
+            { cls: 'dot-tl', popup: 'objectivePopup1' },
+            { cls: 'dot-tr', popup: 'objectivePopup2' },
+            { cls: 'dot-bl', popup: 'objectivePopup3' },
+            { cls: 'dot-br', popup: 'objectivePopup4' }
+        ],
+        init: function () {
+            // Desktop dots inside .diagram-core
+            var core = document.querySelector('.diagram-core');
+            if (core) {
+                this.dots.forEach(function (d) {
+                    if (core.querySelector('.' + d.cls)) return;
+                    var btn = document.createElement('button');
+                    btn.className = 'obj-dot ' + d.cls;
+                    btn.setAttribute('data-popup-target', d.popup);
+                    var span = document.createElement('span');
+                    btn.appendChild(span);
+                    core.appendChild(btn);
+                });
+            }
+            // Mobile dots inside .mobile-item
+            document.querySelectorAll('.objective-list-mobile .mobile-item').forEach(function (item) {
+                if (item.querySelector('.obj-dot')) return;
+                var btn = document.createElement('button');
+                btn.className = 'obj-dot';
+                var span = document.createElement('span');
+                btn.appendChild(span);
+                item.insertBefore(btn, item.firstChild);
+            });
         }
     };
 
@@ -332,6 +374,7 @@
         Accordion.init();
         Tabs.init();
         HashNav.init();
+        DiagramDots.init();
         Popup.init();
         DiagramHover.init();
         HeroReveal.init();
