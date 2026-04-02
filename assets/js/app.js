@@ -190,6 +190,21 @@
         }
     };
 
+    /* ─── Diagram Hover Link ────────────────────────────────── */
+
+    var DiagramHover = {
+        init: function () {
+            $(document).on('mouseenter', '[data-popup-target]', function () {
+                var id = $(this).attr('data-popup-target');
+                $('[data-popup-target="' + id + '"]').addClass('is-hovered');
+            });
+            $(document).on('mouseleave', '[data-popup-target]', function () {
+                var id = $(this).attr('data-popup-target');
+                $('[data-popup-target="' + id + '"]').removeClass('is-hovered');
+            });
+        }
+    };
+
     /* ─── Hero Text Reveal ──────────────────────────────────── */
 
     var HeroReveal = {
@@ -318,6 +333,7 @@
         Tabs.init();
         HashNav.init();
         Popup.init();
+        DiagramHover.init();
         HeroReveal.init();
         ScrollFillText.init();
         RevealItems.init();
