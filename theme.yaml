@@ -290,11 +290,9 @@ form:
                 tab: 'Typography'
                 type: dropdown
                 assetVar: 'font-family'
-                default: inter
+                default: google-sans-flex
                 options:
-                    arial: Inter
-                    muli: Muli
-                    liberationsans: LiberationSans
+                    google-sans-flex: Google Sans Flex
             background:
                 label: Background color
                 comment: Select a custom color to use as background

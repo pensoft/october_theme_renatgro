@@ -40,7 +40,7 @@
         padding: 0 20px;
 
         h1 {
-            font-family: 'Instrument Sans', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-weight: 500;
             font-size: 65px;
             line-height: 1.35;
@@ -51,7 +51,27 @@
             .breakpoint-laptop-down({ font-size: 48px; });
             .breakpoint-large-down({ font-size: 36px; });
             .breakpoint-medium-down({ font-size: 28px; });
+
+            &.hero-reveal .hero-word {
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(20px);
+                animation: heroWordIn 0.5s ease forwards;
+            }
         }
+    }
+}
+
+// ─── Reveal animation (fade-up one by one) ─────────────
+
+.reveal-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+
+    &.is-visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -68,7 +88,7 @@
 // ─── Shared ─────────────────────────────────────────────
 
 .two-tone-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Google Sans Flex', sans-serif;
     font-size: 36px;
     font-weight: 400;
     line-height: 1.55;
@@ -80,6 +100,19 @@
     .breakpoint-laptop-down({ font-size: 28px; });
     .breakpoint-large-down({ font-size: 22px; });
     .breakpoint-medium-down({ font-size: 18px; });
+
+    &.scroll-fill-text {
+        color: @dark-color;
+
+        .scroll-fill-word {
+            color: @dark-color;
+            transition: color 0.3s ease;
+
+            &.is-read {
+                color: @muted-text-color;
+            }
+        }
+    }
 }
 
 // ─── About ──────────────────────────────────────────────
@@ -140,7 +173,7 @@
         }
 
         .item-text {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-size: 28px;
             font-weight: 400;
             line-height: 1.55;
@@ -236,7 +269,7 @@
         });
 
         .card-title {
-            font-family: 'Instrument Sans', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-weight: 500;
             font-size: 26px;
             letter-spacing: 0.26px;
@@ -246,7 +279,7 @@
         }
 
         .card-desc {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-size: 18px;
             font-weight: 400;
             line-height: 1.55;
@@ -299,16 +332,16 @@
             }
         }
         // Dots at SVG path endpoints
-        // SVG path: M(0.5,0.5) → right → down to (269.5,170.5) → left → down to (0.5,260) → right → (269.5,344)
-        // Dot is 30×30, center the green circle (20px) on the path point
+        // SVG path: M(0.5,0.5) → right → down to (269.5,170.5) → left → down to (0.5,215.5) → right → (269.5,344)
+        // Dot is 30×30, center on the path point (offset -15px)
         .dot-tl { left: -15px;  top: -15px; }        // path start: (0.5, 0.5)
-        .dot-tr { left: 228px;  top: 155px; }        // right mid:  (269.5, 170.5)
-        .dot-bl { left: -15px;  top: 200px; }        // left lower: (0.5, ~215)
+        .dot-tr { left: 254px;  top: 155px; }        // right mid:  (269.5, 170.5)
+        .dot-bl { left: -15px;  top: 200px; }        // left lower: (0.5, 215.5)
         .dot-br { left: 254px;  top: 329px; }        // path end:   (269.5, 344)
 
         .node-label {
             position: absolute;
-            font-family: 'Instrument Sans', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-weight: 500;
             font-size: 36px;
             line-height: 1.15;
@@ -320,9 +353,9 @@
             .breakpoint-laptop-down({ font-size: 28px; });
         }
         // Labels aligned vertically with their dot's center
-        .label-tl { right: ~'calc(50% + 155px)'; top: 0;     width: 260px; text-align: right; }
+        .label-tl { right: ~'calc(50% + 155px)'; top: -8px;   width: 260px; text-align: right; }
         .label-tr { left: ~'calc(50% + 155px)';  top: 163px;  width: 271px; text-align: left; }
-        .label-bl { right: ~'calc(50% + 155px)'; top: 208px;  width: 260px; text-align: right; }
+        .label-bl { right: ~'calc(50% + 155px)'; top: 195px;  width: 260px; text-align: right; }
         .label-br { left: ~'calc(50% + 155px)';  top: 337px;  width: 271px; text-align: left; }
     }
 
@@ -341,7 +374,7 @@
             &:hover .obj-dot span { transform: scale(1.3); }
 
             .node-label {
-                font-family: 'Instrument Sans', sans-serif;
+                font-family: 'Google Sans Flex', sans-serif;
                 font-weight: 500;
                 font-size: 24px;
                 line-height: 1.15;
@@ -417,7 +450,7 @@
         padding: 35px 25px 35px 35px;
 
         .popup-title {
-            font-family: 'Instrument Sans', sans-serif;
+            font-family: 'Google Sans Flex', sans-serif;
             font-weight: 500;
             font-size: 26px;
             letter-spacing: 0.26px;
@@ -437,7 +470,7 @@
             li {
                 padding-left: 20px;
                 position: relative;
-                font-family: 'Inter', sans-serif;
+                font-family: 'Google Sans Flex', sans-serif;
                 font-size: 18px;
                 line-height: 1.55;
                 letter-spacing: -0.36px;
@@ -472,6 +505,11 @@
 }
 
 @keyframes popupFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroWordIn {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
 }
