@@ -27,6 +27,10 @@ function onStart() {
     $translator->setLocale($locale);
     app()->setLocale($locale);
 
+    // Refresh Message translation context — cms.page.init fired before
+    // the domain-based locale was set, so Message::$locale is stale.
+    \RainLab\Translate\Models\Message::setContext($locale, $this->page->url);
+
     $this['currentLang'] = $locale;
 
     // Build cross-domain URLs for flag switcher and hreflang
