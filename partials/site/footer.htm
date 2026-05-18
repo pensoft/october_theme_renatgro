@@ -57,10 +57,10 @@ description_limit = 0
 
     <!-- Funding row -->
     <div class="footer-funding-row">
-        <div class="eu-badge">
-            {% if this.theme.footer_funds_flag %}
-                <img src="{{ this.theme.footer_funds_flag.getPath() }}" alt="{{ 'Funded by the European Union'|_ }}">
-            {% endif %}
+        <div class="footer-funding-badges">
+            <img src="{{ 'assets/images/gabrierno.svg'|theme }}" alt="{{ 'Gobierno de España'|_ }}">
+            <img src="{{ 'assets/images/fundacion.svg'|theme }}" alt="{{ 'Fundación Biodiversidad'|_ }}">
+            <img src="{{ 'assets/images/marcode.svg'|theme }}" alt="{{ 'Marco de actuaciones para Doñana'|_ }}">
         </div>
         {% component 'funding_text' %}
 
