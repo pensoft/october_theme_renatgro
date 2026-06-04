@@ -1,9 +1,19 @@
+[menu main_menu]
+start = "id-1"
+activeNode = 0
+listItemClasses = "main-nav-item"
+primaryClasses = "main-nav"
+secondaryClasses = "main-nav-dropdown"
+numberOfLevels = 1
+==
 <nav id="headernavbar" role="navigation" aria-label="Primary">
     <a href="{{'home'|page}}" class="navbar-brand" aria-label="Home" title="Home">
         {% if this.theme.site_logo %}
             <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}" class="logo-img">
         {% endif %}
     </a>
+
+    {% component 'main_menu' %}
 
     <div class="navbar-right">
         <div class="lang-flags">
@@ -18,10 +28,11 @@
                 <span class="flag-icon flag-icon-gb"></span>
             </a>
         </div>
-        <div class="coming-soon-badge">
-            <span>{{ 'Website coming soon!'|_ }}</span>
-        </div>
     </div>
+
+    <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
 
 {% if this.page.id != 'home' %}

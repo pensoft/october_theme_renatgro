@@ -52,21 +52,22 @@
 
     var MobileMenu = {
         init: function () {
-            if (window.innerWidth >= BREAKPOINT_LARGE) return;
-            var $toggle = $('#menuToggle input[type="checkbox"]');
-            if (!$toggle.length) return;
+            var $toggle = $('#headernavbar .nav-toggle');
+            var $nav = $('#headernavbar .main-nav');
+            if (!$toggle.length || !$nav.length) return;
 
-            $toggle.on('change', function () {
-                var open = $(this).is(':checked');
-                var $menu = $('#menu');
-                if (open) {
-                    $menu.show('slide', { direction: 'right' }, 400);
-                    $menu.add($menu.find('*')).css('visibility', 'visible');
-                    $('body').css('overflow', 'hidden');
-                } else {
-                    $menu.hide('slide', { direction: 'right' }, 400);
-                    $('body').css('overflow', '');
-                }
+            $toggle.on('click', function () {
+                var open = !$nav.hasClass('is-open');
+                $nav.toggleClass('is-open', open);
+                $toggle.toggleClass('is-open', open).attr('aria-expanded', open);
+                $('body').css('overflow', open ? 'hidden' : '');
+            });
+
+            // Close when a menu link is followed
+            $nav.on('click', 'a', function () {
+                $nav.removeClass('is-open');
+                $toggle.removeClass('is-open').attr('aria-expanded', false);
+                $('body').css('overflow', '');
             });
         }
     };
