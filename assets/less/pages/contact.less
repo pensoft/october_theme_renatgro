@@ -1,342 +1,191 @@
-.contact{
-    .width100{
-        display: flex;
-        align-items: center;
+// ===== Contact page =====
+// Static contact page: centered intro, institute logos, email pill + mailto button.
+// Hero banner is rendered by partials/site/header.htm (.header-image) and only
+// needs a centering override here to match the design.
+
+// Center the inner-page banner title on the Contact page only (shared banner
+// rule in components/navbar.less left-aligns it for other pages).
+.header-image.contact {
+    .container {
         justify-content: center;
+        text-align: center;
+    }
+
+    .jumbotron {
+        justify-content: center;
+        text-align: center;
+    }
+
+    h1.underline {
+        text-align: center;
     }
 }
 
-.profile-item{
-    width: 100%;
-    .contact_info {
-        border-radius: 20px;
-        margin-bottom: 20px;
-        padding: 15px;
-        max-width: calc(~'100% - 30px');
-        justify-content: center;
-        justify-self: center;
+// Fill the whole content area with the page background so the min-height
+// stretch below the content (between the section and the footer) is not white.
+.content-wrapper.contact {
+    background: #f3f5fe;
+}
+
+.contact-page {
+    position: relative;
+    overflow: hidden;
+    background: #f3f5fe;
+    padding: 90px 0 110px;
+
+    .breakpoint-large-down({
+        padding: 60px 0 70px;
+    });
+
+    .container {
         position: relative;
-        background: @secondary-color;
+        z-index: 2;
+    }
 
-        .email_container{
-            background: @link-color;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 1px 0;
-        }
-        .coordinator_image{
-            position: relative;
-            img{
-                object-fit: cover;
-                width: 298px;
-                height: 312px;
-                max-width: 100%;
-                border-radius: 20px;
-                .breakpoint-large-down({
-                    object-fit: unset;
-                });
-            }
-        }
-        .coordinator_info{
-            font-size: 17px;
-            font-style: normal;
-            line-height: 21px;
-            letter-spacing: -0.51px;
-            text-align: left;
-            width: 100%;
-            h3{
-                font-size: 17px;
-                color: #625143;
-                font-weight: 700;
-                margin-top: 20px;
-                margin-bottom: 0px;
-                text-align: left;
-                .breakpoint-large-down({
-                    display: flex;
-                    justify-content: center;
-                });
-            }
-            .position{
-                color: #99836F;
-                font-weight: 400;
-                .breakpoint-large-down({
-                    text-align: center;
-                });
-            }
-            .btn{
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 50px;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 100%; /* 16px */
-                letter-spacing: -0.48px;
-                margin-top: 28px;
-                transition: all 0.5s ease-in-out;
+    // Decorative side blobs — solid circles peeking in from the edges,
+    // vertically centred, half off-screen (matches the Figma design).
+    .circle-decor {
+        position: absolute;
+        width: 181px;
+        height: 181px;
+        z-index: 1;
+        top: 50%;
+        .breakpoint-large-down({ display: none; });
 
-                &:hover{
-                    i{
-                        display: none;
-                    }
-                }
-            }
-        }
+        &.circle-left  { left: -90px;  transform: translateY(-50%); }
+        &.circle-right { right: -90px; transform: translateY(-50%) scaleY(-1); }
+    }
+}
 
-        .breakpoint-large-down({
-            width: 100%;
+.contact-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 60px;
+    max-width: 860px;
+    margin: 0 auto;
+
+    .breakpoint-large-down({
+        gap: 40px;
+    });
+}
+
+.contact-heading {
+    margin: 0;
+    font-family: 'Google Sans Flex', sans-serif;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: 0.34px;
+    color: @heading-text-color;
+
+    .muted {
+        color: @muted-text-color;
+    }
+
+    .breakpoint-large-down({
+        font-size: 26px;
+    });
+
+    .breakpoint-medium-down({
+        font-size: 22px;
+    });
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 55px;
+
+    .breakpoint-large-down({
+        gap: 35px;
+    });
+}
+
+.contact-institute {
+    margin: 0;
+    font-family: 'Google Sans Flex', sans-serif;
+    font-size: 28px;
+    line-height: 1.35;
+    letter-spacing: 0.28px;
+    color: @heading-text-color;
+
+    .breakpoint-medium-down({
+        font-size: 22px;
+    });
+}
+
+.contact-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .contact-logo {
+        height: 36px;
+        width: auto;
+        max-width: 100%;
+
+        .breakpoint-medium-down({
+            height: 28px;
         });
     }
 }
 
+.contact-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 
-.contact{
-
-    .row.center-xs{
+    .breakpoint-small-down({
         flex-direction: column;
+        width: 100%;
+    });
+
+    .contact-email-pill {
+        display: inline-flex;
         align-items: center;
-        width: 330px;
-        margin: 0 auto;
-    }
-    .btn-primary{
-        margin: 0 auto;
-        width: 100%;
-        background: @link-color;
-        color: white;
-        border: 1px solid @link-color;
-        &:hover{
-            background: @secondary-btn-color;
-            border: 1px solid @secondary-btn-color;
-        }
-    }
-
-    form{
-        width: 100%;
-        max-width: 100%;
-        height: 100%;
-        display: flex;
-        .row{
-            height: 100%;
-        }
-    }
-
-
-    .field.col-md-6{
-        width: 100%;
-        flex-basis: 100%;
-        max-width: 100%;
-    }
-
-    /* **** */
-    .field input[type="text"], .field input[type="email"], .field textarea, .field select{
-        background: white!important;
-        box-shadow: none!important;
-        color: #8A8A8A !important;
-        font-weight: 100;
-        font-size: 14px;
-        border-radius: 10px!important;
-        border: 1px solid #CAD5F2;
-        display: flex;
-        padding: 13px 16px;
-        align-items: center;
-        flex-shrink: 0;
-
-
-        &::placeholder {
-            font-weight: 100;
-            opacity: 0.5;
-            font-size: 0.9em;
-        }
-        &:focus{
-            outline: none;
-            border: 1px solid #283841;
-            color: #283841!important;
-        }
-
-        &:invalid {
-            border-color: red;
-        }
-
-        &.red_err_field{
-            border-radius: 10px;
-            border: 1px solid #E30000;
-            background: #f3d9df!important;
-            color: #E30000!important;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 140%; /* 19.6px */
-            letter-spacing: -0.28px;
-        }
-    }
-
-    .field textarea{
-        min-height: 160px;
-        border: 1px solid #CAD5F2!important;
-    }
-
-    //.field input[name="email"]{
-    //    background: url("../../assets/images/get-involved-email-icon.svg") no-repeat!important;
-    //    background-position: 16px 14px!important;
-    //    padding: 13px 16px 13px 40px;
-    //    &.red_err_field{
-    //        border-radius: 10px;
-    //        border: 1px solid #E30000;
-    //        background: #f3d9df url("../../assets/images/email-icon-red.svg") no-repeat!important;
-    //        background-position: 16px 14px!important;
-    //        color: #E30000!important;
-    //        font-size: 14px;
-    //        font-style: normal;
-    //        font-weight: 400;
-    //        line-height: 140%; /* 19.6px */
-    //        letter-spacing: -0.28px;
-    //    }
-    //}
-
-    button {
-        font-size: 15px!important;
-    }
-
-    .ui.form .field{
-        margin-top: 40px;
-
-
-    }
-
-
-    button {
-        font-size: 15px!important;
-    }
-
-    .ui.form .field{
-        margin-top: 10px!important;
-        .breakpoint-huge-down({
-            margin-top: 5px!important;
-        });
-
-
-        .g-recaptcha{
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-
-        label{
-            font: normal normal 300 13px/30px 'Google Sans Flex', sans-serif;
-            letter-spacing: 0px;
-            color: #05133A;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 20px; /* 166.667% */
-            margin-left: 0;
-            text-align: left;
-            .breakpoint-huge-down({
-                margin: 0;
-            });
-        }
-
-
-
-    }
-
-    .ui.form{
-        .field:has(#organisation){
-            display: none;
-        }
-    }
-}
-
-
-.advisory-board{
-    .contact_info{
-        height: calc(~'100% - 50px');
-        border-radius: 20px;
-        margin-bottom: 20px;
-        padding: 15px;
-        width: calc(~'100% - 30px');
-
         justify-content: center;
-        justify-self: center;
-        position: relative;
-        background: @secondary-color;
-        display: flex;
+        padding: 12px 20px;
+        border: 0.5px solid @heading-text-color;
+        border-radius: 8px;
+        color: @heading-text-color;
+        font-family: 'Google Sans Flex', sans-serif;
+        font-size: 20px;
+        line-height: 1.25;
+        white-space: nowrap;
 
-        h4{
-            color: @heading-text-color;
-            font-size: 18px;
-            font-family: 'Google Sans Flex', sans-serif !important;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 1.7em;
-            text-align: left;
-            margin-bottom: 16px;
-            margin-top: 31px;
-        }
-
-
-        .read-more{
-            margin-bottom: 0;
-            color: @link-color;
-            display: flex;
-            width: fit-content;
-            position: relative;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
-            letter-spacing: -0.24px;
-            cursor: pointer;
-
-            &:after {
-                content: '';
-                position: absolute;
-                right: -15px;
-                top: 50%;
-                margin-top: -5px;
-                width: 10px;
-                height: 10px;
-                background: url('../../assets/images/arrow-down-light-blue.svg') no-repeat center center;
-                background-size: contain;
-                pointer-events: none;
-                transition: transform 0.3s ease;
-            }
-
-            &:hover:after {
-                transform: rotate(180deg);
-                margin-top: -5px;
-
-            }
-        }
-
+        .breakpoint-small-down({
+            width: 100%;
+        });
     }
 
-    .coordinator_image{
-        img{
-            width: 171px;
-            height: 138px;
-            border-radius: 16px;
-            object-fit: cover;
-        }
-    }
+    // Tighten the shared .btn-primary to match the design button.
+    .contact-btn.btn-primary {
+        height: auto;
+        min-width: 0;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 20px;
+        line-height: 1.35;
+        letter-spacing: 0.2px;
+        text-decoration: none;
+        color: @white-color;
+        background-color: @blue-color; // #093C84
+        border-color: @blue-color;
 
-    .coordinator_info{
-        text-align: left;
-        display: flex;
-        align-items: center;
-        h3{
-            color: @heading-text-color;
-            font-size: 18px;
-            font-family: 'Google Sans Flex', sans-serif;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 1.7em;
-            text-align: left;
-            margin-bottom: 12px;
+        &:hover,
+        &:focus,
+        &.active {
+            color: @white-color;
+            background-color: darken(@blue-color, 6%);
+            border-color: darken(@blue-color, 6%);
         }
+
+        .breakpoint-small-down({
+            width: 100%;
+        });
     }
 }
