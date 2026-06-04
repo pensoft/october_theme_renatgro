@@ -1,0 +1,129 @@
+url = "/consortium"
+layout = "default"
+title = "Consortium"
+is_hidden = 0
+meta_title = "Consortium - ReNatgro"
+meta_description = "ReNatgro is implemented by a multidisciplinary consortium combining research excellence and agricultural sector engagement across the Doñana area."
+robot_index = "index"
+robot_follow = "follow"
+
+[siteSearchInclude]
+==
+<?php
+use Pensoft\Partners\Models\Partners;
+
+function onStart()
+{
+    // Expertise section logos → Transnational partners (type 2)
+    $this['expertise_partners'] = Partners::where('type', 2)->orderBy('nest_left')->get();
+
+    // Partners' roles section logos → Partners (type 1)
+    $this['partners'] = Partners::where('type', 1)->orderBy('nest_left')->get();
+}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+{# ─── Expertise ─────────────────────────────────────────── #}
+<section class="container section-consortium-expertise">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="objectives-heading consortium-heading text-center">{{ 'Expertise'|_ }}</h2>
+            <p class="two-tone-text consortium-intro text-center">
+                {{ 'ReNatgro is implemented by a multidisciplinary consortium'|_ }}
+                <span class="muted">{{ 'combining research excellence and agricultural sector engagement.'|_ }}</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="consortium-expertise-row">
+        {# Static project coordinator card #}
+        <div class="consortium-coordinator-card">
+            <span class="coord-label">{{ 'Project coordinator'|_ }}</span>
+            <span class="coord-meta">
+                <span class="coord-acronym">{{ '(IAS-CSIC)'|_ }}</span>
+                <span class="coord-name">{{ 'Institute of Sustainable Agriculture'|_ }}</span>
+            </span>
+        </div>
+
+        {# Data-driven: Transnational partner logos #}
+        <div class="consortium-logo-stack">
+            {% for partner in expertise_partners %}
+                <button type="button" class="consortium-logo-card"
+                        data-popup-target="consortiumPopup{{ partner.id }}"
+                        aria-label="{{ partner.instituion }}">
+                    <span class="logo-badge" aria-hidden="true">
+                        <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="">
+                    </span>
+                    {% if partner.cover %}
+                        <img class="logo-img" src="{{ partner.cover.path }}" alt="{{ partner.instituion }}">
+                    {% else %}
+                        <span class="logo-fallback">{{ partner.instituion }}</span>
+                    {% endif %}
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ─── Partners' roles ───────────────────────────────────── #}
+<section class="container section-consortium-partners">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="objectives-heading consortium-heading text-center">{{ "Partners' roles"|_ }}</h2>
+            <p class="two-tone-text consortium-intro text-center">
+                {{ 'The consortium integrates expertise in agronomy, ecology, biodiversity,'|_ }}
+                <span class="muted">{{ 'digital agriculture and knowledge transfer to ensure real impact and scalability.'|_ }}</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="consortium-partners-row">
+        {% for partner in partners %}
+            <button type="button" class="consortium-logo-card consortium-logo-card--wide"
+                    data-popup-target="consortiumPopup{{ partner.id }}"
+                    aria-label="{{ partner.instituion }}">
+                <span class="logo-badge" aria-hidden="true">
+                    <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="">
+                </span>
+                {% if partner.cover %}
+                    <img class="logo-img" src="{{ partner.cover.path }}" alt="{{ partner.instituion }}">
+                {% else %}
+                    <span class="logo-fallback">{{ partner.instituion }}</span>
+                {% endif %}
+            </button>
+        {% else %}
+            <p class="consortium-empty text-center">{{ 'Partners coming soon'|_ }}</p>
+        {% endfor %}
+    </div>
+</section>
+
+{# ─── Partner detail popups (one per partner, reuses app.js Popup module) ─── #}
+{% for partner in expertise_partners|merge(partners) %}
+    <div id="consortiumPopup{{ partner.id }}" class="objective-popup-overlay consortium-popup-overlay">
+        <div class="objective-popup consortium-popup">
+            <div class="popup-left">
+                <div class="popup-logo-box">
+                    {% if partner.cover %}
+                        <img src="{{ partner.cover.path }}" alt="{{ partner.instituion }}">
+                    {% else %}
+                        <span class="popup-logo-fallback">{{ partner.instituion }}</span>
+                    {% endif %}
+                </div>
+                {% if partner.instituion_url %}
+                    <a href="{{ partner.instituion_url }}" target="_blank" rel="noopener" class="popup-visit-btn">{{ 'Visit website'|_ }}</a>
+                {% endif %}
+            </div>
+
+            <div class="popup-right">
+                {% if partner.content %}
+                    <div class="popup-block-body">{{ partner.content|raw }}</div>
+                {% endif %}
+            </div>
+
+            <button type="button" class="popup-close" data-popup-close aria-label="{{ 'Close'|_ }}">
+                <img src="{{ 'assets/images/icon-close.svg'|theme }}" alt="{{ 'Close'|_ }}">
+            </button>
+        </div>
+    </div>
+{% endfor %}
