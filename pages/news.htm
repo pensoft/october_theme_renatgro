@@ -1,0 +1,297 @@
+url = "/news/:id?|[a-zA-Z\-0-9]"
+layout = "default"
+title = "News"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[related_articles]
+limit = 9
+thumb_width = 386
+thumb_height = 203
+==
+<?php
+use Pensoft\Articles\Models\Category;
+use Pensoft\Articles\Models\Article;
+
+/**
+ * Helper function to encode URL string
+ */
+function urlencode($string) {
+    return trim(\urlencode($string));
+}
+
+function onStart()
+{
+    // ============================================
+    // ARTICLE RETRIEVAL
+    // ============================================
+    $articleSlug = $this->param('id');
+    $article = null;
+
+    if ($articleSlug) {
+        $article = Article::where('slug', $articleSlug)
+            ->where('published', 'true')
+            ->first();
+    }
+
+    $this['article'] = $article;
+    $this['is_detail_page'] = !empty($article);
+
+    // ============================================
+    // CATEGORIES SETUP
+    // ============================================
+    $this['categories'] = Category::orderBy('sort_order')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    // ============================================
+    // CATEGORY FILTERING & NEWS LISTING
+    // ============================================
+    $categoryId = input('categoryId', 'all');
+
+    // Validate category ID
+    if ($categoryId !== 'all' && !is_numeric($categoryId)) {
+        return redirect('news');
+    }
+
+    $this['categoryId'] = $categoryId;
+
+    // Build news listing query
+    $query = Article::news()
+        ->where('published_at', '<=', 'now')
+        ->where('published', 'true');
+
+    // Apply category filter if not 'all'
+    if ($categoryId !== 'all') {
+        $query->whereHas('categories', function ($q) use ($categoryId) {
+            $q->where('id', $categoryId);
+        });
+    }
+
+    // Get paginated results
+    $records = $query->orderBy('published_at', 'DESC')->paginate(15);
+
+    // Append category filter to pagination links
+    if ($categoryId !== 'all') {
+        $records->appends(['categoryId' => $categoryId]);
+    }
+
+    $this['records'] = $records;
+
+    // ============================================
+    // DETAIL PAGE LOGIC
+    // ============================================
+    if ($this['is_detail_page']) {
+        // Share settings
+        $this['allow_share'] = ($article['allow_share'] == 'yes');
+        $this['page_url'] = $this->pageUrl('');
+        $this['encoded_title'] = urlencode($article['title']);
+        $this['slug'] = $article['slug'];
+
+        // SEO Meta Tags
+        if (class_exists('\BennoThommo\Meta\Meta')) {
+            $seoTitle = $article['title'];
+            $seoKeywords = $article['meta_keywords'] ?: $article['keywords'];
+            $seoDescription = str_limit(Html::strip($article['content']), 255);
+
+            // Basic SEO tags
+            if ($seoTitle) {
+                \BennoThommo\Meta\Meta::set('title', $seoTitle);
+            }
+            if ($seoKeywords) {
+                \BennoThommo\Meta\Meta::set('keywords', $seoKeywords);
+            }
+            if ($seoDescription) {
+                \BennoThommo\Meta\Meta::set('description', $seoDescription);
+            }
+
+            // Social sharing meta tags
+            if ($this['allow_share']) {
+                \BennoThommo\Meta\Meta::set('twitter:card', 'summary_large_image');
+                \BennoThommo\Meta\Meta::set('twitter:title', $article['title']);
+                \BennoThommo\Meta\Meta::set('twitter:description', $seoDescription);
+                \BennoThommo\Meta\Meta::set('og:title', $article['title']);
+                \BennoThommo\Meta\Meta::set('og:description', $seoDescription);
+                \BennoThommo\Meta\Meta::set('og:type', 'article');
+                \BennoThommo\Meta\Meta::set('og:url', $this['page_url']);
+
+                // Social sharing images
+                if ($article['cover']) {
+                    \BennoThommo\Meta\Meta::set('twitter:image', $article['cover']->getThumb(600, null, ['mode' => 'auto']));
+                    \BennoThommo\Meta\Meta::set('og:image', $article['cover']->getThumb(600, 314, ['mode' => 'crop']));
+                    \BennoThommo\Meta\Meta::set('og:image:width', 600);
+                    \BennoThommo\Meta\Meta::set('og:image:height', 314);
+                }
+            }
+        }
+
+        // Related Articles - find articles with matching keywords
+        $related = collect([]);
+
+        if (!empty($article['slug']) && !empty($article->keywords)) {
+            $tags = array_filter(array_map('trim', explode(',', $article->keywords)));
+
+            if (!empty($tags)) {
+                // Build OR condition for keywords
+                $keywordConditions = [];
+                foreach ($tags as $tag) {
+                    $keywordConditions[] = "keywords ILIKE '%" . addslashes($tag) . "%'";
+                }
+                $orWhere = '(' . implode(' OR ', $keywordConditions) . ')';
+
+                // Get related articles
+                $related = Article::where('slug', '!=', $article['slug'])
+                    ->where('published', 'true')
+                    ->whereRaw($orWhere)
+                    ->limit(3)
+                    ->get();
+            }
+        }
+
+        $this['related'] = $related;
+    }
+}
+?>
+==
+<div class="container">
+
+	{% if is_detail_page %}
+    {# ============================================
+       NEWS DETAIL PAGE
+       ============================================ #}
+    <!-- Back Button -->
+    <div class="news-back-button">
+        <a href="/news" class="back-link">
+            <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
+            Back to news
+        </a>
+    </div>
+
+
+    <div class="news-detail-container">
+        <!-- Article Header -->
+        <div class="news-detail-header">
+            <h1 class="news-detail-title">{{ article.title }}</h1>
+            <div class="news-detail-date-badge">
+                {{ article.published_at|date('d.m.Y') }}
+            </div>
+        </div>
+
+        <!-- Hero Image -->
+        {% if article.cover %}
+        <div class="news-detail-image">
+            <img src="{{ article.cover.path }}" alt="{{ article.title }}" />
+            {% if article.caption %}
+                <div class="news-detail-caption">{{ article.caption | raw }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Article Content -->
+        <div class="news-detail-content">
+            {{ article.content|raw }}
+        </div>
+
+        <!-- Share Section (Optional) -->
+        <!-- {% if allow_share %}
+        <div class="news-detail-share">
+            <span class="share-label">Share</span>
+            <div class="share-buttons">
+                <a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="share-button" aria-label="Share on Bluesky">
+                    <i class="fa fa-bluesky" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="share-button" aria-label="Share on LinkedIn">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        {% endif %} -->
+    </div>
+
+    <!-- Other News Section -->
+    {% if related.count() > 0 %}
+    <div class="other-news-section">
+        <h2 class="other-news-heading">Other news</h2>
+        <div class="other-news-grid">
+            <div class="row">
+                {% for item in related %}
+                <div class="col-md-4 col-xs-12">
+                    <div class="highlight-card">
+                        <a href="/news/{{item.slug}}" class="highlight-image-wrapper">
+                            {% if item.cover %}
+                            <img src="{{ item.cover.path }}" alt="{{ item.title }}" class="highlight-image" />
+                            {% endif %}
+                            <div class="highlight-date-badge">
+                                {{ item.published_at|date('d.m.Y') }}
+                            </div>
+                        </a>
+                        <div class="highlight-content">
+                            <a href="/news/{{item.slug}}" class="highlight-title-link">
+                                <h3 class="highlight-title">{{ item.title }}</h3>
+                            </a>
+                            <a href="/news/{{item.slug}}" class="highlight-arrow">
+                                <img src="{{ 'assets/images/read-more-white.svg'|theme }}" alt="Read more" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+	{% else %}
+    {# ============================================
+       NEWS LISTING PAGE
+       ============================================ #}
+    <div class="news-listing-section">
+        <!-- Category Tabs -->
+        <div class="news-category-tabs">
+            <div class="tabs-navigation" role="tablist">
+                <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All news</a>
+                {% for category in categories %}
+                    <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="news-list">
+            <div class="row">
+                {% for record in records %}
+                <div class="col-md-4 col-xs-12">
+                    <div class="highlight-card">
+                        <a href="/news/{{record.slug}}" class="highlight-image-wrapper">
+                            {% if record.cover %}
+                            <img src="{{ record.cover.path }}" alt="{{ record.title }}" class="highlight-image" />
+                            {% endif %}
+                            <div class="highlight-date-badge">
+                                {{ record.published_at|date('d.m.Y') }}
+                            </div>
+                        </a>
+                        <div class="highlight-content">
+                            <a href="/news/{{record.slug}}" class="highlight-title-link">
+                                <h3 class="highlight-title">{{ record.title }}</h3>
+                            </a>
+                            <a href="/news/{{record.slug}}" class="highlight-arrow">
+                                <img src="{{ 'assets/images/read-more-white.svg'|theme }}" alt="Read more" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-xs-12">
+                    <p>No news available</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="news-pagination-wrapper">
+            {{ records.render|raw }}
+        </div>
+    </div>
+
+	{% endif %}
+</div>
