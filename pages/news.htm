@@ -280,8 +280,10 @@ function onStart()
                         <span class="news-card-launcher">
                             <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
                         </span>
+                        {% if record.published_at %}
+                        <span class="news-card-date">{{ record.published_at|date('j M')|upper }}</span>
+                        {% endif %}
                         <span class="news-card-overlay">
-                            <span class="news-card-date">{{ record.published_at|date('j M Y')|upper }}</span>
                             <span class="news-card-title">{{ record.title }}</span>
                         </span>
                     </a>
