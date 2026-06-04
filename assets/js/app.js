@@ -248,6 +248,40 @@
         }
     };
 
+    /* ─── Share Tooltip ─────────────────────────────────────── */
+
+    var ShareTooltip = {
+        init: function () {
+            var $shares = $('.news-share');
+            if (!$shares.length) return;
+
+            // Toggle on click/tap (hover handles desktop via CSS)
+            $(document).on('click', '.news-share-toggle', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $share = $(this).closest('.news-share');
+                var open = !$share.hasClass('is-open');
+                $('.news-share').removeClass('is-open').find('.news-share-toggle').attr('aria-expanded', false);
+                $share.toggleClass('is-open', open);
+                $(this).attr('aria-expanded', open);
+            });
+
+            // Close on outside click
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.news-share').length) {
+                    $('.news-share').removeClass('is-open').find('.news-share-toggle').attr('aria-expanded', false);
+                }
+            });
+
+            // Close on Escape
+            $(document).on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $('.news-share').removeClass('is-open').find('.news-share-toggle').attr('aria-expanded', false);
+                }
+            });
+        }
+    };
+
     /* ─── Hero Text Reveal ──────────────────────────────────── */
 
     var HeroReveal = {
@@ -381,6 +415,7 @@
         HeroReveal.init();
         ScrollFillText.init();
         RevealItems.init();
+        ShareTooltip.init();
     });
 
 })(jQuery, window, document);

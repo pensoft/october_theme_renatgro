@@ -160,97 +160,109 @@ function onStart()
     {# ============================================
        NEWS DETAIL PAGE
        ============================================ #}
-    <!-- Back Button -->
-    <div class="news-back-button">
-        <a href="/news" class="back-link">
-            <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
-            Back to news
-        </a>
-    </div>
+    <div class="news-detail row">
+        {# ── Left column: back link, title, body, share ── #}
+        <div class="col-md-7 col-xs-12 news-detail-main">
+            <div class="news-back-button">
+                <a href="/news" class="back-link">
+                    <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
+                    Back to news
+                </a>
+            </div>
 
-
-    <div class="news-detail-container">
-        <!-- Article Header -->
-        <div class="news-detail-header">
             <h1 class="news-detail-title">{{ article.title }}</h1>
-            <div class="news-detail-date-badge">
-                {{ article.published_at|date('d.m.Y') }}
+
+            <div class="news-detail-content">
+                {{ article.content|raw }}
             </div>
-        </div>
 
-        <!-- Hero Image -->
-        {% if article.cover %}
-        <div class="news-detail-image">
-            <img src="{{ article.cover.path }}" alt="{{ article.title }}" />
-            {% if article.caption %}
-                <div class="news-detail-caption">{{ article.caption | raw }}</div>
-            {% endif %}
-        </div>
-        {% endif %}
-
-        <!-- Article Content -->
-        <div class="news-detail-content">
-            {{ article.content|raw }}
-        </div>
-
-        <!-- Share Section (Optional) -->
-        <!-- {% if allow_share %}
-        <div class="news-detail-share">
-            <span class="share-label">Share</span>
-            <div class="share-buttons">
-                <a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="share-button" aria-label="Share on Bluesky">
-                    <i class="fa fa-bluesky" aria-hidden="true"></i>
-                </a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="share-button" aria-label="Share on LinkedIn">
-                    <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-            </div>
-        </div>
-        {% endif %} -->
-    </div>
-
-    <!-- Other News Section -->
-    {% if related.count() > 0 %}
-    <div class="other-news-section">
-        <h2 class="other-news-heading">Other news</h2>
-        <div class="other-news-grid">
-            <div class="row">
-                {% for item in related %}
-                <div class="col-md-4 col-xs-12">
-                    <div class="highlight-card">
-                        <a href="/news/{{item.slug}}" class="highlight-image-wrapper">
-                            {% if item.cover %}
-                            <img src="{{ item.cover.path }}" alt="{{ item.title }}" class="highlight-image" />
+            {% if allow_share %}
+            <div class="news-detail-share">
+                <div class="news-share">
+                    <button type="button" class="share-button news-share-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Share">
+                        <img src="{{ 'assets/images/share-white.svg'|theme }}" alt="" class="share-icon" />
+                        <span>Share</span>
+                    </button>
+                    <div class="news-share-menu" role="menu">
+                        {% if this.theme.social_media %}
+                            {% if this.theme.facebook %}
+                            <a class="news-share-link" role="menuitem" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ page_url }}" aria-label="Share on Facebook">
+                                <span class="pr p-facebook" aria-hidden="true"></span>
+                                <span>Facebook</span>
+                            </a>
                             {% endif %}
-                            <div class="highlight-date-badge">
-                                {{ item.published_at|date('d.m.Y') }}
-                            </div>
-                        </a>
-                        <div class="highlight-content">
-                            <a href="/news/{{item.slug}}" class="highlight-title-link">
-                                <h3 class="highlight-title">{{ item.title }}</h3>
+                            {% if this.theme.twitter %}
+                            <a class="news-share-link" role="menuitem" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text={{ encoded_title }}&url={{ page_url }}" aria-label="Share on X">
+                                <span class="pr p-twitter" aria-hidden="true"></span>
+                                <span>X</span>
                             </a>
-                            <a href="/news/{{item.slug}}" class="highlight-arrow">
-                                <img src="{{ 'assets/images/read-more-white.svg'|theme }}" alt="Read more" />
+                            {% endif %}
+                            {% if this.theme.linkedin %}
+                            <a class="news-share-link" role="menuitem" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url={{ page_url }}" aria-label="Share on LinkedIn">
+                                <span class="pr p-linkedin" aria-hidden="true"></span>
+                                <span>LinkedIn</span>
                             </a>
-                        </div>
+                            {% endif %}
+                            {% if this.theme.bluesky %}
+                            <a class="news-share-link" role="menuitem" target="_blank" rel="noopener" href="https://bsky.app/intent/compose?text={{ encoded_title }}%20{{ page_url }}" aria-label="Share on Bluesky">
+                                <span class="pr p-bluesky" aria-hidden="true"></span>
+                                <span>Bluesky</span>
+                            </a>
+                            {% endif %}
+                            {% if this.theme.threads %}
+                            <a class="news-share-link" role="menuitem" target="_blank" rel="noopener" href="https://www.threads.net/intent/post?text={{ encoded_title }}%20{{ page_url }}" aria-label="Share on Threads">
+                                <span class="pr p-threads" aria-hidden="true"></span>
+                                <span>Threads</span>
+                            </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endif %}
+        </div>
+
+        {# ── Right column: cover + caption + related news ── #}
+        <div class="col-md-5 col-xs-12 news-detail-aside">
+            {% if article.cover %}
+            <figure class="news-detail-cover">
+                <img src="{{ article.cover.path }}" alt="{{ article.title }}" />
+                {% if article.caption %}
+                    <figcaption class="news-detail-caption">{{ article.caption|raw }}</figcaption>
+                {% endif %}
+            </figure>
+            {% endif %}
+
+            {% if related.count() > 0 %}
+            <div class="related-news">
+                <h2 class="related-news-heading">Related news</h2>
+                <div class="related-news-list">
+                    {% for item in related %}
+                    <a href="/news/{{ item.slug }}" class="related-news-card">
+                        {% if item.cover %}
+                        <span class="related-news-image">
+                            <img src="{{ item.cover.path }}" alt="{{ item.title }}" />
+                        </span>
+                        {% endif %}
+                        <span class="related-news-date">{{ item.published_at|date('j M Y')|upper }}</span>
+                        <span class="related-news-title">{{ item.title }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
-    {% endif %}
 
 	{% else %}
     {# ============================================
        NEWS LISTING PAGE
        ============================================ #}
     <div class="news-listing-section">
-        <!-- Category Tabs -->
+        {# Category Tabs (data-driven from Articles categories) #}
         <div class="news-category-tabs">
             <div class="tabs-navigation" role="tablist">
-                <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All news</a>
+                <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All</a>
                 {% for category in categories %}
                     <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
                 {% endfor %}
@@ -260,29 +272,23 @@ function onStart()
         <div class="news-list">
             <div class="row">
                 {% for record in records %}
-                <div class="col-md-4 col-xs-12">
-                    <div class="highlight-card">
-                        <a href="/news/{{record.slug}}" class="highlight-image-wrapper">
-                            {% if record.cover %}
-                            <img src="{{ record.cover.path }}" alt="{{ record.title }}" class="highlight-image" />
-                            {% endif %}
-                            <div class="highlight-date-badge">
-                                {{ record.published_at|date('d.m.Y') }}
-                            </div>
-                        </a>
-                        <div class="highlight-content">
-                            <a href="/news/{{record.slug}}" class="highlight-title-link">
-                                <h3 class="highlight-title">{{ record.title }}</h3>
-                            </a>
-                            <a href="/news/{{record.slug}}" class="highlight-arrow">
-                                <img src="{{ 'assets/images/read-more-white.svg'|theme }}" alt="Read more" />
-                            </a>
-                        </div>
-                    </div>
+                <div class="col-md-4 col-xs-12 news-col">
+                    <a href="/news/{{record.slug}}" class="news-card">
+                        {% if record.cover %}
+                        <img src="{{ record.cover.path }}" alt="{{ record.title }}" class="news-card-image" />
+                        {% endif %}
+                        <span class="news-card-launcher">
+                            <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
+                        </span>
+                        <span class="news-card-overlay">
+                            <span class="news-card-date">{{ record.published_at|date('j M Y')|upper }}</span>
+                            <span class="news-card-title">{{ record.title }}</span>
+                        </span>
+                    </a>
                 </div>
                 {% else %}
                 <div class="col-xs-12">
-                    <p>No news available</p>
+                    <p class="news-empty">No news available</p>
                 </div>
                 {% endfor %}
             </div>

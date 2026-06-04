@@ -11,77 +11,57 @@ robot_follow = "follow"
 <?php
 use Pensoft\Calendar\Models\Entry;
 use Carbon\Carbon;
-use Pensoft\Calendar\Models\Category;
 
-function onStart(){
+function onStart()
+{
+    $this['page_url'] = $this->pageUrl('');
+    $this['slug'] = $this->param('slug');
 
-$this['categories'] = Category::orderBy('created_at', 'desc')->get();
+    // ============================================
+    // DETAIL PAGE
+    // ============================================
+    if ($this->param('slug')) {
+        $entry = Entry::select(
+            '*',
+            'title',
+            'place',
+            'description',
+            'url',
+            DB::raw("to_char(\"start\", 'DD') as start_day"),
+            DB::raw("to_char(\"start\", 'YYYY') as start_year"),
+            DB::raw("to_char(\"end\", 'DD') as end_day"),
+            DB::raw("to_char(\"end\", 'YYYY') as end_year"),
+            DB::raw("to_char(\"start\", 'month') as start_month"),
+            DB::raw("to_char(\"end\", 'month') as end_month"),
+            DB::raw("\"end\" is not null as has_end")
+        )->where('slug', $this->param('slug'))->first();
 
-$categoryId = input('categoryId', 'all');
+        $this['entry'] = $entry;
 
-if ($categoryId !== 'all' && !is_numeric($categoryId)) {
-return redirect('events');
-}
+        if ($entry && class_exists('\BennoThommo\Meta\Meta')) {
+            \BennoThommo\Meta\Meta::set('twitter:card', 'summary_large_image');
+            \BennoThommo\Meta\Meta::set('twitter:title', $entry['title']);
+            \BennoThommo\Meta\Meta::set('twitter:description', str_limit(Html::strip($entry['description']), 255));
+            \BennoThommo\Meta\Meta::set('og:title', $entry['title']);
+            \BennoThommo\Meta\Meta::set('og:description', str_limit(Html::strip($entry['description']), 255));
+            \BennoThommo\Meta\Meta::set('og:type', 'entry');
+            \BennoThommo\Meta\Meta::set('og:url', $this->pageUrl(''));
 
-$this['categoryId'] = $categoryId;
+            if ($entry['cover_image']) {
+                \BennoThommo\Meta\Meta::set('twitter:image', $entry['cover_image']->getThumb(600, null, ['mode' => 'auto']));
+                \BennoThommo\Meta\Meta::set('og:image', $entry['cover_image']->getThumb(600, 314, ['mode' => 'crop']));
+                \BennoThommo\Meta\Meta::set('og:image:width', 600);
+                \BennoThommo\Meta\Meta::set('og:image:height', 314);
+            }
+        }
+    }
 
-
-if($this->param('slug')){
-$this['entry'] =  Entry::select(
-'*',
-'title',
-'place',
-'description',
-'url',
-
-DB::raw("to_char(\"start\", 'DD') as start_day"),
-DB::raw("to_char(\"start\", 'YYYY') as start_year"),
-DB::raw("to_char(\"end\", 'DD') as end_day"),
-DB::raw("to_char(\"end\", 'YYYY') as end_year"),
-DB::raw("to_char(\"start\", 'month') as start_month"),
-DB::raw("to_char(\"end\", 'month') as end_month"),
-DB::raw("
-\"end\" is not null as has_end
-")
-
-
-)->where('slug', $this->param('slug'))->first();
-
-\BennoThommo\Meta\Meta::set('twitter:card', 'summary_large_image');
-\BennoThommo\Meta\Meta::set('twitter:title', $this['entry']['title']);
-\BennoThommo\Meta\Meta::set('twitter:description', str_limit(Html::strip($this['entry']['description']), 255));
-\BennoThommo\Meta\Meta::set('og:title', $this['entry']['title']);
-\BennoThommo\Meta\Meta::set('og:description', str_limit(Html::strip($this['entry']['description']), 255) );
-\BennoThommo\Meta\Meta::set('og:type', 'entry');
-\BennoThommo\Meta\Meta::set('og:url', $this->pageUrl(''));
-if($this['entry']['cover_image']){
-\BennoThommo\Meta\Meta::set('twitter:image', $this['entry']['cover_image']->getThumb(600, null, ['mode' => 'auto']));
-
-
-\BennoThommo\Meta\Meta::set('og:image', $this['entry']['cover_image']->getThumb(600, 314, ['mode' => 'crop']));
-\BennoThommo\Meta\Meta::set('og:image:width', 600);
-\BennoThommo\Meta\Meta::set('og:image:height', 314);
-}
-
-}
-$this['page_url'] = $this->pageUrl('');
-
-if ($categoryId === 'all') {
-$records = Entry::where('end', '>=', Carbon::now())->orderBy('start', 'asc')->paginate(20);
-} else {
-$records = Entry::latest()->whereHas('categories', function ($query) use ($categoryId) {
-$query->where('id', $categoryId);
-})->where('end', '>=', Carbon::now())->orderBy('start', 'asc')->paginate(20);
-}
-
-if ($categoryId !== 'all') {
-$records->appends(['categoryId' => $categoryId]);
-}
-
-$this['records'] = $records;
-$this['past_entries'] = Entry::where('end', '<', Carbon::now())->orderBy('start', 'desc')->get();
-
-$this['slug'] = $this->param('slug');
+    // ============================================
+    // LISTING (upcoming events, paginated)
+    // ============================================
+    $this['records'] = Entry::where('end', '>=', Carbon::now())
+        ->orderBy('start', 'asc')
+        ->paginate(12);
 }
 ?>
 
@@ -91,136 +71,95 @@ $this['slug'] = $this->param('slug');
 
 <section class="container-fluid events">
     {% if not slug %}
-        <!-- Events Listing -->
+        {# ============================================
+           EVENTS LISTING
+           ============================================ #}
         <div class="container">
-            <!-- Upcoming Events -->
-            <div class="events-list-container">
+            <div class="events-list">
+                <div class="row">
                     {% for entry in records %}
-                        {% set url = entry.url ? entry.url : '/events/' ~ entry.slug %}
-
-                        <div class="entry-item">
-                            <!-- Event Date -->
-                            <div class="date-container">
-                                <div class="date-text">
-                                    <span class="date-day">{{ entry.start|date("j") }}</span>
-                                    <span class="date-month">{{ entry.start|date("M")|upper }}</span>
-                                    <span class="date-year">{{ entry.start|date("Y") }}</span>
-                                </div>
+                        {% set detail_url = 'events'|page ~ '/' ~ entry.slug %}
+                        {% set mode_label = entry.url ? 'Online' : 'On site' %}
+                        <div class="col-md-4 col-xs-12 event-col">
+                            <a href="{{ detail_url }}" class="event-card">
+                                {% if entry.cover_image %}
+                                <img src="{{ entry.cover_image.getThumb(600, 384, {'mode': 'crop'}) }}" alt="{{ entry.title }}" class="event-card-image" />
+                                {% endif %}
+                                <span class="event-card-gradient"></span>
+                                <span class="event-card-launcher">
+                                    <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
+                                </span>
+                                <span class="event-card-date">{{ entry.start|date('j') }} {{ entry.start|date('M')|upper }}</span>
+                                <span class="event-card-overlay">
+                                    <span class="event-card-mode">{{ mode_label }}</span>
+                                    <span class="event-card-title">{{ entry.title|raw }}</span>
+                                </span>
+                            </a>
+                            {% if entry.place %}
+                            <div class="event-card-location">
+                                <img src="{{ 'assets/images/location-pin.svg'|theme }}" alt="" class="location-pin" />
+                                <span>{{ entry.place }}</span>
                             </div>
-
-                            <!-- Event Image -->
-                            {% if entry.cover_image %}
-                                <div class="event-image-wrapper">
-                                    <a href="{{ 'events'|page }}/{{ entry.slug }}">
-                                        <img src="{{ entry.cover_image.getThumb(600, 384, {'mode': 'crop'}) }}" alt="{{ entry.title }}" class="event-image">
-                                    </a>
-                                </div>
                             {% endif %}
-
-                            <!-- Event Title -->
-                            <div class="event-content">
-                                <a href="{{ 'events'|page }}/{{ entry.slug }}" class="event-title">{{ entry.title|raw }}</a>
-                            </div>
-
-                            <!-- Event Action -->
-                            <div class="event-action">
-                                <a href="{{ 'events'|page }}/{{ entry.slug }}" class="read-more">
-                                    <img src="{{ 'assets/images/arrow-right-white.svg'|theme }}" alt="Read more" class="arrow-icon">
-                                </a>
-                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-xs-12">
+                            <p class="events-empty">No upcoming events</p>
                         </div>
                     {% endfor %}
                 </div>
+            </div>
 
-                <!-- Pagination -->
-                {% if entries.count > 20 %}
-                    <div class="events-pagination">
-                        {{ entries.fragment('listView').render|raw }}
-                    </div>
-                {% endif %}
-
-                <!-- Past Events -->
-                {% if past_entries.count %}
-                    <h2 class="subtitle">Past events</h2>
-
-                    <div class="events-list-container">
-                        {% for entry in past_entries %}
-                            {% set url = entry.url ? entry.url : '/events/' ~ entry.slug %}
-
-                            <div class="entry-item">
-                                <!-- Event Date -->
-                                <div class="date-container">
-                                    <div class="date-text">
-                                        <span class="date-day">{{ entry.start|date("j") }}</span>
-                                        <span class="date-month">{{ entry.start|date("M")|upper }}</span>
-                                        <span class="date-year">{{ entry.start|date("Y") }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Event Image -->
-                                {% if entry.cover_image %}
-                                    <div class="event-image-wrapper">
-                                        <a href="{{ 'events'|page }}/{{ entry.slug }}">
-                                            <img src="{{ entry.cover_image.getThumb(600, 384, {'mode': 'crop'}) }}" alt="{{ entry.title }}" class="event-image">
-                                        </a>
-                                    </div>
-                                {% endif %}
-
-                                <!-- Event Title -->
-                                <div class="event-content">
-                                    <a href="{{ 'events'|page }}/{{ entry.slug }}" class="event-title">{{ entry.title|raw }}</a>
-                                </div>
-
-                                <!-- Event Action -->
-                                <div class="event-action">
-                                    <a href="{{ 'events'|page }}/{{ entry.slug }}" class="read-more">
-                                        <img src="{{ 'assets/images/arrow-right-white.svg'|theme }}" alt="Read more" class="arrow-icon">
-                                    </a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+            <div class="events-pagination-wrapper">
+                {{ records.render|raw }}
             </div>
         </div>
     {% else %}
-        <!-- Single Event View -->
+        {# ============================================
+           EVENT DETAIL
+           ============================================ #}
         <div class="container">
-            <!-- Back Navigation -->
-            <div class="event-detail-back">
-                <a href="/events" class="back-link">
-                    <img src="{{ 'assets/images/chevron-left-green.svg'|theme }}" alt="Back" class="back-icon">
-                    Back to events
-                </a>
-            </div>
-
-            <!-- Event Detail Content -->
-            <div class="row">
-                <!-- Event Image -->
-                <div class="col-md-5 col-xs-12">
-                    <div class="event-detail-image-wrapper">
-                        {% if entry.cover_image %}
-                            <img src="{{ entry.cover_image.path }}" alt="{{ entry.title }}" class="event-detail-image">
-                        {% endif %}
+            <div class="event-detail row">
+                {# ── Left column: back link, title, description ── #}
+                <div class="col-md-7 col-xs-12 event-detail-main">
+                    <div class="event-detail-back">
+                        <a href="/events" class="back-link">
+                            <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
+                            Back to events
+                        </a>
                     </div>
+
+                    <h1 class="event-detail-title">{{ entry.title|raw }}</h1>
+
+                    <div class="event-detail-date-badge">
+                        {{ entry.start|date('d.m.Y') }}{% if entry.has_end %} – {{ entry.end|date('d.m.Y') }}{% endif %}
+                    </div>
+
+                    {% if entry.place %}
+                    <div class="event-detail-location">
+                        <img src="{{ 'assets/images/location-pin.svg'|theme }}" alt="" class="location-pin" />
+                        <span>{{ entry.place }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="event-detail-description">
+                        {{ entry.description|raw }}
+                    </div>
+
+                    {% if entry.url %}
+                    <div class="event-detail-cta">
+                        <a href="{{ entry.url }}" target="_blank" rel="noopener" class="event-detail-link">Visit event page</a>
+                    </div>
+                    {% endif %}
                 </div>
 
-                <!-- Event Content -->
-                <div class="col-md-7 col-xs-12">
-                    <div class="event-detail-content">
-                        <!-- Date Badge -->
-                        <div class="event-detail-date-badge">
-                            {{ entry.start|date('d.m.Y') }}
-                        </div>
-
-                        <!-- Event Title -->
-                        <h1 class="event-detail-title">{{ entry.title|raw }}</h1>
-
-                        <!-- Event Description -->
-                        <div class="event-detail-description">
-                            {{ entry.description|raw }}
-                        </div>
-                    </div>
+                {# ── Right column: cover image ── #}
+                <div class="col-md-5 col-xs-12 event-detail-aside">
+                    {% if entry.cover_image %}
+                    <figure class="event-detail-cover">
+                        <img src="{{ entry.cover_image.path }}" alt="{{ entry.title }}" />
+                    </figure>
+                    {% endif %}
                 </div>
             </div>
         </div>
