@@ -1,0 +1,164 @@
+// ===== ABOUT PAGE =====
+
+.about-heading {
+    font-family: 'Google Sans Flex', sans-serif;
+    font-weight: 500;
+    font-size: 36px;
+    letter-spacing: 0.36px;
+    color: @dark-color;
+    margin-bottom: 20px;
+
+    .breakpoint-large-down({ font-size: 28px; });
+
+    &.text-center { text-align: center; }
+}
+
+// ─── About Doñana intro ─────────────────────────────────
+
+.section-about-intro {
+    padding: 60px 0 40px;
+    text-align: center;
+
+    .about-intro-text {
+        max-width: 1200px;
+        margin: 0 auto;
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.55;
+        letter-spacing: -0.48px;
+        color: @dark-color;
+
+        .breakpoint-laptop-down({ font-size: 20px; });
+        .breakpoint-large-down({ font-size: 18px; });
+    }
+}
+
+// ─── Two-column text + image blocks ─────────────────────
+
+.section-about-block {
+    padding: 40px 0;
+
+    .about-block-row {
+        display: flex;
+        align-items: center;
+
+        .breakpoint-medium-down({ flex-direction: column; });
+    }
+
+    // Reversed block keeps source order on mobile (text first), image left on desktop
+    .about-block-reverse {
+        .breakpoint-medium-down({ flex-direction: column-reverse; });
+    }
+
+    .about-block-media {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 5px;
+        overflow: hidden;
+
+        .breakpoint-medium-down({ aspect-ratio: 16 / 10; margin-bottom: 25px; });
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .about-block-text {
+        padding: 0 30px;
+
+        .breakpoint-medium-down({ padding: 0; });
+    }
+
+    .about-block-title {
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 1.35;
+        letter-spacing: 0.32px;
+        color: @dark-color;
+        margin-bottom: 20px;
+
+        .breakpoint-large-down({ font-size: 26px; });
+    }
+
+    p {
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 1.65;
+        letter-spacing: -0.4px;
+        color: @dark-color;
+        margin: 0;
+
+        .breakpoint-large-down({ font-size: 18px; });
+    }
+}
+
+// ─── Project overview stat cards ────────────────────────
+
+.section-about-overview {
+    padding: 40px 0 80px;
+
+    .about-heading { margin-bottom: 40px; }
+
+    // Equal-height columns: flexboxgrid .row is already display:flex,
+    // so stretch each column and let the card fill it.
+    .overview-cards {
+        align-items: stretch;
+    }
+
+    .overview-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        min-height: 310px;
+        padding: 35px;
+        background: #F3F5FE;
+        border-radius: 5px;
+
+        .breakpoint-medium-down({ min-height: 0; margin-bottom: 18px; });
+    }
+
+    .overview-card-top {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .overview-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: @blue-color;
+
+        svg { display: block; }
+    }
+
+    .overview-value {
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 1.35;
+        letter-spacing: -0.6px;
+        color: @blue-color;
+        max-width: 213px;
+    }
+
+    .overview-label {
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 1.35;
+        letter-spacing: 0.28px;
+        color: @dark-color;
+
+        .breakpoint-large-down({ font-size: 22px; });
+    }
+}
