@@ -25,14 +25,16 @@ background = "transperant"
 templates = "template2"
 description_limit = 0
 
-[jumbotron objectives]
-jumbotron = "objectives"
-background = "transperant"
-templates = "template2"
-description_limit = 0
-
 ==
-
+<?php
+function onStart()
+{
+    $this['latestNews'] = \Pensoft\Articles\Models\Article::news()
+        ->descPublished()
+        ->take(3)
+        ->get();
+}
+?>
 ==
 
 <!-- About the project -->
@@ -56,7 +58,41 @@ description_limit = 0
     {% component 'challenge' %}
 </section>
 
-<!-- General objective -->
-<section class="container-fluid section-objective">
-    {% component 'objectives' %}
-</div>
+<!-- Latest news -->
+<section class="container-fluid section-latest-news">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="latest-news-heading">{{ 'Latest news'|_ }}</h2>
+            </div>
+        </div>
+
+        {% if latestNews and latestNews|length %}
+        <div class="row latest-news-grid">
+            {% for article in latestNews %}
+            <div class="col-xs-12 col-sm-4">
+                <a href="/news/{{ article.slug }}" class="news-card">
+                    {% if article.cover %}
+                    <div class="news-card-media">
+                        <img src="{{ article.cover|crop_image|resize(475, 276, {'mode': 'crop'}) }}" alt="{{ article.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="news-card-body">
+                        {% if article.pretty_published_at %}
+                        <span class="news-card-date">{{ article.pretty_published_at }}</span>
+                        {% endif %}
+                        <h3 class="news-card-title">{{ article.title|striptags }}</h3>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-xs-12 latest-news-actions">
+                <a href="{{ 'news'|page }}" class="btn btn-outline-news">{{ 'View all'|_ }}</a>
+            </div>
+        </div>
+    </div>
+</section>

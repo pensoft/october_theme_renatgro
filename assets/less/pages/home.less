@@ -290,224 +290,119 @@
     }
 }
 
-// ─── General objective ──────────────────────────────────
+// ─── Latest news ────────────────────────────────────────
 
-.section-objective {
-    .objective-text {
-        margin-bottom: 60px;
+.section-latest-news {
+    padding: 60px 0;
+
+    .latest-news-heading {
         text-align: center;
-        h2 { margin-bottom: 20px; }
+        margin-bottom: 40px;
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 500;
+        font-size: 36px;
+        letter-spacing: 0.36px;
+        color: @dark-color;
+
+        .breakpoint-large-down({ font-size: 28px; });
     }
 
-    // Desktop diagram: Figma SVG (270×345) centered, CSS dots at path endpoints, labels outside
-    .objective-diagram {
-        position: relative;
-        height: 400px;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-bottom: 60px;
-
-        .breakpoint-large-down({ display: none; });
-
-        .diagram-core {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            transform: translateX(-50%);
-            width: 270px;
-            height: 345px;
-        }
-
-        .connector-svg {
-            display: block;
-            width: 270px;
-            height: 345px;
-        }
-
-        .obj-dot {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            z-index: 2;
-            &:hover span,
-            &.is-hovered span {
-                transform: scale(1.15);
-            }
-        }
-        // Dots centered on SVG path endpoints (30×30, offset -15px from center)
-        // Path: start (0.5, 0.5) → (269.5, 170.5) → (0.5, 215.5) → (269.5, 344)
-        .dot-tl { left: -15px;  top: -15px; }        // (0.5, 0.5) — Sustainable fertigation
-        .dot-tr { left: 254px;  top: 70px; }        // (269.5, 170.5) — Farm renaturalisation
-        .dot-bl { left: -15px;  top: 243px; }        // (0.5, 215.5) — Monitoring and digital innovation
-        .dot-br { left: 254px;  top: 329px; }        // (269.5, 344) — Target crops
-
-        .node-label {
-            position: absolute;
-            font-family: 'Google Sans Flex', sans-serif;
-            font-weight: 500;
-            font-size: 36px;
-            line-height: 1.15;
-            letter-spacing: 0.36px;
-            color: @dark-color;
-            cursor: pointer;
-            transition: color 0.2s;
-            &:hover { color: @blue-color; }
-            .breakpoint-laptop-down({ font-size: 28px; });
-        }
-        // Labels aligned vertically with their dot's center
-        .label-tl { right: ~'calc(52% + 155px)'; top: -40px;   width: 260px; text-align: right; }
-        .label-tr { left: ~'calc(52% + 155px)';  top: 40px;  width: 271px; text-align: left; }
-        .label-bl { right: ~'calc(52% + 155px)'; top: 195px;  width: 260px; text-align: right; }
-        .label-br { left: ~'calc(52% + 155px)';  top: 324px;  width: 271px; text-align: left; }
+    .latest-news-grid {
+        margin-bottom: 35px;
     }
 
-    // Mobile fallback
-    .objective-list-mobile {
-        display: none;
-        .breakpoint-large-down({ display: block; });
-
-        .mobile-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            margin-bottom: 20px;
-
-            &:hover .obj-dot span { transform: scale(1.3); }
-
-            .node-label {
-                font-family: 'Google Sans Flex', sans-serif;
-                font-weight: 500;
-                font-size: 24px;
-                line-height: 1.15;
-                color: @dark-color;
-                text-align: left;
-            }
-        }
-    }
-}
-
-// ─── Green dot button (shared) ──────────────────────────
-
-.obj-dot {
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
+    .news-card {
         display: block;
-        width: 30px;
-        height: 30px;
-        background: url('../images/objective-dot.svg') no-repeat center / contain;
-        border-radius: 50%;
-        transition: transform 0.2s;
-    }
-}
+        position: relative;
+        height: 276px;
+        border-radius: 5px;
+        overflow: hidden;
+        text-decoration: none;
+        margin-bottom: 25px;
 
-// ─── Popup ──────────────────────────────────────────────
+        .breakpoint-medium-down({ height: 240px; });
 
-.objective-popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 28, 68, 0.4);
-    z-index: 10000;
-    align-items: center;
-    justify-content: center;
-}
+        .news-card-media {
+            position: absolute;
+            inset: 0;
 
-.objective-popup {
-    position: relative;
-    display: flex;
-    background: #F2F3F8;
-    border-radius: 5px;
-    max-width: 760px;
-    width: 90%;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    animation: popupFadeIn 0.25s ease;
-
-    .breakpoint-large-down({
-        flex-direction: column;
-        max-height: 90vh;
-        overflow-y: auto;
-    });
-
-    .popup-image {
-        flex-shrink: 0;
-        width: 345px;
-        .breakpoint-large-down({ width: 100%; height: 200px; });
-        img { width: 100%; height: 100%; object-fit: cover; }
-    }
-
-    .popup-content {
-        flex: 1;
-        padding: 35px 25px 35px 35px;
-
-        .popup-title {
-            font-family: 'Google Sans Flex', sans-serif;
-            font-weight: 500;
-            font-size: 26px;
-            letter-spacing: 0.26px;
-            line-height: 1.35;
-            color: @dark-color;
-            margin-bottom: 25px;
-        }
-
-        .popup-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-
-            li {
-                padding-left: 20px;
-                position: relative;
-                font-family: 'Google Sans Flex', sans-serif;
-                font-size: 18px;
-                line-height: 1.55;
-                letter-spacing: -0.36px;
-                color: @dark-color;
-
-                &:before {
-                    content: '';
-                    position: absolute;
-                    left: 0; top: 7px;
-                    width: 10px; height: 10px;
-                    background: @dark-color;
-                    border-radius: 50%;
-                }
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.4s ease;
             }
         }
+
+        // Dark gradient so the text is legible over the photo
+        &:after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 28, 68, 0) 35%, rgba(0, 28, 68, 0.85) 100%);
+            z-index: 1;
+        }
+
+        .news-card-body {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            z-index: 2;
+            color: white;
+        }
+
+        .news-card-date {
+            display: block;
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.28px;
+            margin-bottom: 8px;
+            opacity: 0.85;
+        }
+
+        .news-card-title {
+            font-family: 'Google Sans Flex', sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 1.35;
+            letter-spacing: -0.36px;
+            color: white;
+            margin: 0;
+        }
+
+        &:hover .news-card-media img {
+            transform: scale(1.05);
+        }
     }
 
-    .popup-close {
-        position: absolute;
-        top: 15px; right: 15px;
-        width: 30px; height: 30px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.5;
-        transition: opacity 0.2s;
-        &:hover { opacity: 1; }
+    .latest-news-actions {
+        text-align: center;
     }
-}
 
-@keyframes popupFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
+    .btn-outline-news {
+        display: inline-block;
+        width: auto;
+        padding: 12px 30px;
+        border: 1px solid @blue-color;
+        border-radius: 8px;
+        background: transparent;
+        font-family: 'Google Sans Flex', sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        letter-spacing: -0.32px;
+        color: @blue-color;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease;
+
+        &:hover {
+            background: @blue-color;
+            color: white;
+        }
+
+        .breakpoint-small-down({ width: auto; padding: 12px 30px; });
+    }
 }
 
 @keyframes heroWordIn {
