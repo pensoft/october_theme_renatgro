@@ -73,16 +73,17 @@ function onStart()
             <div class="col-xs-12 col-sm-4">
                 <a href="/news/{{ article.slug }}" class="news-card">
                     {% if article.cover %}
-                    <div class="news-card-media">
-                        <img src="{{ article.cover|crop_image|resize(475, 276, {'mode': 'crop'}) }}" alt="{{ article.title }}">
-                    </div>
+                    <img src="{{ article.cover|crop_image|resize(475, 276, {'mode': 'crop'}) }}" alt="{{ article.title }}" class="news-card-image" />
                     {% endif %}
-                    <div class="news-card-body">
-                        {% if article.pretty_published_at %}
-                        <span class="news-card-date">{{ article.pretty_published_at }}</span>
-                        {% endif %}
+                    <span class="news-card-launcher">
+                        <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
+                    </span>
+                    {% if article.published_at %}
+                    <span class="news-card-date">{{ article.published_at|date('j M')|upper }}</span>
+                    {% endif %}
+                    <span class="news-card-overlay">
                         <h3 class="news-card-title">{{ article.title|striptags }}</h3>
-                    </div>
+                    </span>
                 </a>
             </div>
             {% endfor %}

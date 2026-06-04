@@ -1,25 +1,7 @@
 // ===== Contact page =====
 // Static contact page: centered intro, institute logos, email pill + mailto button.
-// Hero banner is rendered by partials/site/header.htm (.header-image) and only
-// needs a centering override here to match the design.
-
-// Center the inner-page banner title on the Contact page only (shared banner
-// rule in components/navbar.less left-aligns it for other pages).
-.header-image.contact {
-    .container {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .jumbotron {
-        justify-content: center;
-        text-align: center;
-    }
-
-    h1.underline {
-        text-align: center;
-    }
-}
+// The hero banner is the shared image hero (.header-image in components/navbar.less),
+// which already centers its title — no per-page override needed here.
 
 // Fill the whole content area with the page background so the min-height
 // stretch below the content (between the section and the footer) is not white.

@@ -8,7 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 59px 81px;
+    padding: 30px 81px;
     box-sizing: border-box;
     z-index: 10000;
     background: transparent;
@@ -36,67 +36,61 @@
     });
 }
 
-// On non-home pages: always fixed with dark bg
-.content-wrapper:not(.home) #headernavbar {
-    background: #001C44;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 15px 81px;
-
-    .breakpoint-large-down({
-        padding: 15px 20px;
-    });
-}
+// Inner pages share the homepage behaviour: the navbar starts transparent and
+// absolute over the hero image, then the Navbar JS module adds the .scrolled
+// dark/fixed state on scroll (see assets/js/app.js).
 
 // ===== Inner page header banner =====
 
 .header-image {
     position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
     color: @white-color;
-    height: 346px;
-    background: @blue-color;
-    border-radius: 20px;
-    margin: 15px;
 
-    &:after {
-        content: '';
+    .breakpoint-large-down({ height: 260px; });
+    .breakpoint-medium-down({ height: 220px; });
+
+    .hero-bg {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: transparent linear-gradient(-180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%) 0% 0% no-repeat padding-box;
+        object-fit: cover;
+        object-position: center bottom;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 28, 68, 0.2);
+        z-index: 1;
     }
 
     .container {
+        position: relative;
+        z-index: 2;
         padding: 0;
         width: inherit;
         height: 100%;
         display: flex;
-        align-items: end;
+        align-items: center;
+        justify-content: center;
     }
 
     h1.underline {
         padding: 0;
-        margin-bottom: 55px;
-        font: normal normal 500 80px/1.1 'Google Sans Flex', sans-serif;
+        margin: 0;
+        text-align: center;
+        font: normal normal 500 65px/1.35 'Google Sans Flex', sans-serif;
+        letter-spacing: 0.65px;
         color: white;
 
-        .breakpoint-large-down({
-            font-size: 40px;
-        });
-    }
-
-    .jumbotron {
-        display: flex;
-        justify-content: left;
-        text-align: left;
-
-        .breakpoint-large-down({
-            justify-content: center;
-            text-align: center;
-        });
+        .breakpoint-laptop-down({ font-size: 48px; });
+        .breakpoint-large-down({ font-size: 36px; });
+        .breakpoint-medium-down({ font-size: 28px; });
     }
 }
 

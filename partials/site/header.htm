@@ -37,6 +37,8 @@ numberOfLevels = 1
 
 {% if this.page.id != 'home' %}
 <div class="header-image {{page_id}}">
+    <img src="{{ 'assets/images/hero-bg.png'|theme }}" alt="" class="hero-bg" aria-hidden="true">
+    <div class="hero-overlay"></div>
     <div class="container">
         <h1 class="underline white">
             {% if page_title %} {{ page_title|_ }} {% else %} {{ site_name }} {% endif %}
