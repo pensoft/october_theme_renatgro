@@ -1,0 +1,147 @@
+url = "/resources"
+layout = "default"
+title = "Resources"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[siteSearchInclude]
+==
+<?php
+use Pensoft\Media\Models\Newsletters;
+use Pensoft\Media\Models\Videos;
+use Pensoft\Media\Models\Pressreleases;
+
+function onStart()
+{
+    // Documents tab → Newsletters (PDF + optional preview image + name + date)
+    $this['documents'] = Newsletters::orderBy('date', 'desc')->get();
+
+    // Videos tab → Videos (name + youtube/vimeo embed url + published_at)
+    $this['videos'] = Videos::orderBy('published_at', 'desc')->get();
+
+    // Links tab → Press releases (name + description + date + link repeater)
+    $this['pressreleases'] = Pressreleases::orderBy('date', 'desc')->get();
+}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<div class="container resources">
+
+    {# ── Tab navigation (client-side, no reload) ── #}
+    <div class="resources-tabs">
+        <div class="tabs-navigation" role="tablist">
+            <button type="button" class="tab-link active" data-tab="documents" role="tab" aria-selected="true">{{ 'Documents'|_ }}</button>
+            <button type="button" class="tab-link" data-tab="videos" role="tab" aria-selected="false">{{ 'Videos'|_ }}</button>
+            <button type="button" class="tab-link" data-tab="links" role="tab" aria-selected="false">{{ 'Links'|_ }}</button>
+        </div>
+    </div>
+
+    {# ── Documents (Newsletters) ── #}
+    <div class="resources-panel" data-panel="documents" role="tabpanel">
+        <div class="row resources-grid">
+            {% for doc in documents %}
+                {% if doc.file %}
+                <div class="col-md-4 col-xs-12 resource-col">
+                    <a href="{{ doc.file.path }}" target="_blank" rel="noopener" class="resource-card resource-card--doc{% if doc.newsletter_image %} has-preview{% endif %}" aria-label="{{ doc.name }}">
+                        {% if doc.newsletter_image %}
+                        <span class="resource-card-media" style="background-image: url('{{ doc.newsletter_image.path }}');" aria-hidden="true"></span>
+                        {% else %}
+                        <span class="resource-card-icon" aria-hidden="true">
+                            <img src="{{ 'assets/images/pdf-icon.svg'|theme }}" alt="" />
+                        </span>
+                        {% endif %}
+                        <span class="resource-card-action" aria-hidden="true">
+                            <img src="{{ 'assets/images/download.svg'|theme }}" alt="" />
+                        </span>
+                        <span class="resource-card-overlay">
+                            <span class="resource-card-label">
+                                {{ 'Date published'|_ }}{% if doc.date %} · {{ doc.date|date('j M Y') }}{% endif %}
+                            </span>
+                            <span class="resource-card-title">{{ doc.name }}</span>
+                        </span>
+                    </a>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="col-xs-12"><p class="resources-empty">{{ 'No documents available'|_ }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# ── Videos (embedded YouTube / Vimeo player) ── #}
+    <div class="resources-panel" data-panel="videos" role="tabpanel" hidden>
+        <div class="row resources-grid">
+            {% for video in videos %}
+                {% set vurl = video.youtube_url ?: video.vimeo_url %}
+                {% if vurl %}
+                <div class="col-md-4 col-xs-12 resource-col">
+                    <div class="resource-card resource-card--video">
+                        <span class="resource-card-embed">
+                            <iframe src="{{ vurl }}" title="{{ video.name }}" frameborder="0" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </span>
+                        {% if video.name %}
+                        <span class="resource-card-caption">{{ video.name }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="col-xs-12"><p class="resources-empty">{{ 'No videos available'|_ }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# ── Links (Press releases) ── #}
+    <div class="resources-panel" data-panel="links" role="tabpanel" hidden>
+        <div class="row resources-grid">
+            {% for pr in pressreleases %}
+                {% for item in pr.link %}
+                    {% if item.url %}
+                    <div class="col-md-4 col-xs-12 resource-col">
+                        <a href="{{ item.url }}" target="_blank" rel="noopener" class="resource-card resource-card--link" aria-label="{{ item.text ?: pr.name }}">
+                            <span class="resource-card-action" aria-hidden="true">
+                                <img src="{{ 'assets/images/link-icon.svg'|theme }}" alt="" />
+                            </span>
+                            <span class="resource-card-overlay">
+                                <span class="resource-card-title">{{ item.text ?: pr.name }}</span>
+                            </span>
+                        </a>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-xs-12"><p class="resources-empty">{{ 'No links available'|_ }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    var nav = document.querySelector('.resources .resources-tabs');
+    if (!nav) return;
+
+    var links = nav.querySelectorAll('.tab-link');
+    var panels = document.querySelectorAll('.resources .resources-panel');
+
+    nav.addEventListener('click', function (e) {
+        var btn = e.target.closest('.tab-link');
+        if (!btn) return;
+
+        var tab = btn.getAttribute('data-tab');
+
+        links.forEach(function (l) {
+            var on = l === btn;
+            l.classList.toggle('active', on);
+            l.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+
+        panels.forEach(function (p) {
+            p.hidden = p.getAttribute('data-panel') !== tab;
+        });
+    });
+})();
+</script>
