@@ -6,31 +6,14 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron contact]
+jumbotron = "contact"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
 ==
 {% component 'siteSearchInclude' %}
 
-<section class="contact-page">
-    <img src="{{ 'assets/images/circle-navy.svg'|theme }}" alt="" class="circle-decor circle-left" aria-hidden="true">
-    <img src="{{ 'assets/images/circle-green.svg'|theme }}" alt="" class="circle-decor circle-right" aria-hidden="true">
-
-    <div class="container">
-        <div class="contact-intro">
-            <h2 class="contact-heading">
-                {{ 'For more information about the project'|_ }}<span class="muted">{{ ', collaboration opportunities or events'|_ }}</span>
-            </h2>
-
-            <div class="contact-details">
-                <p class="contact-institute">{{ 'Institute of Sustainable Agriculture (IAS-CSIC)'|_ }}</p>
-
-                <div class="contact-logos">
-                    <img src="{{ 'assets/images/ias-csic-logo.png'|theme }}" alt="IAS-CSIC" class="contact-logo">
-                </div>
-
-                <div class="contact-actions">
-                    <span class="contact-email-pill">email@email.com</span>
-                    <a href="mailto:email@email.com" class="btn btn-primary contact-btn">{{ 'Contact us'|_ }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% component 'contact' %}

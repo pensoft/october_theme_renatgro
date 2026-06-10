@@ -8,6 +8,19 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron consortium-expertise-intro]
+jumbotron = "consortium-expertise-intro"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
+[jumbotron consortium-partners-intro]
+jumbotron = "consortium-partners-intro"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
 ==
 <?php
 use Pensoft\Partners\Models\Partners;
@@ -26,16 +39,7 @@ function onStart()
 
 {# ─── Expertise ─────────────────────────────────────────── #}
 <section class="container section-consortium-expertise">
-    <div class="row">
-        <div class="col-xs-12">
-            <h2 class="objectives-heading consortium-heading text-center">{{ 'Expertise'|_ }}</h2>
-            <p class="two-tone-text consortium-intro text-center">
-                {{ 'ReNatgro is implemented by a multidisciplinary consortium'|_ }}
-                <span class="muted">{{ 'combining research excellence and agricultural sector engagement.'|_ }}</span>
-            </p>
-        </div>
-    </div>
-
+    {% component 'consortium-expertise-intro' %}
     <div class="consortium-expertise-row">
         {# Static project coordinator card #}
         <div class="consortium-coordinator-card">
@@ -68,16 +72,7 @@ function onStart()
 
 {# ─── Partners' roles ───────────────────────────────────── #}
 <section class="container section-consortium-partners">
-    <div class="row">
-        <div class="col-xs-12">
-            <h2 class="objectives-heading consortium-heading text-center">{{ "Partners' roles"|_ }}</h2>
-            <p class="two-tone-text consortium-intro text-center">
-                {{ 'The consortium integrates expertise in agronomy, ecology, biodiversity,'|_ }}
-                <span class="muted">{{ 'digital agriculture and knowledge transfer to ensure real impact and scalability.'|_ }}</span>
-            </p>
-        </div>
-    </div>
-
+    {% component 'consortium-partners-intro' %}
     <div class="consortium-partners-row">
         {% for partner in partners %}
             <button type="button" class="consortium-logo-card consortium-logo-card--wide"
