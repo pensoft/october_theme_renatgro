@@ -8,112 +8,51 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron about-donana]
+jumbotron = "about-donana"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
+[jumbotron demonstration-farms]
+jumbotron = "demonstration-farms"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
+[jumbotron supporting-transition]
+jumbotron = "supporting-transition"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
+[jumbotron project-overview]
+jumbotron = "project-overview"
+background = "transperant"
+templates = "template2"
+description_limit = 0
+
 ==
+
 {% component 'siteSearchInclude' %}
 
 <!-- About Doñana -->
 <section class="container-fluid section-about-intro">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="about-heading">{{ 'About Doñana'|_ }}</h2>
-                <p class="about-intro-text">{{ 'The Doñana natural area faces increasing pressure on water resources and biodiversity due to intensive agricultural and human activities. ReNatgro responds to these challenges by testing practical solutions that combine efficient fertigation practices, biodiversity-friendly farm renaturalisation and digital tools.'|_ }}</p>
-            </div>
-        </div>
-    </div>
+    {% component 'about-donana' %}
 </section>
 
 <!-- Demonstration farms -->
 <section class="container-fluid section-about-block">
-    <div class="container">
-        <div class="row about-block-row">
-            <div class="col-xs-12 col-md-6">
-                <div class="about-block-media">
-                    <img src="{{ 'assets/images/about-demonstration-farms.jpg'|theme }}" alt="{{ 'Demonstration farms'|_ }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="about-block-text">
-                    <h2 class="about-block-title">{{ 'Demonstration farms'|_ }}</h2>
-                    <p>{{ 'The project works with representative farms producing strawberries, berries, citrus and olives across the Doñana area of influence. Demonstration actions include water-efficient fertigation systems, restoration of non-productive farm areas using native vegetation, biodiversity infrastructure, ecosystem monitoring and digital tools supporting sustainable agricultural management.'|_ }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% component 'demonstration-farms' %}
 </section>
 
 <!-- Supporting the transition -->
 <section class="container-fluid section-about-block">
-    <div class="container">
-        <div class="row about-block-row about-block-reverse">
-            <div class="col-xs-12 col-md-6">
-                <div class="about-block-text">
-                    <h2 class="about-block-title">{{ 'Supporting the transition'|_ }}</h2>
-                    <p>{{ 'ReNatgro also integrates farmer training, agrotourism initiatives and blockchain-based traceability approaches to strengthen the transition towards a more resilient and environmentally compatible agricultural model in Doñana.'|_ }}</p>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="about-block-media">
-                    <img src="{{ 'assets/images/about-supporting-transition.jpg'|theme }}" alt="{{ 'Supporting the transition'|_ }}">
-                </div>
-            </div>
-        </div>
-    </div>
+    {% component 'supporting-transition' %}
 </section>
 
 <!-- Project overview -->
 <section class="container-fluid section-about-overview">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="about-heading text-center">{{ 'Project overview'|_ }}</h2>
-            </div>
-        </div>
-        <div class="row overview-cards">
-            <div class="col-xs-12 col-md-4">
-                <div class="overview-card">
-                    <div class="overview-card-top">
-                        <span class="overview-icon">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <rect x="3.25" y="4.875" width="19.5" height="17.875" rx="2" stroke="white" stroke-width="2"/>
-                                <path d="M3.25 9.75H22.75" stroke="white" stroke-width="2"/>
-                                <path d="M8.125 2.4375V7.3125M17.875 2.4375V7.3125" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </span>
-                        <div class="overview-value">{{ '2025-2028'|_ }}</div>
-                    </div>
-                    <div class="overview-label">{{ 'Duration'|_ }}</div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <div class="overview-card">
-                    <div class="overview-card-top">
-                        <span class="overview-icon">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M9.75 21.9375L7.3125 19.5C6.65625 18.8438 6.65625 17.7812 7.3125 17.125L8.125 16.3125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14.625 9.0625L11.375 12.3125C10.7188 12.9688 9.65625 12.9688 9 12.3125C8.34375 11.6562 8.34375 10.5938 9 9.9375L13 5.9375H17.0625L22.75 11.625" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M3.25 11.625L8.9375 5.9375M22.75 14.625L18.6875 18.6875M16.1875 18.75L13.4375 16M11.375 18.6875L8.625 15.9375M13.8125 21.125C14.4688 21.7812 15.5312 21.7812 16.1875 21.125C16.8438 20.4688 16.8438 19.4062 16.1875 18.75L13.4375 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                        <div class="overview-value">{{ '4'|_ }}</div>
-                    </div>
-                    <div class="overview-label">{{ 'Partners'|_ }}</div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <div class="overview-card">
-                    <div class="overview-card-top">
-                        <span class="overview-icon">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M18.6875 6.5C17.3 5.2 15.4375 4.0625 13 4.0625C8.0625 4.0625 4.875 8.0625 4.875 13C4.875 17.9375 8.0625 21.9375 13 21.9375C15.4375 21.9375 17.3 20.8 18.6875 19.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M3.25 11.375H13M3.25 14.625H11.375" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </span>
-                        <div class="overview-value">{{ 'Biodiversity Foundation'|_ }}</div>
-                    </div>
-                    <div class="overview-label">{{ 'Funding'|_ }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% component 'project-overview' %}
 </section>
