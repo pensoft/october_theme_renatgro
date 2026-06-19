@@ -107,6 +107,21 @@
                 height: 47px;
                 width: auto;
             }
+
+            // On narrow screens the three badges overflow the viewport (the row
+            // can't shrink), clipping the last logo. Let them wrap and cap each
+            // logo's width so they always fit.
+            .breakpoint-large-down({
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                    max-height: 47px;
+                }
+            });
         }
 
         .disclaimer {

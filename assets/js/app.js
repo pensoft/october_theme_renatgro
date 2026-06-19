@@ -12,7 +12,7 @@
 ;(function ($, window, document) {
     'use strict';
 
-    var BREAKPOINT_LARGE = 992;
+    var BREAKPOINT_LARGE = 1200;
     var SCROLL_THRESHOLD = 100;
     var HEADER_OFFSET    = 150;
     var ANIM_SPEED       = 300;
@@ -23,7 +23,6 @@
         init: function () {
             this.el = document.getElementById('headernavbar');
             if (!this.el) return;
-            this.scrolledPadding = window.innerWidth < BREAKPOINT_LARGE ? '15px 20px' : '15px 81px';
             var handler = this.onScroll.bind(this);
             window.addEventListener('scroll', handler, { passive: true });
             document.body.addEventListener('scroll', handler, { passive: true });
@@ -32,18 +31,14 @@
         getScrollTop: function () {
             return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
         },
+        // Drive the sticky/dark state via the .scrolled CSS class only.
+        // navbar.less owns all layout (including responsive padding), so we must
+        // not write an inline style here — it would override the mobile rules.
         onScroll: function () {
             if (this.getScrollTop() > SCROLL_THRESHOLD) {
                 this.el.classList.add('scrolled');
-                this.el.setAttribute('style',
-                    'position:fixed;top:0;left:0;width:100%;z-index:10000;' +
-                    'background:rgba(0,28,68,0.95);backdrop-filter:blur(10px);' +
-                    '-webkit-backdrop-filter:blur(10px);padding:' + this.scrolledPadding +
-                    ';box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;'
-                );
             } else {
                 this.el.classList.remove('scrolled');
-                this.el.removeAttribute('style');
             }
         }
     };

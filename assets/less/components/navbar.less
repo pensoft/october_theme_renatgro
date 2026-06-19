@@ -14,7 +14,7 @@
     background: transparent;
     transition: background 0.3s ease, padding 0.3s ease;
 
-    .breakpoint-large-down({
+    .breakpoint-huge-down({
         padding: 20px;
     });
 }
@@ -31,7 +31,7 @@
     padding: 15px 81px;
     z-index: 10000;
 
-    .breakpoint-large-down({
+    .breakpoint-huge-down({
         padding: 15px 20px;
     });
 }
@@ -110,7 +110,7 @@
         height: 61px;
         width: auto;
 
-        .breakpoint-large-down({
+        .breakpoint-huge-down({
             height: 40px;
         });
     }
@@ -205,8 +205,8 @@
         }
     }
 
-    // Below large: turns into a slide-down panel toggled by .nav-toggle
-    .breakpoint-large-down({
+    // Below huge: turns into a slide-down panel toggled by .nav-toggle
+    .breakpoint-huge-down({
         position: absolute;
         top: 100%;
         left: 20px;
@@ -255,12 +255,19 @@
         span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     }
 
-    .breakpoint-large-down({
+    .breakpoint-huge-down({
         display: flex;
     });
 }
 
-// Hide the desktop menu inline on small screens (panel handles it)
-.breakpoint-large-down({
-    #headernavbar { position: relative; }
+// Hide the desktop menu inline on small screens (panel handles it),
+// and lay the collapsed header out explicitly: [logo] …… [flags] [☰].
+// Keep the navbar absolute (overlaying the hero) — switching it to
+// `relative` here drops it into flow, exposing the white body background
+// as a band above the hero.
+.breakpoint-huge-down({
+    #headernavbar {
+        .navbar-brand { margin-right: auto; } // logo left, push the rest right
+        .nav-toggle   { margin-left: 4px; }   // hamburger sits right of the flags
+    }
 });
