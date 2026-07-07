@@ -257,36 +257,43 @@
     padding: 60px 0;
     background: linear-gradient(180deg, #F4FEF3 0%, #FFFFFF 100%);
 
+    // Concentric green "rising sun" graphic (Figma "Group 13"): three green
+    // arcs fading outward with a solid core, rising from the bottom-centre.
+    // Painted as a CSS pseudo-element (layered radial-gradients) rather than
+    // empty <div>s, so it can't be stripped by the jumbotron richeditor.
     .outcomes-graphic {
         position: relative;
         height: 320px;
-        margin: 0 auto 40px;
+        // Negative top margin collapses with the heading's bottom margin to
+        // tighten the gap between "Expected outcomes" and the top pill.
+        margin: -35px auto 0;
         overflow: hidden;
 
-        .breakpoint-large-down({ height: auto; overflow: visible; });
-    }
-
-    // Concentric green ripple arcs rising from the bottom-center
-    .outcomes-ripple {
-        position: absolute;
-        left: 50%;
-        bottom: -260px;
-        transform: translateX(-50%);
-        width: 520px;
-        height: 520px;
-
-        .breakpoint-large-down({ display: none; });
-
-        .ripple {
+        &:before {
+            content: '';
             position: absolute;
-            left: 50%;
+            left: 0;
+            right: 0;
             bottom: 0;
-            transform: translateX(-50%);
-            border-radius: 50%;
+            height: 320px;
+            z-index: 1;
+            pointer-events: none;
+            // Concentric green arcs rising from the bottom-centre: each ring holds
+            // its colour, then fades over a long soft feather so the boundaries
+            // blend (no hard ring edges). The largest arc fades to 0 before the
+            // 320px top so it is never hard-clipped. Topmost layer is the core dome.
+            background:
+                radial-gradient(circle 300px at 50% 100%, rgba(132, 175, 50, 0.09) 0, rgba(132, 175, 50, 0.09) 175px, rgba(132, 175, 50, 0) 300px),
+                radial-gradient(circle 215px at 50% 100%, rgba(132, 175, 50, 0.13) 0, rgba(132, 175, 50, 0.13) 130px, rgba(132, 175, 50, 0) 215px),
+                radial-gradient(circle 140px at 50% 100%, rgba(132, 175, 50, 0.20) 0, rgba(132, 175, 50, 0.20) 90px,  rgba(132, 175, 50, 0) 140px),
+                radial-gradient(circle 95px  at 50% 100%, #8cb838 0, #9ec24f 55px, rgba(158, 194, 79, 0) 95px);
         }
-        .ripple-1 { width: 520px; height: 520px; background: rgba(132, 175, 50, 0.10); }
-        .ripple-2 { width: 360px; height: 360px; background: rgba(132, 175, 50, 0.18); }
-        .ripple-3 { width: 200px; height: 200px; background: rgba(132, 175, 50, 0.45); }
+
+        .breakpoint-large-down({
+            height: auto;
+            overflow: visible;
+            &:before { content: none; }
+        });
     }
 
     .outcomes-pills {
@@ -338,7 +345,7 @@
     }
 
     .outcomes-blurbs {
-        margin-top: 20px;
+        margin-top: 35px;
     }
 
     .outcome-blurb {
