@@ -175,11 +175,17 @@ function onStart()
                                 </span>
                             </span>
                         </button>
-                        <div class="resource-langmenu-panel" role="menu">
+                        <div class="resource-langmenu-panel" role="menu" aria-label="{{ 'Select language'|_ }}">
+                            <button type="button" class="resource-langmenu-close" aria-label="{{ 'Close'|_ }}"></button>
                             <span class="resource-langmenu-title">{{ 'Select language'|_ }}</span>
-                            {% for option in downloads %}
-                            <a href="{{ option.url }}" target="_blank" rel="noopener" role="menuitem" class="resource-langmenu-option">{{ option.label }}</a>
-                            {% endfor %}
+                            <div class="resource-langmenu-options">
+                                {% for option in downloads %}
+                                <a href="{{ option.url }}" target="_blank" rel="noopener" role="menuitem" class="resource-langmenu-option">
+                                    <span class="resource-langmenu-option-label">{{ option.label }}</span>
+                                    <img src="{{ 'assets/images/download.svg'|theme }}" alt="" />
+                                </a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                     {% endif %}
@@ -288,7 +294,19 @@ function onStart()
             if (!wasOpen) {
                 menu.classList.add('is-open');
                 btn.setAttribute('aria-expanded', 'true');
+                var first = menu.querySelector('.resource-langmenu-option');
+                if (first) first.focus();
             }
+        });
+
+        var close = menu.querySelector('.resource-langmenu-close');
+        if (close) close.addEventListener('click', function () {
+            closeAll();
+            btn.focus();
+        });
+
+        menu.querySelectorAll('.resource-langmenu-option').forEach(function (opt) {
+            opt.addEventListener('click', closeAll);
         });
     });
 
@@ -297,7 +315,10 @@ function onStart()
     });
 
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeAll();
+        if (e.key !== 'Escape') return;
+        var open = document.querySelector('.resources .resource-langmenu.is-open button.resource-card');
+        closeAll();
+        if (open) open.focus();
     });
 
     var nav = document.querySelector('.resources .resources-tabs');
