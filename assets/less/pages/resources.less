@@ -224,6 +224,95 @@
         }
     }
 
+    // ─── Language-version dropdown (multi-language docs) ─
+    .resource-langmenu {
+        position: relative;
+
+        // The card is a <button> here — neutralise the button chrome so
+        // the shared .resource-card styles render identically to <a> cards.
+        button.resource-card {
+            padding: 0;
+            border: 0;
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        // Available languages line inside the overlay, with a caret
+        .resource-card-langbadge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+            color: @yellow-color;
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.3;
+
+            &::after {
+                content: '';
+                width: 0;
+                height: 0;
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 5px solid @yellow-color;
+                transition: transform 0.25s ease-in-out;
+            }
+        }
+
+        &.is-open .resource-card-langbadge::after {
+            transform: rotate(180deg);
+        }
+
+        // Dropdown panel — opens over the card's overlay area
+        .resource-langmenu-panel {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            z-index: 5;
+            display: none;
+            flex-direction: column;
+            padding: 8px;
+            border-radius: 8px;
+            background: @white-color;
+            box-shadow: 0 18px 40px rgba(0, 28, 68, 0.25);
+        }
+
+        &.is-open .resource-langmenu-panel {
+            display: flex;
+        }
+
+        .resource-langmenu-title {
+            padding: 6px 10px;
+            color: @muted-text-color;
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .resource-langmenu-option {
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            color: @primary-color;
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.3;
+            text-decoration: none;
+            transition: background 0.2s ease-in-out;
+
+            &:hover {
+                background: @secondary-color-hover;
+                color: @link-color;
+            }
+        }
+    }
+
     // ─── Responsive ──────────────────────────────────────
     .breakpoint-large-down({
         padding-top: 40px;
