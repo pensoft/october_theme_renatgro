@@ -1,18 +1,20 @@
 // ============================================================
-//  NEWS & UPDATES PAGE
-//  - Listing: category tabs + 3-up card grid + pagination
+//  NEWS & EVENTS PAGE (combined)
+//  - Primary tabs: News | Events (client-side switch)
+//  - News panel: 3-up card grid + pagination
+//  - Events panel: event cards (styled in pages/events.less via
+//    the panel's "events" wrapper class)
 //  - Detail: two-column (body/share | cover + related news)
 // ============================================================
 
 #layout-content.news {
     min-height: 800px;
-}
 
-.news {
-
-    // ─── Category tabs ───────────────────────────────────
-    .news-category-tabs {
-        margin-bottom: 30px;
+    // ─── Primary News | Events tabs ──────────────────────
+    // Scoped under the #layout-content id so the resting state
+    // wins specificity over the theme's generic button styles.
+    .news-events-tabs {
+        margin-bottom: 40px;
 
         .tabs-navigation {
             display: flex;
@@ -26,31 +28,38 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            min-width: 140px;
             padding: 12px 20px;
             border-radius: 8px;
-            border: 1px solid rgba(0, 28, 68, 0.35);
+            border: 1px solid @blue-color;
             background: transparent;
-            color: @dark-color;
+            color: @blue-color;
             font-family: 'Google Sans Flex', sans-serif;
             font-size: 14px;
             font-weight: 500;
             line-height: 1.35;
-            letter-spacing: 0.14px;
+            letter-spacing: -0.28px;
             text-align: center;
+            cursor: pointer;
             transition: all 0.25s ease-in-out;
 
             &:hover {
-                border-color: @green-color;
-                color: @green-color;
+                border-color: @blue-color;
+                background: fade(@blue-color, 8%);
+                color: @blue-color;
             }
 
-            &.active {
-                border-color: @green-color;
-                background: @green-color;
-                color: #ffffff;
+            &.active,
+            &.active:hover {
+                border-color: @blue-color;
+                background: @blue-color;
+                color: @white-color;
             }
         }
     }
+}
+
+.news {
 
     // ─── Listing grid ────────────────────────────────────
     .news-list {

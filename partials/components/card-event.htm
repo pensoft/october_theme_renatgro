@@ -1,0 +1,27 @@
+description = "Event card for the News & Events page. Vars: entry (Calendar Entry), is_past (bool, mutes the image and adds the year)."
+==
+{% set detail_url = 'events'|page ~ '/' ~ entry.slug %}
+{% set mode_label = entry.url ? 'Online'|_ : 'On site'|_ %}
+{% set is_past = is_past|default(false) %}
+<div class="col-md-4 col-xs-12 event-col">
+    <a href="{{ detail_url }}" class="event-card{% if is_past %} event-card--past{% endif %}">
+        {% if entry.cover_image %}
+        <img src="{{ entry.cover_image.getThumb(600, 384, {'mode': 'crop'}) }}" alt="{{ entry.title }}" class="event-card-image" />
+        {% endif %}
+        <span class="event-card-gradient"></span>
+        <span class="event-card-launcher">
+            <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
+        </span>
+        <span class="event-card-date">{{ entry.start|date('j') }} {{ entry.start|date('M')|upper }}{% if is_past %} {{ entry.start|date('Y') }}{% endif %}</span>
+        <span class="event-card-overlay">
+            <span class="event-card-mode">{{ mode_label }}</span>
+            <span class="event-card-title">{{ entry.title|raw }}</span>
+        </span>
+    </a>
+    {% if entry.place %}
+    <div class="event-card-location">
+        <img src="{{ 'assets/images/location-pin.svg'|theme }}" alt="" class="location-pin" />
+        <span>{{ entry.place }}</span>
+    </div>
+    {% endif %}
+</div>

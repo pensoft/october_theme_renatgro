@@ -1,7 +1,9 @@
 // ============================================================
-//  EVENTS PAGE
-//  - Listing: 3-up upcoming-event card grid + pagination
-//  - Detail: two-column (body | cover image)
+//  EVENTS
+//  - Listing (3-up card grid + pagination) renders inside the
+//    combined News & Events page: its events panel carries the
+//    "events" wrapper class so these styles apply there.
+//  - Detail: two-column (body | cover image) on /events/<slug>.
 //  No calendar view, no category tabs, no past-events section.
 // ============================================================
 
@@ -10,6 +12,29 @@
 }
 
 .events {
+
+    // ─── Sections: Upcoming | Ongoing | Past ─────────────
+    .events-section {
+        margin-bottom: 50px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .events-section-heading {
+        margin: 0 0 25px 0;
+        color: @heading-text-color;
+        font-family: 'Google Sans Flex', sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.25;
+        letter-spacing: -0.84px;
+
+        .breakpoint-large-down({
+            font-size: 24px;
+        });
+    }
 
     // ─── Listing grid ────────────────────────────────────
     .events-list {
@@ -145,6 +170,17 @@
             .event-card-image {
                 transform: scale(1.06);
             }
+        }
+    }
+
+    // Past events: muted image so they read as archive, not upcoming
+    .event-card--past {
+        .event-card-image {
+            filter: grayscale(0.65);
+        }
+
+        &:hover .event-card-image {
+            filter: grayscale(0);
         }
     }
 

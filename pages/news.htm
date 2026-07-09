@@ -1,9 +1,11 @@
 url = "/news/:id?|[a-zA-Z\-0-9]"
 layout = "default"
-title = "News"
+title = "News & Events"
 is_hidden = 0
 robot_index = "index"
 robot_follow = "follow"
+
+[siteSearchInclude]
 
 [related_articles]
 limit = 9
@@ -11,8 +13,8 @@ thumb_width = 386
 thumb_height = 203
 ==
 <?php
-use Pensoft\Articles\Models\Category;
 use Pensoft\Articles\Models\Article;
+use Pensoft\Calendar\Models\Entry;
 
 /**
  * Helper function to encode URL string
@@ -39,45 +41,49 @@ function onStart()
     $this['is_detail_page'] = !empty($article);
 
     // ============================================
-    // CATEGORIES SETUP
+    // NEWS LISTING
     // ============================================
-    $this['categories'] = Category::orderBy('sort_order')
-        ->orderBy('created_at', 'desc')
+    $this['records'] = Article::news()
+        ->where('published_at', '<=', 'now')
+        ->where('published', 'true')
+        ->orderBy('published_at', 'DESC')
+        ->paginate(15);
+
+    // ============================================
+    // EVENTS TAB (combined News & Events page)
+    // ============================================
+    // 'epage' paginator name keeps the events pager independent from the
+    // news pager's default 'page'; 'tab' reopens the Events tab on reload.
+    $this['activeTab'] = input('tab') === 'events' ? 'events' : 'news';
+
+    // Public events in three sections. One-day events have a NULL "end" —
+    // coalesce to "start", compared on date granularity so an event stays
+    // "ongoing" for the whole of its last day. Internal events are for
+    // logged-in users only.
+    $base = Entry::where('is_internal', false);
+
+    // Upcoming: not started yet, soonest first (shown in full)
+    $this['upcomingEvents'] = (clone $base)
+        ->whereRaw('"start" > now()')
+        ->orderBy('start', 'asc')
         ->get();
 
-    // ============================================
-    // CATEGORY FILTERING & NEWS LISTING
-    // ============================================
-    $categoryId = input('categoryId', 'all');
+    // Ongoing: started, last day not over yet (shown in full)
+    $this['ongoingEvents'] = (clone $base)
+        ->whereRaw('"start" <= now()')
+        ->whereRaw('coalesce("end", "start")::date >= now()::date')
+        ->orderBy('start', 'asc')
+        ->get();
 
-    // Validate category ID
-    if ($categoryId !== 'all' && !is_numeric($categoryId)) {
-        return redirect('news');
-    }
-
-    $this['categoryId'] = $categoryId;
-
-    // Build news listing query
-    $query = Article::news()
-        ->where('published_at', '<=', 'now')
-        ->where('published', 'true');
-
-    // Apply category filter if not 'all'
-    if ($categoryId !== 'all') {
-        $query->whereHas('categories', function ($q) use ($categoryId) {
-            $q->where('id', $categoryId);
-        });
-    }
-
-    // Get paginated results
-    $records = $query->orderBy('published_at', 'DESC')->paginate(15);
-
-    // Append category filter to pagination links
-    if ($categoryId !== 'all') {
-        $records->appends(['categoryId' => $categoryId]);
-    }
-
-    $this['records'] = $records;
+    // Past: fully over, most recent first. 'epage' keeps this pager
+    // independent from the news pager; 'tab' reopens the Events tab.
+    $past = (clone $base)
+        ->whereRaw('"start" <= now()')
+        ->whereRaw('coalesce("end", "start")::date < now()::date')
+        ->orderBy('start', 'desc')
+        ->paginate(12, ['*'], 'epage');
+    $past->appends(['tab' => 'events']);
+    $this['pastEvents'] = $past;
 
     // ============================================
     // DETAIL PAGE LOGIC
@@ -154,6 +160,8 @@ function onStart()
 }
 ?>
 ==
+{% component 'siteSearchInclude' %}
+
 <div class="container">
 
 	{% if is_detail_page %}
@@ -166,7 +174,7 @@ function onStart()
             <div class="news-back-button">
                 <a href="/news" class="back-link">
                     <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
-                    Back to news
+                    {{ 'Back to news'|_ }}
                 </a>
             </div>
 
@@ -181,7 +189,7 @@ function onStart()
                 <div class="news-share">
                     <button type="button" class="share-button news-share-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Share">
                         <img src="{{ 'assets/images/share-white.svg'|theme }}" alt="" class="share-icon" />
-                        <span>Share</span>
+                        <span>{{ 'Share'|_ }}</span>
                     </button>
                     <div class="news-share-menu" role="menu">
                         {% if this.theme.social_media %}
@@ -235,7 +243,7 @@ function onStart()
 
             {% if related.count() > 0 %}
             <div class="related-news">
-                <h2 class="related-news-heading">Related news</h2>
+                <h2 class="related-news-heading">{{ 'Related news'|_ }}</h2>
                 <div class="related-news-list">
                     {% for item in related %}
                     <a href="/news/{{ item.slug }}" class="related-news-card">
@@ -256,50 +264,136 @@ function onStart()
 
 	{% else %}
     {# ============================================
-       NEWS LISTING PAGE
+       COMBINED NEWS & EVENTS LISTING PAGE
        ============================================ #}
     <div class="news-listing-section">
-        {# Category Tabs (data-driven from Articles categories) #}
-        <div class="news-category-tabs">
+        {# ── Primary tabs: News | Events (client-side switch) ── #}
+        <div class="news-events-tabs">
             <div class="tabs-navigation" role="tablist">
-                <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All</a>
-                {% for category in categories %}
-                    <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
-                {% endfor %}
+                <button type="button" class="tab-link{% if activeTab == 'news' %} active{% endif %}" data-tab="news" role="tab" aria-selected="{% if activeTab == 'news' %}true{% else %}false{% endif %}">{{ 'News'|_ }}</button>
+                <button type="button" class="tab-link{% if activeTab == 'events' %} active{% endif %}" data-tab="events" role="tab" aria-selected="{% if activeTab == 'events' %}true{% else %}false{% endif %}">{{ 'Events'|_ }}</button>
             </div>
         </div>
 
-        <div class="news-list">
-            <div class="row">
-                {% for record in records %}
-                <div class="col-md-4 col-xs-12 news-col">
-                    <a href="/news/{{record.slug}}" class="news-card">
-                        {% if record.cover %}
-                        <img src="{{ record.cover.path }}" alt="{{ record.title }}" class="news-card-image" />
-                        {% endif %}
-                        <span class="news-card-launcher">
-                            <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
-                        </span>
-                        {% if record.published_at %}
-                        <span class="news-card-date">{{ record.published_at|date('j M')|upper }}</span>
-                        {% endif %}
-                        <span class="news-card-overlay">
-                            <span class="news-card-title">{{ record.title }}</span>
-                        </span>
-                    </a>
+        {# ── News panel ── #}
+        <div class="news-events-panel" data-panel="news" role="tabpanel" {% if activeTab != 'news' %}hidden{% endif %}>
+            <div class="news-list">
+                <div class="row">
+                    {% for record in records %}
+                    <div class="col-md-4 col-xs-12 news-col">
+                        <a href="/news/{{record.slug}}" class="news-card">
+                            {% if record.cover %}
+                            <img src="{{ record.cover.path }}" alt="{{ record.title }}" class="news-card-image" />
+                            {% endif %}
+                            <span class="news-card-launcher">
+                                <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
+                            </span>
+                            {% if record.published_at %}
+                            <span class="news-card-date">{{ record.published_at|date('j M')|upper }}</span>
+                            {% endif %}
+                            <span class="news-card-overlay">
+                                <span class="news-card-title">{{ record.title }}</span>
+                            </span>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-xs-12">
+                        <p class="news-empty">{{ 'No news available'|_ }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% else %}
-                <div class="col-xs-12">
-                    <p class="news-empty">No news available</p>
-                </div>
-                {% endfor %}
+            </div>
+
+            <div class="news-pagination-wrapper">
+                {{ records.render|raw }}
             </div>
         </div>
 
-        <div class="news-pagination-wrapper">
-            {{ records.render|raw }}
+        {# ── Events panel — class "events" scopes pages/events.less card styles ── #}
+        <div class="news-events-panel events" data-panel="events" role="tabpanel" {% if activeTab != 'events' %}hidden{% endif %}>
+            {% if upcomingEvents|length %}
+            <div class="events-section">
+                <h2 class="events-section-heading">{{ 'Upcoming events'|_ }}</h2>
+                <div class="events-list">
+                    <div class="row">
+                        {% for entry in upcomingEvents %}
+                            {% partial 'components/card-event' entry=entry %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if ongoingEvents|length %}
+            <div class="events-section">
+                <h2 class="events-section-heading">{{ 'Ongoing events'|_ }}</h2>
+                <div class="events-list">
+                    <div class="row">
+                        {% for entry in ongoingEvents %}
+                            {% partial 'components/card-event' entry=entry %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if pastEvents.total %}
+            <div class="events-section">
+                <h2 class="events-section-heading">{{ 'Past events'|_ }}</h2>
+                <div class="events-list">
+                    <div class="row">
+                        {% for entry in pastEvents %}
+                            {% partial 'components/card-event' entry=entry is_past=true %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="events-pagination-wrapper">
+                    {{ pastEvents.render|raw }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if not upcomingEvents|length and not ongoingEvents|length and not pastEvents.total %}
+            <p class="events-empty">{{ 'No events available'|_ }}</p>
+            {% endif %}
         </div>
     </div>
+
+    <script>
+    (function () {
+        var section = document.querySelector('.news-listing-section');
+        if (!section) return;
+
+        var links = section.querySelectorAll('.news-events-tabs .tab-link');
+        var panels = section.querySelectorAll('.news-events-panel');
+
+        section.querySelector('.news-events-tabs').addEventListener('click', function (e) {
+            var btn = e.target.closest('.tab-link');
+            if (!btn) return;
+
+            var tab = btn.getAttribute('data-tab');
+
+            links.forEach(function (l) {
+                var on = l === btn;
+                l.classList.toggle('active', on);
+                l.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+
+            panels.forEach(function (p) {
+                p.hidden = p.getAttribute('data-panel') !== tab;
+            });
+
+            // Keep the URL shareable / refresh-safe
+            var url = new URL(window.location);
+            if (tab === 'events') {
+                url.searchParams.set('tab', 'events');
+            } else {
+                url.searchParams.delete('tab');
+            }
+            history.replaceState(null, '', url);
+        });
+    })();
+    </script>
 
 	{% endif %}
 </div>

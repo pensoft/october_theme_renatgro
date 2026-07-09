@@ -10,10 +10,15 @@ robot_follow = "follow"
 ==
 <?php
 use Pensoft\Calendar\Models\Entry;
-use Carbon\Carbon;
 
 function onStart()
 {
+    // The events listing lives on the combined News & Events page —
+    // this page only renders event details (/events/<slug>).
+    if (!$this->param('slug')) {
+        return \Redirect::to('/news?tab=events');
+    }
+
     $this['page_url'] = $this->pageUrl('');
     $this['slug'] = $this->param('slug');
 
@@ -36,6 +41,10 @@ function onStart()
             DB::raw("\"end\" is not null as has_end")
         )->where('slug', $this->param('slug'))->first();
 
+        if (!$entry) {
+            return \Redirect::to('/news?tab=events');
+        }
+
         $this['entry'] = $entry;
 
         if ($entry && class_exists('\BennoThommo\Meta\Meta')) {
@@ -56,12 +65,6 @@ function onStart()
         }
     }
 
-    // ============================================
-    // LISTING (upcoming events, paginated)
-    // ============================================
-    $this['records'] = Entry::where('end', '>=', Carbon::now())
-        ->orderBy('start', 'asc')
-        ->paginate(12);
 }
 ?>
 
@@ -70,62 +73,18 @@ function onStart()
 {% component 'siteSearchInclude' %}
 
 <section class="container-fluid events">
-    {% if not slug %}
-        {# ============================================
-           EVENTS LISTING
-           ============================================ #}
-        <div class="container">
-            <div class="events-list">
-                <div class="row">
-                    {% for entry in records %}
-                        {% set detail_url = 'events'|page ~ '/' ~ entry.slug %}
-                        {% set mode_label = entry.url ? 'Online' : 'On site' %}
-                        <div class="col-md-4 col-xs-12 event-col">
-                            <a href="{{ detail_url }}" class="event-card">
-                                {% if entry.cover_image %}
-                                <img src="{{ entry.cover_image.getThumb(600, 384, {'mode': 'crop'}) }}" alt="{{ entry.title }}" class="event-card-image" />
-                                {% endif %}
-                                <span class="event-card-gradient"></span>
-                                <span class="event-card-launcher">
-                                    <img src="{{ 'assets/images/arrow-up-right-white.svg'|theme }}" alt="" />
-                                </span>
-                                <span class="event-card-date">{{ entry.start|date('j') }} {{ entry.start|date('M')|upper }}</span>
-                                <span class="event-card-overlay">
-                                    <span class="event-card-mode">{{ mode_label }}</span>
-                                    <span class="event-card-title">{{ entry.title|raw }}</span>
-                                </span>
-                            </a>
-                            {% if entry.place %}
-                            <div class="event-card-location">
-                                <img src="{{ 'assets/images/location-pin.svg'|theme }}" alt="" class="location-pin" />
-                                <span>{{ entry.place }}</span>
-                            </div>
-                            {% endif %}
-                        </div>
-                    {% else %}
-                        <div class="col-xs-12">
-                            <p class="events-empty">No upcoming events</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="events-pagination-wrapper">
-                {{ records.render|raw }}
-            </div>
-        </div>
-    {% else %}
-        {# ============================================
-           EVENT DETAIL
-           ============================================ #}
-        <div class="container">
+    {# ============================================
+       EVENT DETAIL
+       (listing lives on /news?tab=events)
+       ============================================ #}
+    <div class="container">
             <div class="event-detail row">
                 {# ── Left column: back link, title, description ── #}
                 <div class="col-md-7 col-xs-12 event-detail-main">
                     <div class="event-detail-back">
-                        <a href="/events" class="back-link">
+                        <a href="/news?tab=events" class="back-link">
                             <img src="{{ 'assets/images/chevron-left.svg'|theme }}" alt="" class="back-icon" />
-                            Back to events
+                            {{ 'Back to events'|_ }}
                         </a>
                     </div>
 
@@ -148,7 +107,7 @@ function onStart()
 
                     {% if entry.url %}
                     <div class="event-detail-cta">
-                        <a href="{{ entry.url }}" target="_blank" rel="noopener" class="event-detail-link">Visit event page</a>
+                        <a href="{{ entry.url }}" target="_blank" rel="noopener" class="event-detail-link">{{ 'Visit event page'|_ }}</a>
                     </div>
                     {% endif %}
                 </div>
@@ -163,5 +122,4 @@ function onStart()
                 </div>
             </div>
         </div>
-    {% endif %}
 </section>
