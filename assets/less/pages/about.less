@@ -15,22 +15,35 @@
 
 // ─── About Doñana intro ─────────────────────────────────
 
-// Section spacing comes from the shared 50px rhythm (layout/default.less)
+// Section spacing comes from the shared 50px rhythm (layout/default.less).
 .section-about-intro {
     text-align: center;
 
-    .about-intro-text {
+    // Intro copy is sized to match the About-block body text below
+    // (.section-about-block p), not the larger homepage hero size.
+    p {
         max-width: 1200px;
         margin: 0 auto;
         font-family: 'Google Sans Flex', sans-serif;
         font-weight: 400;
-        font-size: 24px;
-        line-height: 1.55;
-        letter-spacing: -0.48px;
+        font-size: 20px;
+        line-height: 1.65;
+        letter-spacing: -0.4px;
         color: @dark-color;
 
-        .breakpoint-laptop-down({ font-size: 20px; });
         .breakpoint-large-down({ font-size: 18px; });
+    }
+
+    // Shared muted->navy scroll-fill animation (app.js ScrollFillText)
+    p.scroll-fill-text {
+        color: @muted-text-color;
+
+        .scroll-fill-word {
+            color: @muted-text-color;
+            transition: color 0.3s ease;
+
+            &.is-read { color: @dark-color; }
+        }
     }
 }
 
@@ -94,11 +107,27 @@
 
         .breakpoint-large-down({ font-size: 18px; });
     }
+
+    // Same muted→dark scroll animation as the homepage/objectives intros
+    // (app.js ScrollFillText), but at this block's own type size.
+    p.scroll-fill-text {
+        color: @muted-text-color;
+
+        .scroll-fill-word {
+            color: @muted-text-color;
+            transition: color 0.3s ease;
+
+            &.is-read { color: @dark-color; }
+        }
+    }
 }
 
 // ─── Project overview stat cards ────────────────────────
 
 .section-about-overview {
+    // Last section on the page: extra room before the footer on top of the
+    // shared 50px section rhythm.
+    padding-bottom: 80px;
 
     .about-heading { margin-bottom: 40px; }
 
@@ -113,7 +142,7 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-        min-height: 310px;
+        min-height: 220px;
         padding: 35px;
         background: #F3F5FE;
         border-radius: 5px;
