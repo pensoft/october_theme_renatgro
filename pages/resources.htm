@@ -107,8 +107,9 @@ function onStart()
     // Videos tab → Videos (name + youtube/vimeo embed url + published_at)
     $this['videos'] = Videos::orderBy('published_at', 'desc')->get();
 
-    // Links tab → Press releases (name + description + date + link repeater)
-    $this['pressreleases'] = Pressreleases::orderBy('date', 'desc')->get();
+    // Links tab → Press releases (name + description + date + link repeater
+    // + optional preview image shown on the cards)
+    $this['pressreleases'] = Pressreleases::with('image')->orderBy('date', 'desc')->get();
 }
 ?>
 ==
@@ -227,7 +228,10 @@ function onStart()
                 {% for item in pr.link %}
                     {% if item.url %}
                     <div class="col-md-4 col-xs-12 resource-col">
-                        <a href="{{ item.url }}" target="_blank" rel="noopener" class="resource-card resource-card--link" aria-label="{{ item.text ?: pr.name }}">
+                        <a href="{{ item.url }}" target="_blank" rel="noopener" class="resource-card resource-card--link{% if pr.image %} has-preview{% endif %}" aria-label="{{ item.text ?: pr.name }}">
+                            {% if pr.image %}
+                            <span class="resource-card-media" style="background-image: url('{{ pr.image.path }}');" aria-hidden="true"></span>
+                            {% endif %}
                             <span class="resource-card-action" aria-hidden="true">
                                 <img src="{{ 'assets/images/link-icon.svg'|theme }}" alt="" />
                             </span>

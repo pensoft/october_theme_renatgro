@@ -56,8 +56,12 @@
     }
 }
 
-.resources {
-    padding-bottom: 80px;
+// Scoped to the page's own .container — the layout also stamps the page id
+// ("resources") onto .content-wrapper and #layout-content, so a bare
+// .resources selector padded all three (white band above the hero banner on
+// small screens, ~240px of stacked space above the footer on desktop).
+.container.resources {
+    padding-bottom: 50px;
 
     // ─── Card grid ───────────────────────────────────────
     .resources-grid {

@@ -81,6 +81,27 @@
     padding-right: 0 !important;
 }
 
+// ===== Section vertical rhythm =====
+// Full-width page sections (home/about: section.container-fluid wrapping a
+// jumbotron-rendered .container) own the vertical spacing; the inner container
+// contributes none. Without this both layers padded (50px container + ad-hoc
+// section values), so gaps between sections varied from ~90px to ~180px.
+// Single-class specificity (0,1,0): out-ranks the element reset in
+// base/reset.less (`section { padding: 0 }`, 0,0,1) — which silently kills a
+// zero-specificity :where() version of this rule — while page .section-*
+// rules of equal specificity still win via import order (pages/* come later).
+.container-fluid {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+section.container-fluid .container,
+section.container-fluid .container1000,
+section.container-fluid .container700 {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 // ===== Grid helpers =====
 
 .row {
@@ -136,7 +157,11 @@
     }
 
     .container {
-        ul {
+        // Indent only plain rich-text lists coming from DB content. Styled
+        // lists (e.g. ul.popup-list in the objectives popups) manage their own
+        // padding — the old bare `ul` selector out-ranked them via the #id
+        // above and shoved every classed list 40px to the right.
+        ul:not([class]) {
             padding-left: 40px;
 
             .breakpoint-large-down({

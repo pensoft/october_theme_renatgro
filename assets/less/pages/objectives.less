@@ -14,7 +14,7 @@
 // ─── General objective ──────────────────────────────────
 
 .section-general-objective {
-    padding: 60px 0 40px;
+    padding: 50px 0;
 
     .general-objective-text {
         max-width: 900px;
@@ -25,11 +25,8 @@
 // ─── Specific objectives (curved-connector diagram) ─────
 
 .section-specific-objectives {
-    padding: 40px 0 60px;
-    margin-bottom: 80px;
+    padding: 50px 0;
     background: #F2F3F8;
-
-    .breakpoint-large-down({ margin-bottom: 50px; });
 
     // Desktop diagram: Figma SVG (270×345) centered, CSS dots at path endpoints, labels outside
     .objective-diagram {
@@ -67,10 +64,11 @@
         }
         // Dots centered on SVG path endpoints (30×30, offset -15px from center)
         // Path: start (0.5, 0.5) → (269.5, 170.5) → (0.5, 215.5) → (269.5, 344)
-        .dot-tl { left: -15px;  top: -15px; }
-        .dot-tr { left: 254px;  top: 70px; }
-        .dot-bl { left: -15px;  top: 243px; }
-        .dot-br { left: 254px;  top: 329px; }
+        // Pulse delays staggered so the four dots breathe out of phase.
+        .dot-tl { left: -15px;  top: -15px;  animation-delay: 0s; }
+        .dot-tr { left: 254px;  top: 70px;   animation-delay: 0.7s; }
+        .dot-bl { left: -15px;  top: 243px;  animation-delay: 1.4s; }
+        .dot-br { left: 254px;  top: 329px;  animation-delay: 2.1s; }
 
         .node-label {
             position: absolute;
@@ -112,7 +110,7 @@
         }
     }
 
-    // Shared green dot
+    // Shared green dot — with a subtle pulse so the diagram isn't static
     .obj-dot {
         width: 30px;
         height: 30px;
@@ -124,6 +122,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 50%;
+        animation: objDotPulse 2.8s ease-in-out infinite;
 
         span {
             display: block;
@@ -251,16 +251,23 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
+// Soft ripple + slight breathe on the objective dots
+@keyframes objDotPulse {
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0 fade(@green-color, 40%); }
+    60%  { transform: scale(1.08); box-shadow: 0 0 0 10px fade(@green-color, 0%); }
+    100% { transform: scale(1);    box-shadow: 0 0 0 0 fade(@green-color, 0%); }
+}
+
 // ─── Expected outcomes ──────────────────────────────────
 
 .section-expected-outcomes {
-    padding: 60px 0;
-    background: linear-gradient(180deg, #F4FEF3 0%, #FFFFFF 100%);
+    padding: 50px 0;
+    background: #ffffff;
 
-    // Concentric green "rising sun" graphic (Figma "Group 13"): three green
-    // arcs fading outward with a solid core, rising from the bottom-centre.
-    // Painted as a CSS pseudo-element (layered radial-gradients) rather than
-    // empty <div>s, so it can't be stripped by the jumbotron richeditor.
+    // Concentric green "rising sun" graphic: a solid core dome plus three
+    // distinct dashed rings that rotate slowly. The ring elements are
+    // injected by app.js (OutcomeRings) — real markup in the jumbotron body
+    // would be stripped/mangled by the richeditor.
     .outcomes-graphic {
         position: relative;
         height: 320px;
@@ -269,31 +276,68 @@
         margin: -35px auto 0;
         overflow: hidden;
 
-        &:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 320px;
-            z-index: 1;
-            pointer-events: none;
-            // Concentric green arcs rising from the bottom-centre: each ring holds
-            // its colour, then fades over a long soft feather so the boundaries
-            // blend (no hard ring edges). The largest arc fades to 0 before the
-            // 320px top so it is never hard-clipped. Topmost layer is the core dome.
-            background:
-                radial-gradient(circle 300px at 50% 100%, rgba(132, 175, 50, 0.09) 0, rgba(132, 175, 50, 0.09) 175px, rgba(132, 175, 50, 0) 300px),
-                radial-gradient(circle 215px at 50% 100%, rgba(132, 175, 50, 0.13) 0, rgba(132, 175, 50, 0.13) 130px, rgba(132, 175, 50, 0) 215px),
-                radial-gradient(circle 140px at 50% 100%, rgba(132, 175, 50, 0.20) 0, rgba(132, 175, 50, 0.20) 90px,  rgba(132, 175, 50, 0) 140px),
-                radial-gradient(circle 95px  at 50% 100%, #8cb838 0, #9ec24f 55px, rgba(158, 194, 79, 0) 95px);
-        }
-
         .breakpoint-large-down({
             height: auto;
             overflow: visible;
-            &:before { content: none; }
+            .outcome-rings { display: none; }
         });
+    }
+
+    .outcome-rings {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+
+        // Circles centred on the bottom-centre of the graphic; the container's
+        // overflow:hidden clips them to rising half-discs. Dashed borders give
+        // the slow rotation something visible to move; stacked translucent
+        // fills build up the concentric intensity toward the core.
+        .outcome-ring {
+            position: absolute;
+            left: 50%;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+
+        .ring-outer {
+            width: 600px;
+            height: 600px;
+            bottom: -300px;
+            margin-left: -300px;
+            border: 2px dashed fade(@green-color, 25%);
+            background: fade(@green-color, 5%);
+            animation: ringSpin 70s linear infinite;
+        }
+
+        .ring-mid {
+            width: 430px;
+            height: 430px;
+            bottom: -215px;
+            margin-left: -215px;
+            border: 2px dashed fade(@green-color, 35%);
+            background: fade(@green-color, 7%);
+            animation: ringSpin 55s linear infinite reverse;
+        }
+
+        .ring-inner {
+            width: 280px;
+            height: 280px;
+            bottom: -140px;
+            margin-left: -140px;
+            border: 2px dashed fade(@green-color, 50%);
+            background: fade(@green-color, 10%);
+            animation: ringSpin 40s linear infinite;
+        }
+
+        .ring-core {
+            width: 190px;
+            height: 190px;
+            bottom: -95px;
+            margin-left: -95px;
+            border: none;
+            background: radial-gradient(circle at 50% 30%, #9ec24f 0%, #8cb838 75%);
+        }
     }
 
     .outcomes-pills {
@@ -344,6 +388,21 @@
         .breakpoint-large-down({ font-size: 16px; });
     }
 
+    // One-by-one pill reveal. The .pills-animate hook is added by app.js
+    // (OutcomePills) only when JS runs and motion is allowed, so pills stay
+    // visible without JS. `translate` is used instead of `transform` because
+    // .pill-top centres itself with transform: translateX(-50%).
+    .outcomes-pills.pills-animate .outcome-pill {
+        opacity: 0;
+        translate: 0 18px;
+        transition: opacity 0.5s ease, translate 0.5s ease;
+
+        &.is-visible {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
     .outcomes-blurbs {
         margin-top: 35px;
     }
@@ -373,4 +432,15 @@
             .breakpoint-large-down({ font-size: 16px; });
         }
     }
+}
+
+// Slow rotation for the outcome rings (dashed borders make it visible)
+@keyframes ringSpin {
+    to { rotate: 360deg; }
+}
+
+// Respect users who opt out of motion: freeze the decorative animations.
+@media (prefers-reduced-motion: reduce) {
+    .section-specific-objectives .obj-dot { animation: none; }
+    .section-expected-outcomes .outcome-rings .outcome-ring { animation: none; }
 }

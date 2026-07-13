@@ -244,6 +244,7 @@
     .challenge-cards {
         position: relative;
         z-index: 2;
+        margin-top: 45px;
 
         .breakpoint-large-down({
             flex-direction: column;
@@ -257,7 +258,7 @@
         border-radius: 5px;
         color: white;
         text-align: center;
-        padding: 40px;
+        padding: 40px 30px;
         min-height: 313px;
         display: flex;
         flex-direction: column;
@@ -272,11 +273,18 @@
         .card-title {
             font-family: 'Google Sans Flex', sans-serif;
             font-weight: 500;
-            font-size: 26px;
+            // Fluid size so the longest title ("Need for practical
+            // solutions") stays on one line across desktop widths; below
+            // the large breakpoint the cards stack full-width, so a fixed
+            // comfortable size comes back. Escaped: the PHP LESS compiler
+            // mangles bare clamp() into an error dump.
+            font-size: ~"clamp(16px, 1.7vw, 23px)";
             letter-spacing: 0.26px;
             line-height: 1.35;
             color: white;
             margin-bottom: 25px;
+
+            .breakpoint-large-down({ font-size: 24px; });
         }
 
         .card-desc {
@@ -292,8 +300,9 @@
 
 // ─── Latest news ────────────────────────────────────────
 
+// Vertical padding comes from the shared section rhythm (layout/default.less);
+// the inner .container contributes none.
 .section-latest-news {
-    padding: 60px 0;
 
     .latest-news-heading {
         text-align: center;
@@ -307,8 +316,9 @@
         .breakpoint-large-down({ font-size: 28px; });
     }
 
+    // Cards already carry 25px bottom margin — keep the grid→button gap ~35px
     .latest-news-grid {
-        margin-bottom: 35px;
+        margin-bottom: 10px;
     }
 
     .news-card {

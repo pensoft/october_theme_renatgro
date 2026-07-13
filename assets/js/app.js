@@ -228,6 +228,58 @@
         }
     };
 
+    /* ─── Outcome Rings (inject if missing) ─────────────────── */
+    // The rotating rings of the "Expected outcomes" graphic are real
+    // elements styled in pages/objectives.less. They are injected here
+    // rather than stored in the jumbotron body, which the richeditor
+    // would strip or mangle.
+
+    var OutcomeRings = {
+        init: function () {
+            var graphic = document.querySelector('.outcomes-graphic');
+            if (!graphic || graphic.querySelector('.outcome-rings')) return;
+            var wrap = document.createElement('div');
+            wrap.className = 'outcome-rings';
+            wrap.setAttribute('aria-hidden', 'true');
+            ['ring-outer', 'ring-mid', 'ring-inner', 'ring-core'].forEach(function (cls) {
+                var ring = document.createElement('div');
+                ring.className = 'outcome-ring ' + cls;
+                wrap.appendChild(ring);
+            });
+            graphic.insertBefore(wrap, graphic.firstChild);
+        }
+    };
+
+    /* ─── Outcome Pills (reveal one by one) ─────────────────── */
+    // Adds the .pills-animate hook only when JS runs and the user allows
+    // motion, so the pills stay visible for no-JS / reduced-motion users.
+
+    var OutcomePills = {
+        init: function () {
+            var wrap = document.querySelector('.outcomes-pills');
+            if (!wrap) return;
+            var pills = wrap.querySelectorAll('.outcome-pill');
+            if (!pills.length) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            wrap.classList.add('pills-animate');
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    observer.disconnect();
+                    pills.forEach(function (pill, i) {
+                        setTimeout(function () {
+                            pill.classList.add('is-visible');
+                        }, i * 180);
+                    });
+                });
+            }, { threshold: 0.2 });
+
+            observer.observe(wrap);
+        }
+    };
+
     /* ─── Diagram Hover Link ────────────────────────────────── */
 
     var DiagramHover = {
@@ -405,6 +457,8 @@
         Tabs.init();
         HashNav.init();
         DiagramDots.init();
+        OutcomeRings.init();
+        OutcomePills.init();
         Popup.init();
         DiagramHover.init();
         HeroReveal.init();

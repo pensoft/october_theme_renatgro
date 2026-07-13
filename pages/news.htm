@@ -184,7 +184,12 @@ function onStart()
                 {{ article.content|raw }}
             </div>
 
-            {% if allow_share %}
+            {# Show the Share control only when sharing is enabled for this
+               article AND at least one social network is turned on in the
+               theme settings — otherwise the menu is empty and hovering the
+               button reveals a blank popup. #}
+            {% set has_social = this.theme.social_media and (this.theme.facebook or this.theme.twitter or this.theme.linkedin or this.theme.bluesky or this.theme.threads) %}
+            {% if allow_share and has_social %}
             <div class="news-detail-share">
                 <div class="news-share">
                     <button type="button" class="share-button news-share-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Share">

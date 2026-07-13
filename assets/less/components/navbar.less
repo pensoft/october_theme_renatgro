@@ -72,12 +72,19 @@
     .container {
         position: relative;
         z-index: 2;
-        padding: 0;
+        // Top padding offsets the absolute navbar overlaying the banner
+        // (30px padding ×2 + 61px logo = 121px; 20px ×2 + 40px = 80px below
+        // the huge breakpoint), so the title centers in the VISIBLE area
+        // below the nav instead of hugging it.
+        padding: 121px 0 0;
         width: inherit;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-sizing: border-box;
+
+        .breakpoint-huge-down({ padding-top: 80px; });
     }
 
     h1.underline {
