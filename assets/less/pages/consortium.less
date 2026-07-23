@@ -94,7 +94,7 @@
 
 .consortium-logo-stack {
     flex-shrink: 0;
-    width: 210px;
+    width: 240px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -128,7 +128,7 @@
     align-items: center;
     justify-content: center;
     min-height: 123px;
-    padding: 35px;
+    padding: 25px;
     background: #f3f5fe;
     border: none;
     border-radius: 5px;
@@ -141,23 +141,22 @@
     }
 
     &--wide {
-        width: 250px;
-        height: 160px;
+        width: 300px;
+        height: 190px;
     }
 
     .logo-img {
         display: block;
-        // Narrow expertise card — keep clear padding around the logo
-        max-width: 120px;
-        max-height: 60px;
-        width: auto;
+        // Fill the card so small source logos scale UP (max-* alone only caps,
+        // it never upscales an image below its intrinsic size).
+        width: 100%;
         height: auto;
+        max-height: 110px;
         object-fit: contain;
     }
 
     &--wide .logo-img {
-        max-width: 150px;
-        max-height: 80px;
+        max-height: 150px;
     }
 
     .logo-fallback {
