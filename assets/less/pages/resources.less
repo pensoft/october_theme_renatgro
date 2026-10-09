@@ -54,6 +54,42 @@
             }
         }
     }
+
+    // ─── Documents category sub-tabs (filter pills) ──────
+    .resources-subtabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin: -16px 0 32px;
+
+        .subtab-link {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid fade(@blue-color, 35%);
+            background: transparent;
+            color: @blue-color;
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.35;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+
+            &:hover {
+                border-color: @blue-color;
+                background: fade(@blue-color, 8%);
+            }
+
+            &.active,
+            &.active:hover {
+                border-color: @blue-color;
+                background: fade(@blue-color, 14%);
+                color: @blue-color;
+            }
+        }
+    }
 }
 
 // Scoped to the page's own .container — the layout also stamps the page id
@@ -67,6 +103,11 @@
     .resources-grid {
         margin-left: -12px;
         margin-right: -12px;
+    }
+
+    // Hidden by the Documents category filter
+    .resource-col[hidden] {
+        display: none;
     }
 
     .resource-col {

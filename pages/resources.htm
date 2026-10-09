@@ -8,101 +8,26 @@ robot_follow = "follow"
 [siteSearchInclude]
 ==
 <?php
-use Pensoft\Media\Models\Newsletters;
+use Pensoft\Media\Models\Documents;
+use Pensoft\Media\Models\DocumentsCategory;
 use Pensoft\Media\Models\Videos;
 use Pensoft\Media\Models\Pressreleases;
 
 function onStart()
 {
-    // Documents tab → Newsletters (PDF + optional preview image + name + date)
-    $documents = Newsletters::with(['file', 'newsletter_image', 'file_lang_versions'])
-        ->orderBy('date', 'desc')
+    // Documents tab → Documents (title + PDF + optional preview image),
+    // in backend reorder order; only records with a file are downloadable
+    $documents = Documents::with(['file', 'image'])
+        ->has('file')
+        ->orderBy('sort_order')
         ->get();
 
-    // Language versions: each document gets a {label, url} download list built
-    // from its file_lang_versions attachments (caption title = language name),
-    // with the required default file kept as the fallback/first entry.
-    // One entry → direct download; several → language dropdown on the card.
-    $langNames = [
-        'en' => ['english', 'inglés', 'ingles'],
-        'es' => ['español', 'espanol', 'spanish'],
-    ];
-    $currentLang = $this['currentLang'] ?: 'en';
-    $currentNames = isset($langNames[$currentLang]) ? $langNames[$currentLang] : $langNames['en'];
-
-    $matchesCurrent = function ($label) use ($currentLang, $currentNames) {
-        $label = mb_strtolower(trim($label));
-        if ($label === $currentLang) {
-            return true;
-        }
-        foreach ($currentNames as $name) {
-            if (mb_strpos($label, $name) !== false) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    $defaultLangLabel = class_exists('RainLab\Translate\Models\Message')
-        ? \RainLab\Translate\Models\Message::trans('English')
-        : 'English';
-
-    foreach ($documents as $doc) {
-        $downloads = [];
-
-        foreach ($doc->file_lang_versions as $version) {
-            $label = trim((string) $version->title);
-            $downloads[] = [
-                'label' => $label !== '' ? $label : $version->file_name,
-                'url'   => $version->path,
-            ];
-        }
-
-        if ($doc->file) {
-            $defaultLabel = trim((string) $doc->file->title);
-
-            if (!count($downloads)) {
-                // Single-language resource — behaves as a direct download
-                $downloads[] = [
-                    'label' => $defaultLabel !== '' ? $defaultLabel : $doc->file->file_name,
-                    'url'   => $doc->file->path,
-                ];
-            } else {
-                // Prepend the default file unless a language version re-uploads it
-                $isDuplicate = false;
-                foreach ($doc->file_lang_versions as $version) {
-                    if ($version->file_name === $doc->file->file_name) {
-                        $isDuplicate = true;
-                        break;
-                    }
-                }
-                if (!$isDuplicate) {
-                    array_unshift($downloads, [
-                        'label' => $defaultLabel !== '' ? $defaultLabel : $defaultLangLabel,
-                        'url'   => $doc->file->path,
-                    ]);
-                }
-            }
-        }
-
-        // Current site language first, original order otherwise
-        if (count($downloads) > 1) {
-            $preferred = [];
-            $others = [];
-            foreach ($downloads as $option) {
-                if ($matchesCurrent($option['label'])) {
-                    $preferred[] = $option;
-                } else {
-                    $others[] = $option;
-                }
-            }
-            $downloads = array_merge($preferred, $others);
-        }
-
-        $doc->downloads = $downloads;
-    }
-
     $this['documents'] = $documents;
+
+    // Category sub-tabs → only categories that have at least one document
+    $this['documentCategories'] = DocumentsCategory::whereIn('id', $documents->pluck('category_id')->filter()->unique())
+        ->orderBy('sort_order')
+        ->get();
 
     // Videos tab → Videos (name + youtube/vimeo embed url + published_at)
     $this['videos'] = Videos::orderBy('published_at', 'desc')->get();
@@ -126,17 +51,23 @@ function onStart()
         </div>
     </div>
 
-    {# ── Documents (Newsletters) ── #}
+    {# ── Documents (filtered client-side by category sub-tabs) ── #}
     <div class="resources-panel" data-panel="documents" role="tabpanel">
+        {% if documentCategories|length %}
+        <div class="resources-subtabs" role="group" aria-label="{{ 'Filter by category'|_ }}">
+            <button type="button" class="subtab-link active" data-category="all" aria-pressed="true">{{ 'All'|_ }}</button>
+            {% for category in documentCategories %}
+            <button type="button" class="subtab-link" data-category="{{ category.id }}" aria-pressed="false">{{ category.title }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <div class="row resources-grid">
             {% for doc in documents %}
-                {% set downloads = doc.downloads %}
-                {% if downloads|length %}
-                <div class="col-md-4 col-xs-12 resource-col">
-                    {% if downloads|length == 1 %}
-                    <a href="{{ downloads[0].url }}" target="_blank" rel="noopener" class="resource-card resource-card--doc{% if doc.newsletter_image %} has-preview{% endif %}" aria-label="{{ doc.name }}">
-                        {% if doc.newsletter_image %}
-                        <span class="resource-card-media" style="background-image: url('{{ doc.newsletter_image.path }}');" aria-hidden="true"></span>
+                <div class="col-md-4 col-xs-12 resource-col" data-category="{{ doc.category_id ?: 'none' }}">
+                    <a href="{{ doc.file.path }}" target="_blank" rel="noopener" class="resource-card resource-card--doc{% if doc.image %} has-preview{% endif %}" aria-label="{{ doc.title }}">
+                        {% if doc.image %}
+                        <span class="resource-card-media" style="background-image: url('{{ doc.image.path }}');" aria-hidden="true"></span>
                         {% else %}
                         <span class="resource-card-icon" aria-hidden="true">
                             <img src="{{ 'assets/images/pdf-icon.svg'|theme }}" alt="" />
@@ -147,51 +78,12 @@ function onStart()
                         </span>
                         <span class="resource-card-overlay">
                             <span class="resource-card-label">
-                                {{ 'Date published'|_ }}{% if doc.date %} · {{ doc.date|date('j M Y') }}{% endif %}
+                                {{ 'Date published'|_ }}{% if doc.created_at %} · {{ doc.created_at|date('j M Y') }}{% endif %}
                             </span>
-                            <span class="resource-card-title">{{ doc.name }}</span>
+                            <span class="resource-card-title">{{ doc.title }}</span>
                         </span>
                     </a>
-                    {% else %}
-                    {# Multiple language versions — card opens a language dropdown #}
-                    <div class="resource-langmenu">
-                        <button type="button" class="resource-card resource-card--doc{% if doc.newsletter_image %} has-preview{% endif %}" aria-haspopup="menu" aria-expanded="false" aria-label="{{ doc.name }} — {{ 'Select language'|_ }}">
-                            {% if doc.newsletter_image %}
-                            <span class="resource-card-media" style="background-image: url('{{ doc.newsletter_image.path }}');" aria-hidden="true"></span>
-                            {% else %}
-                            <span class="resource-card-icon" aria-hidden="true">
-                                <img src="{{ 'assets/images/pdf-icon.svg'|theme }}" alt="" />
-                            </span>
-                            {% endif %}
-                            <span class="resource-card-action" aria-hidden="true">
-                                <img src="{{ 'assets/images/download.svg'|theme }}" alt="" />
-                            </span>
-                            <span class="resource-card-overlay">
-                                <span class="resource-card-label">
-                                    {{ 'Date published'|_ }}{% if doc.date %} · {{ doc.date|date('j M Y') }}{% endif %}
-                                </span>
-                                <span class="resource-card-title">{{ doc.name }}</span>
-                                <span class="resource-card-langbadge">
-                                    {%- for option in downloads %}{{ option.label }}{% if not loop.last %} · {% endif %}{% endfor -%}
-                                </span>
-                            </span>
-                        </button>
-                        <div class="resource-langmenu-panel" role="menu" aria-label="{{ 'Select language'|_ }}">
-                            <button type="button" class="resource-langmenu-close" aria-label="{{ 'Close'|_ }}"></button>
-                            <span class="resource-langmenu-title">{{ 'Select language'|_ }}</span>
-                            <div class="resource-langmenu-options">
-                                {% for option in downloads %}
-                                <a href="{{ option.url }}" target="_blank" rel="noopener" role="menuitem" class="resource-langmenu-option">
-                                    <span class="resource-langmenu-option-label">{{ option.label }}</span>
-                                    <img src="{{ 'assets/images/download.svg'|theme }}" alt="" />
-                                </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
-                {% endif %}
             {% else %}
                 <div class="col-xs-12"><p class="resources-empty">{{ 'No documents available'|_ }}</p></div>
             {% endfor %}
@@ -277,55 +169,27 @@ function onStart()
 })();
 
 (function () {
-    var menus = document.querySelectorAll('.resources .resource-langmenu');
-    if (!menus.length) return;
+    var group = document.querySelector('.resources .resources-subtabs');
+    if (!group) return;
 
-    function closeAll() {
-        menus.forEach(function (menu) {
-            menu.classList.remove('is-open');
-            var btn = menu.querySelector('button.resource-card');
-            if (btn) btn.setAttribute('aria-expanded', 'false');
-        });
-    }
+    var buttons = group.querySelectorAll('.subtab-link');
+    var cards = document.querySelectorAll('.resources [data-panel="documents"] .resource-col[data-category]');
 
-    menus.forEach(function (menu) {
-        var btn = menu.querySelector('button.resource-card');
+    group.addEventListener('click', function (e) {
+        var btn = e.target.closest('.subtab-link');
         if (!btn) return;
 
-        btn.addEventListener('click', function () {
-            var wasOpen = menu.classList.contains('is-open');
-            closeAll();
-            if (!wasOpen) {
-                menu.classList.add('is-open');
-                btn.setAttribute('aria-expanded', 'true');
-                var first = menu.querySelector('.resource-langmenu-option');
-                if (first) first.focus();
-            }
+        var category = btn.getAttribute('data-category');
+
+        buttons.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('active', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
 
-        var close = menu.querySelector('.resource-langmenu-close');
-        if (close) close.addEventListener('click', function () {
-            closeAll();
-            btn.focus();
-        });
-
-        menu.querySelectorAll('.resource-langmenu-option').forEach(function (opt) {
-            opt.addEventListener('click', closeAll);
+        cards.forEach(function (card) {
+            card.hidden = category !== 'all' && card.getAttribute('data-category') !== category;
         });
     });
-
-    document.addEventListener('click', function (e) {
-        if (!e.target.closest('.resource-langmenu')) closeAll();
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key !== 'Escape') return;
-        var open = document.querySelector('.resources .resource-langmenu.is-open button.resource-card');
-        closeAll();
-        if (open) open.focus();
-    });
-
-    var nav = document.querySelector('.resources .resources-tabs');
-    if (nav) nav.addEventListener('click', closeAll);
 })();
 </script>
